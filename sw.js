@@ -1,15 +1,19 @@
 /* ZameenMap service worker — caches the app shell for instant offline open.
    Satellite tiles are NOT handled here; they live in the app's IndexedDB cache. */
-var CACHE = 'zameenmap-shell-v7.8';
-var SHELL = ['./', './index.html', './manifest.webmanifest', './favicon.svg',
-  './favicon-32.png', './apple-touch-icon.png', './icon-192.png',
-  './icon-512.png', './icon-maskable-512.png'];
+var CACHE = 'zameenmap-shell-v7.9';
+/* Only files that actually exist in the repo: the five icon PNGs used to be
+   listed here but were never shipped, and one missing file made c.addAll()
+   fail the whole install — so offline never worked. Each file is cached
+   individually so a single failure can never break the install again. */
+var SHELL = ['./', './index.html', './manifest.webmanifest', './favicon.svg'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open(CACHE).then(function (c) { return c.addAll(SHELL); })
-      .then(function () { return self.skipWaiting(); })
-      .catch(function () {})
+    caches.open(CACHE).then(function (c) {
+      return Promise.all(SHELL.map(function (u) {
+        return c.add(new Request(u, { cache: 'no-cache' })).catch(function () {});
+      }));
+    }).then(function () { return self.skipWaiting(); })
   );
 });
 
