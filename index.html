@@ -1106,6 +1106,8 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="bar"><i id="satBar"></i></div>
       <button class="reset go" id="satBtn" onclick="downloadSat()">⬇ Download HD Satellite (Offline)</button>
       <button class="reset" onclick="clearSat()">Delete Saved Satellite</button>
+      <button class="reset go" id="installBtn" onclick="installApp()">&#128241; Install App (Offline)</button>
+      <p class="hint" id="installHint">Installs ZameenMap on your home screen — then it opens directly as an app, no browser needed.</p>
       <h5>&#9878; Grid Adjust</h5>
       <p class="hint">If the grid looks slightly offset, move it in 5 m steps.</p>
       <div class="pad">
@@ -1822,6 +1824,33 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       navigator.serviceWorker.register('sw.js').catch(function(){});
     }
   }catch(e){}
+
+  /* --- In-page Install App button (beforeinstallprompt) --- */
+  var deferredPrompt = null;
+  function hideInstallUI(){
+    var b=document.getElementById('installBtn'); if(b) b.style.display='none';
+    var h=document.getElementById('installHint'); if(h) h.style.display='none';
+  }
+  try{
+    if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches){ hideInstallUI(); }
+  }catch(e){}
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferredPrompt = e;
+    var b=document.getElementById('installBtn'); if(b) b.style.display='';
+  });
+  window.addEventListener('appinstalled', function(){ deferredPrompt = null; hideInstallUI(); });
+  window.installApp = function(){
+    var b=document.getElementById('installBtn');
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(choice){
+        if(choice && choice.outcome==='accepted'){ hideInstallUI(); }
+        deferredPrompt = null;
+      }).catch(function(){ deferredPrompt = null; });
+    }else if(b){
+      b.textContent = 'Install: browser menu \u2192 Install app / Add to Home screen';
+    }
+  };
 
   function dzHideLoader(){
     var l=document.getElementById('loader'); if(!l||l._done) return; l._done=true;
