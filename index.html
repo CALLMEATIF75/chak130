@@ -736,6 +736,8 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .lockcard .lk{font-size:30px}
 .lbl-q{font-weight:700;font-size:11px;color:#7dd3fc;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
 .lbl-q-sel{font-weight:800;font-size:12px;color:#fde047;text-shadow:0 0 3px #000,0 0 3px #000,0 1px 3px #000}
+.lbl-k{font-weight:800;font-size:11px;color:#fbbf24;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
+.lbl-ml{font-weight:700;font-size:9px;color:#7dd3fc;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
 /* ===== v5: selected mustatil ka banner — header ke andar rehta hai, map ke center ko nahi dhakta ===== */
 #selBanner{display:none;align-items:center;gap:9px;margin-top:8px;padding:6px 8px 6px 12px;border-radius:11px;background:rgba(180,83,9,.16);border:1px solid #b45309}
 #selBanner .sbName{font-size:17px;font-weight:800;color:#fcd34d;white-space:nowrap;letter-spacing:.2px}
@@ -796,8 +798,10 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .stat b{display:block;font-size:17px;color:#fde68a;font-variant-numeric:tabular-nums}
 .stat small{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
 .tabs{display:flex;gap:6px;padding:10px 14px 0}
-.tab{flex:1;min-width:0;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:10px 2px;font-size:12.5px;font-weight:700;min-height:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab{flex:1;min-width:0;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:8px 2px;font-size:12.5px;font-weight:700;min-height:54px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .tab.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}
+.tab-ic{font-size:20px;line-height:1}
+.tab-tx{font-size:11px;font-weight:700;line-height:1.1}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
 .tabbody h5:first-child{margin-top:0}
@@ -1041,13 +1045,13 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     </div>
   </div>
   <div class="tabs">
-    <button class="tab" id="tabbtn-ly" onclick="switchDashTab('ly')">Map Layers</button>
-    <button class="tab" id="tabbtn-tl" onclick="switchDashTab('tl')">Tools</button>
-    <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')">Land Records</button>
-    <button class="tab on" id="tabbtn-ov" onclick="switchDashTab('ov')">Overview</button>
+    <button class="tab" id="tabbtn-ly" onclick="switchDashTab('ly')"><span class="tab-ic">🗺️</span><span class="tab-tx">Map Layers</span></button>
+    <button class="tab" id="tabbtn-tl" onclick="switchDashTab('tl')"><span class="tab-ic">🛠️</span><span class="tab-tx">Tools</span></button>
+    <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')"><span class="tab-ic">📋</span><span class="tab-tx">Land Records</span></button>
+    <button class="tab" id="tabbtn-ov" onclick="switchDashTab('ov')"><span class="tab-ic">📊</span><span class="tab-tx">Overview</span></button>
   </div>
 
-  <div class="tabbody" id="tab-ov">
+  <div class="tabbody" id="tab-ov" style="display:none">
     <div class="stats" id="dashStats"></div>
     <h5>&#128205; Live Location</h5>
     <div class="p-card">
@@ -1268,7 +1272,6 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
   <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver">v7.8</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
-<div id="qilaChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="qilaChipTxt"></span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
@@ -1682,6 +1685,76 @@ function drawSelQila(){
   for(var q=1;q<=25;q++) L.polygon(qCorners(m,q),{renderer:canvas,color:V6C.sel,weight:1.6,dashArray:'5 4',fill:false,interactive:false}).addTo(qSelLayer);
 }
 
+/* ===== Kanal/Marla drill-down (24 Nov 2026): qila ke andar 8 kanal, kanal ke andar 20 marla =====
+   Jese murabba ke andar 25 qila boxes bante hain, wese hi qila tap par us ke andar 8 kanal boxes
+   aur kanal tap par us ke andar 20 marla boxes map par bante hain. Tap flow: murabba -> qila -> kanal -> marla.
+   Aik qila = 40 karam (E-W) x 36 karam (N-S) = 8 kanal (4 cols x 2 rows, har kanal 10x18 karam).
+   Aik kanal = 20 marla (5 cols x 4 rows, har marla 2x4.5 karam = 9 sq karam). */
+var kanalLayer=L.layerGroup(), marlaLayer=L.layerGroup();
+var selKanal=null, selMarla=null; /* selected kanal (1-8) / marla (1-20) inside the selected qila */
+function bilinPt(c,fx,fy){
+  var nw=c[0], ne=c[1], se=c[2], sw=c[3];
+  return [
+    (1-fx)*(1-fy)*nw[0] + fx*(1-fy)*ne[0] + fx*fy*se[0] + (1-fx)*fy*sw[0],
+    (1-fx)*(1-fy)*nw[1] + fx*(1-fy)*ne[1] + fx*fy*se[1] + (1-fx)*fy*sw[1]
+  ];
+}
+function subQuad(c,fx0,fy0,fx1,fy1){
+  return [bilinPt(c,fx0,fy0), bilinPt(c,fx1,fy0), bilinPt(c,fx1,fy1), bilinPt(c,fx0,fy1)];
+}
+function kanalCorners(m,q,k){
+  var qc=qCorners(m,q), col=(k-1)%4, row=Math.floor((k-1)/4);
+  return subQuad(qc, col/4, row/2, (col+1)/4, (row+1)/2);
+}
+function marlaCorners(kc,ml){
+  var col=(ml-1)%5, row=Math.floor((ml-1)/5);
+  return subQuad(kc, col/5, row/4, (col+1)/5, (row+1)/4);
+}
+function kanalFromGeo(m,q,g){
+  var rc=qRC(q), x0=m.gc+rc.col/5, y0=(m.gr-2)+rc.row/5;
+  var fx=Math.min(0.999,Math.max(0,(g.x-x0)/0.2)), fy=Math.min(0.999,Math.max(0,(g.y-y0)/0.2));
+  return Math.floor(fy*2+1e-9)*4 + Math.floor(fx*4+1e-9) + 1;
+}
+function marlaFromGeo(m,q,k,g){
+  var rc=qRC(q), x0=m.gc+rc.col/5, y0=(m.gr-2)+rc.row/5;
+  var kcol=(k-1)%4, krow=Math.floor((k-1)/4), kx0=x0+kcol*0.05, ky0=y0+krow*0.1;
+  var fx=Math.min(0.999,Math.max(0,(g.x-kx0)/0.05)), fy=Math.min(0.999,Math.max(0,(g.y-ky0)/0.1));
+  return Math.floor(fy*4+1e-9)*5 + Math.floor(fx*5+1e-9) + 1;
+}
+function geoOfTap(lat,lng){
+  return (curVillage==='130') ? llToGeo(lat,lng) : affineGeo(lat,lng);
+}
+function drawKanalBoxes(){
+  kanalLayer.clearLayers();
+  if(!target || !target.q){ if(map.hasLayer(kanalLayer)) map.removeLayer(kanalLayer); return; }
+  var m=murByKey(target.m);
+  for(var k=1;k<=8;k++){
+    var kc=kanalCorners(m,target.q,k);
+    L.polygon(kc,{renderer:canvas,color:'#f59e0b',weight:1.4,fill:false,interactive:false}).addTo(kanalLayer);
+    var cen=[(kc[0][0]+kc[2][0])/2,(kc[0][1]+kc[2][1])/2];
+    L.marker(cen,{interactive:false,keyboard:false,icon:L.divIcon({className:'lbl',html:'<span class="lbl-k">'+k+'</span>',iconSize:[20,14],iconAnchor:[10,7]})}).addTo(kanalLayer);
+  }
+  if(!map.hasLayer(kanalLayer)) map.addLayer(kanalLayer);
+}
+function drawMarlaBoxes(){
+  marlaLayer.clearLayers();
+  if(!target || !target.q || !selKanal){ if(map.hasLayer(marlaLayer)) map.removeLayer(marlaLayer); return; }
+  var m=murByKey(target.m), kc=kanalCorners(m,target.q,selKanal);
+  for(var ml=1;ml<=20;ml++){
+    var mc=marlaCorners(kc,ml);
+    L.polygon(mc,{renderer:canvas,color:'#38bdf8',weight:1,fill:false,interactive:false}).addTo(marlaLayer);
+    var cen=[(mc[0][0]+mc[2][0])/2,(mc[0][1]+mc[2][1])/2];
+    L.marker(cen,{interactive:false,keyboard:false,icon:L.divIcon({className:'lbl',html:'<span class="lbl-ml">'+ml+'</span>',iconSize:[18,12],iconAnchor:[9,6]})}).addTo(marlaLayer);
+  }
+  if(!map.hasLayer(marlaLayer)) map.addLayer(marlaLayer);
+}
+function clearDrill(){
+  selKanal=null; selMarla=null;
+  kanalLayer.clearLayers(); marlaLayer.clearLayers();
+  if(map.hasLayer(kanalLayer)) map.removeLayer(kanalLayer);
+  if(map.hasLayer(marlaLayer)) map.removeLayer(marlaLayer);
+}
+
 function addQLabels(m,vb,sel){
   for(var q=1;q<=25;q++){
     var qb=qBounds(m,q); if(!vb.intersects(toLB(qb))) continue;
@@ -1716,14 +1789,43 @@ function refresh(){
   updateSelBanner();
 }
 
-/* ===== Tap select: 1st tap = murabba (its qilas only), 2nd tap = qila ===== */
+/* ===== Tap select: murabba -> qila -> kanal -> marla (drill-down, 24 Nov 2026) =====
+   1st tap murabba = us ke 25 qila boxes. 2nd tap qila = us ke andar 8 kanal boxes.
+   3rd tap kanal = us ke andar 20 marla boxes. Dobara wohi kanal tap = wapas kanal view. */
 function onMapClick(e){
   if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng);
   if(window.placeTapPin) placeTapPin(e.latlng);
   var h=locate(e.latlng.lat,e.latlng.lng);
-  if(!h){ clearTarget(); return; }
-  if(target && target.m===h.name) target.q=(target.q===h.q)?null:h.q;
-  else target={m:h.name,q:null};
+  if(!h){ clearTarget(); clearDrill(); return; }
+  var m=murByKey(h.name);
+  if(!target || target.m!==h.name){
+    /* Naya murabba — select karo (qila boxes), drill reset */
+    target={m:h.name,q:null}; selKanal=null; selMarla=null;
+    syncSelects(); drawTarget(false); drawKanalBoxes(); drawMarlaBoxes(); return;
+  }
+  if(!target.q){
+    /* Murabba selected, ab qila chuno — us ke kanal boxes dikhao */
+    target.q=h.q; selKanal=null; selMarla=null;
+    syncSelects(); drawTarget(false); drawKanalBoxes(); drawMarlaBoxes(); return;
+  }
+  if(h.q!==target.q){
+    /* Doosra qila — usay select karo, us ke kanal boxes dikhao */
+    target.q=h.q; selKanal=null; selMarla=null;
+    syncSelects(); drawTarget(false); drawKanalBoxes(); drawMarlaBoxes(); return;
+  }
+  /* Wohi qila dobara tap — kanal/marla drill-down */
+  var g=geoOfTap(e.latlng.lat,e.latlng.lng);
+  if(!selKanal){
+    selKanal=kanalFromGeo(m,target.q,g); selMarla=null;
+    drawMarlaBoxes(); syncSelects(); drawTarget(false); return;
+  }
+  var k2=kanalFromGeo(m,target.q,g);
+  if(k2===selKanal){
+    /* Wohi kanal dobara — wapas kanal view */
+    selKanal=null; selMarla=null; drawMarlaBoxes();
+  } else {
+    selKanal=k2; selMarla=null; drawMarlaBoxes();
+  }
   syncSelects(); drawTarget(false);
 }
 function syncSelects(){
@@ -1865,12 +1967,12 @@ function drawTarget(fly){
     var m=murByKey(target.m), ref=target.q?qBounds(m,target.q):mBounds(m);
     following=false; setFollowBtn(); map.fitBounds(toLB(ref),{padding:[70,70],maxZoom:target.q?19.5:17});
   }
-  updateNav(); updateQilaChip(); refresh();
+  updateNav(); drawKanalBoxes(); drawMarlaBoxes(); refresh();
 }
 function clearTarget(){
   target=null; qSelLayer.clearLayers(); repaintHi(); if(navLine){map.removeLayer(navLine);navLine=null}
-  syncSelects();
-  document.getElementById('nav').style.display='none'; updateQilaChip(); refresh();
+  syncSelects(); clearDrill();
+  document.getElementById('nav').style.display='none'; refresh();
 }
 
 /* ===== v5: Selected mustatil ka banner — header ke andar bara naam.
@@ -1902,20 +2004,6 @@ function updateNav(){
   var c=targetCenter(), d=dist(userLL,c);
   document.getElementById('navtxt').textContent=name+': '+(d>=1000?(d/1000).toFixed(2)+' km':Math.round(d)+' m')+' • '+bearing(userLL,c);
   if(navLine) navLine.setLatLngs([userLL,c]); else navLine=L.polyline([userLL,c],{color:'#fbbf24',weight:2.5,dashArray:'6 6',interactive:false}).addTo(map);
-}
-/* Tapped qila/murabba ka raqba map par dikhao (Kanal/Marla) — user ki shikayat thi ke tap par raqba nazar nahi aata */
-function updateQilaChip(){
-  var c=document.getElementById('qilaChip'); if(!c) return;
-  if(!target){ c.style.display='none'; return; }
-  var t=document.getElementById('qilaChipTxt');
-  if(target.q){
-    /* Aik qila = 1 Acre = 8 Kanal = 160 Marla */
-    t.textContent = 'Qila '+target.q+' · 1 Acre · 8 Kanal · 160 Marla';
-  } else {
-    /* Aik murabba = 25 qilas = 25 Acre = 200 Kanal = 4,000 Marla */
-    t.textContent = keyDisplay(target.m)+' · 25 Acre · 200 Kanal · 4,000 Marla';
-  }
-  c.style.display='block';
 }
 
 /* ===== Satellite download for offline use ===== */
@@ -3117,14 +3205,56 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   });
 
   /* --- Dashboard tabs: Search moved to the hero (always visible); Records PIN behaviour barqarar --- */
+  /* ===== Icon tabs + Android back button (24 Nov 2026) =====
+     4 icon options — sirf click par open hon, koi panel pehle se khula nahi.
+     Panel khulne par clear view (search hero hide). Android back button dabane par
+     pehle panel band ho (history entry), website/app band na ho. */
+  var curPanel=null, panelPushed=false;
+  function syncHeroForPanel(){
+    var hero=document.querySelector('#dash .hero');
+    if(hero) hero.style.display = curPanel ? 'none' : '';
+  }
+  function closePanel(){
+    curPanel=null;
+    ['ly','tl','rc','ov'].forEach(function(x){
+      var el=$('tab-'+x), b=$('tabbtn-'+x);
+      if(el) el.style.display='none';
+      if(b) b.className='tab';
+    });
+    syncHeroForPanel();
+  }
+  function closePanelViaBack(){
+    /* Tab dobara tap = band karo. History entry push ki thi to back() se band karo
+       (popstate handler closePanel karega); warna seedha band karo. */
+    if(panelPushed){
+      panelPushed=false;
+      try{
+        if(history.state && history.state.c130panel) history.back();
+        else closePanel();
+      }catch(e){ closePanel(); }
+    } else closePanel();
+  }
+  window.addEventListener('popstate', function(ev){
+    if(curPanel){ panelPushed=false; closePanel(); }
+  });
   window.switchDashTab = function(t){
     if(t==='rc' && window.pinIsUnlocked && !pinIsUnlocked()){ requirePin(function(){ window.switchDashTab('rc'); }); return; }
+    /* Toggle: dobara wohi tab tap = band karo (clear view, search wapas) */
+    if(curPanel===t){ closePanelViaBack(); return; }
+    var wasOpen = !!curPanel;
+    curPanel=t;
     ['ly','tl','rc','ov'].forEach(function(x){
       var el=$('tab-'+x), b=$('tabbtn-'+x);
       if(el) el.style.display = (x===t)?'block':'none';
       if(b) b.className = 'tab'+(x===t?' on':'');
     });
     var bb=$('tab-'+t); if(bb) bb.scrollTop=0;
+    syncHeroForPanel();
+    /* Back button: panel kholne par history entry — Android back dabane par panel band ho, site band na ho */
+    try{
+      if(wasOpen) history.replaceState({c130panel:t},'');
+      else { history.pushState({c130panel:t},''); panelPushed=true; }
+    }catch(e){}
   };
   window.openSearchTab = function(){
     if(window.toggleDash) toggleDash(true);
