@@ -1035,18 +1035,14 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <button onclick="dashSearchGo()">Search</button>
       </div>
       <div id="gsRes" class="gsres" style="display:none"></div>
-      <div class="searchrow">
-        <input id="dashQ" type="number" min="1" max="25" placeholder="Qila number (1&#8211;25) &mdash; optional">
-        <button onclick="dashSearchGo()">Go</button>
-      </div>
-      <p class="hint">Name, khata or murabba — owner results need Numberdar Login.</p>
+      <p class="hint">Name, khata or murabba — owner results need the PIN (open Land Records).</p>
     </div>
   </div>
   <div class="tabs">
+    <button class="tab" id="tabbtn-ly" onclick="switchDashTab('ly')">Map Layers</button>
+    <button class="tab" id="tabbtn-tl" onclick="switchDashTab('tl')">Tools</button>
+    <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')">Land Records</button>
     <button class="tab on" id="tabbtn-ov" onclick="switchDashTab('ov')">Overview</button>
-    <button class="tab" id="tabbtn-ly" onclick="switchDashTab('ly')">Layers</button>
-    <button class="tab" id="tabbtn-pm" onclick="switchDashTab('pm')">Measure</button>
-    <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')">Records</button>
   </div>
 
   <div class="tabbody" id="tab-ov">
@@ -1096,9 +1092,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <summary>&#128214; How to Use</summary>
       <ul>
         <li><b>Locate:</b> Overview tab &rarr; <b>Locate Me</b>.</li>
-        <li><b>Measure:</b> Measure tab — tap plot corners; area &amp; distance appear live.</li>
+        <li><b>Measure:</b> Tools tab — tap plot corners; area &amp; distance appear live.</li>
         <li><b>Search:</b> the search box at the top — name, khata, murabba or qila.</li>
-        <li><b>Records:</b> Numberdar Login (PIN) &rarr; Records tab &rarr; printout.</li>
+        <li><b>Land Records:</b> open the Land Records tab, enter the PIN, then print.</li>
         <li><b>Clean map:</b> the &#128065; button (top-right) hides everything; <b>Show</b> brings it back.</li>
       </ul>
     </details>
@@ -1132,39 +1128,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       </div>
     </details>
     <details class="sect">
-      <summary>Go To Location</summary>
-      <div class="searchrow">
-        <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)">
-        <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)">
-      </div>
-      <div class="btnrow"><button onclick="v6GoToDD()">&#128205; Go to Coordinates</button></div>
-      <div class="searchrow">
-        <input id="gtLatD" type="number" placeholder="Lat &#176;">
-        <input id="gtLatM" type="number" placeholder="Lat &#8242;">
-        <input id="gtLatS" type="number" placeholder="Lat &#8243;">
-      </div>
-      <div class="searchrow">
-        <input id="gtLngD" type="number" placeholder="Lng &#176;">
-        <input id="gtLngM" type="number" placeholder="Lng &#8242;">
-        <input id="gtLngS" type="number" placeholder="Lng &#8243;">
-      </div>
-      <div class="btnrow"><button onclick="v6GoToDMS()">&#128205; Go to DMS</button></div>
-    </details>
-    <details class="sect">
       <summary>&#128190; My Saved Layers</summary>
       <div class="btnrow">
         <button onclick="v6SaveLayers()">&#128190; Save Layer</button>
         <button onclick="v6RemoveLayers()">Remove Layers</button>
-      </div>
-    </details>
-    <details class="sect">
-      <summary>&#128736; Tools</summary>
-      <div id="dashQuick">
-        <button onclick="fitVillage()">Whole Village</button>
-        <button onclick="v6ResetView()">&#127968; Reset View</button>
-        <button onclick="toggleFull()">Fullscreen</button>
-        <button onclick="toggleCleanView()">Clean View</button>
-        <button onclick="shareLink()">Copy Link</button>
       </div>
     </details>
     <div id="setSect">
@@ -1178,41 +1145,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <button class="reset go" id="installBtn" onclick="installApp()">&#128241; Install App (Offline)</button>
         <p class="hint" id="installHint">Installs ZameenMap on your home screen — then it opens directly as an app, no browser needed.</p>
       </details>
-      <details class="sect">
-        <summary>&#9878; Grid Adjust</summary>
-        <p class="hint">If the grid looks slightly offset, move it in 5 m steps.</p>
-        <div class="pad">
-          <span></span><button onclick="nudge(5,0)">&#9650;</button><span></span>
-          <button onclick="nudge(0,-5)">&#9664;</button><span id="shiftTxt">0 m</span><button onclick="nudge(0,5)">&#9654;</button>
-          <span></span><button onclick="nudge(-5,0)">&#9660;</button><span></span>
-        </div>
-        <button class="reset" onclick="resetShift()">Reset</button>
-      </details>
     </div>
   </div>
 
-  <div class="tabbody" id="tab-pm" style="display:none">
-    <h5>Land Calculator</h5>
-    <p class="hint">Just type the measurement in feet — the rest is calculated automatically. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
-    <div class="searchrow">
-      <input id="calcLen" type="number" min="0" step="any" inputmode="decimal" placeholder="Length (ft)" oninput="calcLandUpdate()">
-      <input id="calcWid" type="number" min="0" step="any" inputmode="decimal" placeholder="Width (ft)" oninput="calcLandUpdate()">
-    </div>
-    <p class="hint" style="margin-top:6px">Or enter the area directly (if you already know it):</p>
-    <div class="searchrow">
-      <input id="calcSqft" type="number" min="0" step="any" inputmode="decimal" placeholder="Area (sq ft) — optional" oninput="calcLandUpdate()">
-    </div>
-    <div class="res" id="calcRes" style="display:none">
-      <div class="resline big"><span>Total Area</span><b id="calcBreak">—</b></div>
-      <div class="resline mid"><span>Square Feet</span><b id="calcSqftOut">0</b></div>
-      <div class="resline big"><span>Marla</span><b id="calcMarla">0</b></div>
-      <div class="resline"><span>Kanal</span><b id="calcKanal">0</b></div>
-      <div class="resline"><span>Acre</span><b id="calcAcre">0</b></div>
-      <div class="resline"><span>Square Yard (Gaj)</span><b id="calcGaj">0</b></div>
-      <div class="resline"><span>Square Meter</span><b id="calcSqm">0</b></div>
-    </div>
-    <div class="btnrow"><button onclick="calcLandClear()">Clear Calculator</button></div>
-    <p class="hint">Hisab: 1 Marla = 272.25 sq ft &middot; 1 Kanal = 20 Marla = 5,445 sq ft &middot; 1 Acre = 8 Kanal = 160 Marla = 43,560 sq ft.</p>
+  <div class="tabbody" id="tab-tl" style="display:none">
     <h5>Measure (Paimaish)</h5>
     <button class="big" id="pmBtn" onclick="toggleMeasure()">Start Measurement</button>
     <div class="btnrow"><button id="unFt" class="on2" onclick="v6SetUnits('ft')">Units: Feet</button><button id="unM" onclick="v6SetUnits('m')">Units: Metres</button></div>
@@ -1239,6 +1175,29 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="btnrow"><button onclick="pmCopyCoords()">&#128203; Copy All Coordinates</button></div>
       <p class="hint">The latitude and longitude of every point (for example the four corners of a plot) — copy and use them anywhere.</p>
     </div>
+
+    <h5>Land Calculator</h5>
+    <p class="hint">Just type the measurement in feet — the rest is calculated automatically. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
+    <div class="searchrow">
+      <input id="calcLen" type="number" min="0" step="any" inputmode="decimal" placeholder="Length (ft)" oninput="calcLandUpdate()">
+      <input id="calcWid" type="number" min="0" step="any" inputmode="decimal" placeholder="Width (ft)" oninput="calcLandUpdate()">
+    </div>
+    <p class="hint" style="margin-top:6px">Or enter the area directly (if you already know it):</p>
+    <div class="searchrow">
+      <input id="calcSqft" type="number" min="0" step="any" inputmode="decimal" placeholder="Area (sq ft) — optional" oninput="calcLandUpdate()">
+    </div>
+    <div class="res" id="calcRes" style="display:none">
+      <div class="resline big"><span>Total Area</span><b id="calcBreak">—</b></div>
+      <div class="resline mid"><span>Square Feet</span><b id="calcSqftOut">0</b></div>
+      <div class="resline big"><span>Marla</span><b id="calcMarla">0</b></div>
+      <div class="resline"><span>Kanal</span><b id="calcKanal">0</b></div>
+      <div class="resline"><span>Acre</span><b id="calcAcre">0</b></div>
+      <div class="resline"><span>Square Yard (Gaj)</span><b id="calcGaj">0</b></div>
+      <div class="resline"><span>Square Meter</span><b id="calcSqm">0</b></div>
+    </div>
+    <div class="btnrow"><button onclick="calcLandClear()">Clear Calculator</button></div>
+    <p class="hint">Hisab: 1 Marla = 272.25 sq ft &middot; 1 Kanal = 20 Marla = 5,445 sq ft &middot; 1 Acre = 8 Kanal = 160 Marla = 43,560 sq ft.</p>
+
     <details class="sect">
       <summary>Plot sizes &mdash; reference</summary>
       <div class="presets"><table>
@@ -1251,8 +1210,47 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <tr><td>1 Qila / Acre (160 Marla)</td><td>43,560 sq ft</td></tr>
       </table></div>
     </details>
-  </div>
 
+    <details class="sect">
+      <summary>Go To Location</summary>
+      <div class="searchrow">
+        <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)">
+        <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)">
+      </div>
+      <div class="btnrow"><button onclick="v6GoToDD()">&#128205; Go to Coordinates</button></div>
+      <div class="searchrow">
+        <input id="gtLatD" type="number" placeholder="Lat &#176;">
+        <input id="gtLatM" type="number" placeholder="Lat &#8242;">
+        <input id="gtLatS" type="number" placeholder="Lat &#8243;">
+      </div>
+      <div class="searchrow">
+        <input id="gtLngD" type="number" placeholder="Lng &#176;">
+        <input id="gtLngM" type="number" placeholder="Lng &#8242;">
+        <input id="gtLngS" type="number" placeholder="Lng &#8243;">
+      </div>
+      <div class="btnrow"><button onclick="v6GoToDMS()">&#128205; Go to DMS</button></div>
+    </details>
+    <details class="sect">
+      <summary>&#9878; Grid Adjust</summary>
+      <p class="hint">If the grid looks slightly offset, move it in 5 m steps.</p>
+      <div class="pad">
+        <span></span><button onclick="nudge(5,0)">&#9650;</button><span></span>
+        <button onclick="nudge(0,-5)">&#9664;</button><span id="shiftTxt">0 m</span><button onclick="nudge(0,5)">&#9654;</button>
+        <span></span><button onclick="nudge(-5,0)">&#9660;</button><span></span>
+      </div>
+      <button class="reset" onclick="resetShift()">Reset</button>
+    </details>
+    <details class="sect">
+      <summary>Quick Tools</summary>
+      <div id="dashQuick">
+        <button onclick="fitVillage()">Whole Village</button>
+        <button onclick="v6ResetView()">&#127968; Reset View</button>
+        <button onclick="toggleFull()">Fullscreen</button>
+        <button onclick="toggleCleanView()">Clean View</button>
+        <button onclick="shareLink()">Copy Link</button>
+      </div>
+    </details>
+  </div>
   <div class="tabbody" id="tab-rc" style="display:none">
     <h5>Land Records — Owners</h5>
     <div class="searchrow">
@@ -1263,7 +1261,6 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
-  <button id="ndBtn" class="ndlogin" onclick="numberdarLogin()">&#128272; Numberdar Login</button>
   <div class="dash-foot"><div class="owner-name">Muhammad Atif</div><div class="owner-role">Numberdar &middot; Chak 130/1-L</div><div class="owner-ver">ZameenMap &middot; v7.8</div></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
@@ -2167,7 +2164,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(open) dzSyncLayers();
   };
   window.switchDashTab = function(t){
-    ['ov','ly','pm'].forEach(function(x){
+    ['ly','tl','rc','ov'].forEach(function(x){
       document.getElementById('tab-'+x).style.display = (x===t)?'block':'none';
       document.getElementById('tabbtn-'+x).className = 'tab'+(x===t?' on':'');
     });
@@ -2197,8 +2194,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     var v=document.getElementById('dashSearch').value.trim().replace(/[\s\-]+/g,'/');
     if(!MUR[v]){ showToast('Mustatil "'+v+'" not found — pick one from the list below'); return; }
     onPickM(v);
-    var q=parseInt(document.getElementById('dashQ').value,10);
-    if(q>=1&&q<=25) onPickQ(String(q));
     if(window.innerWidth<1100) toggleDash(false);
   };
 
@@ -2386,14 +2381,22 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     { name:'Ashiq Ali', father:'Muhammad Tufail', khata:'262', muraba:'468/14', role:'',
       cnic:'31301-1449964-3', phone:'03425902043',
       totalKanal:40,
-      plots:[{q:3},{q:4},{q:5},{q:7},{q:8}] }
+      plots:[{q:3},{q:4},{q:5},{q:7},{q:8}] },
+    { name:'Muhammad Afzal', father:'Rasheed Ahmad', khata:'178', muraba:'467/12', role:'',
+      cnic:'', phone:'03030528103',
+      totalKanal:24,
+      plots:[{q:4, kanal:4, part:'N', note:'Qila 4 — 4 Kanal, North side'},{q:7, kanal:4, part:'S', note:'Qila 7 — 4 Kanal, South side'},{q:14},{q:17}] },
+    { name:'Jafar Ali', father:'Muhammad Shareef', khata:'206', muraba:'467/12', role:'',
+      cnic:'', phone:'03461413194',
+      totalKanal:48,
+      plots:[{q:3},{q:5},{q:6},{q:8},{q:13},{q:18}] }
   ];
   /* NOTE (dev): Record 1 ke qilon ka per-qila jog 13x8+4 = 108 Kanal banta hai, lekin owner
      ke diye hue hisab ke mutabiq Kul Raqba 100 Kanal hi dikhaya jata hai (user confirmation
      pending hai). Total ko per-qila jog se kabhi override na karein. */
   function plotKanal(p){ return (p && p.kanal) ? p.kanal : FULL_KANAL; }
   var OWN_BY_KEY = {};
-  OWNERS.forEach(function(o,oi){ o.plots.forEach(function(p){ OWN_BY_KEY[o.muraba+'|'+p.q] = {oi:oi, plot:p}; }); });
+  OWNERS.forEach(function(o,oi){ o.plots.forEach(function(p){ var k=o.muraba+'|'+p.q; (OWN_BY_KEY[k]=OWN_BY_KEY[k]||[]).push({oi:oi, plot:p}); }); });
   window.OWNERS = OWNERS;
 
   /* ================= PIN GATE =================
@@ -2507,7 +2510,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       var m=MUR[o.muraba]; if(!m) return;
       o.plots.forEach(function(p){
         var rc=qRC(p.q), x0=m.gc+rc.col/5, y0=(m.gr-2)+rc.row/5;
-        var cs=(p.part==='E') ? geoRectLL(x0+0.1, y0, x0+0.2, y0+0.2) : qCorners(m,p.q);
+        var cs=(p.part==='E') ? geoRectLL(x0+0.1, y0, x0+0.2, y0+0.2)
+          : (p.part==='N') ? geoRectLL(x0, y0, x0+0.2, y0+0.1)
+          : (p.part==='S') ? geoRectLL(x0, y0+0.1, x0+0.2, y0+0.2)
+          : qCorners(m,p.q);
         L.polygon(cs,{renderer:canvas, color:'#c084fc', weight:2, dashArray:p.kanal?'6 4':null,
           fillColor:'#a855f7', fillOpacity:.16, interactive:false}).addTo(ownLayer);
       });
@@ -2528,38 +2534,50 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* ================= Qila tap -> Owner card ================= */
   function recOfTarget(){
     if(!target || !target.q) return null;
-    var r=OWN_BY_KEY[target.m+'|'+target.q];
-    return r ? {o:OWNERS[r.oi], oi:r.oi, plot:r.plot} : null;
+    var list=OWN_BY_KEY[target.m+'|'+target.q];
+    if(!list || !list.length) return null;
+    return list.map(function(r){ return {o:OWNERS[r.oi], oi:r.oi, plot:r.plot}; });
   }
   window.hideOwnerCard = function(){ var c=$('ownerCard'); if(c) c.style.display='none'; };
   function showOwnerCard(){
-    var r=recOfTarget(), c=$('ownerCard'); if(!c) return;
-    if(!r){ c.style.display='none'; return; }
+    var list=recOfTarget(), c=$('ownerCard'); if(!c) return;
+    if(!list){ c.style.display='none'; return; }
+    var first=list[0];
     if(!unlocked){
       /* Locked: sirf itna ke record mojood hai — koi zaati maloomat nahi */
       $('ocBody').innerHTML =
-        '<div class="ocrow"><span>Muraba No</span><b>'+r.o.muraba+'</b></div>'+
-        '<div class="ocrow"><span>Qila No</span><b>'+r.plot.q+'</b></div>'+
+        '<div class="ocrow"><span>Muraba No</span><b>'+first.o.muraba+'</b></div>'+
+        '<div class="ocrow"><span>Qila No</span><b>'+first.plot.q+'</b></div>'+
         '<div class="locknote">&#128274; A record exists for this qila. Owner details are in the Numberdar\'s records — enter the PIN to view.</div>';
-      var pb=$('ocPrint'); pb.innerHTML='&#128275; Unlock with PIN';
+      var pb=$('ocPrint'); pb.style.display=''; pb.innerHTML='&#128275; Unlock with PIN';
       pb.onclick=function(){ requirePin(function(){ showOwnerCard(); }); };
       c.style.display='block';
       return;
     }
-    var o=r.o, pk=plotKanal(r.plot);
-    $('ocBody').innerHTML =
-      '<div class="oc-name">'+o.name+(o.role?' <span class="oc-role">'+o.role+'</span>':'')+'</div>'+
-      '<div class="ocrow"><span>Father</span><b>'+o.father+'</b></div>'+
-      '<div class="ocrow"><span>Khata No</span><b>'+o.khata+'</b></div>'+
-      '<div class="ocrow"><span>CNIC</span><b>'+o.cnic+'</b></div>'+
-      '<div class="ocrow"><span>Mobile</span><b>'+o.phone+'</b></div>'+
-      '<div class="ocrow"><span>Muraba No</span><b>'+o.muraba+'</b></div>'+
-      '<div class="ocrow"><span>Qila No</span><b>'+r.plot.q+'</b></div>'+
-      '<div class="ocrow"><span>Area of this Qila</span><b>'+pk+' Kanal ('+F(pk*20)+' Marla)</b></div>'+
-      (r.plot.note ? '<div class="ocnote">'+r.plot.note+'</div>' : '')+
-      '<div class="ocrow tot"><span>Owner Total Land</span><b>'+o.totalKanal+' Kanal ('+F(o.totalKanal*20)+' Marla)</b></div>';
-    var pb2=$('ocPrint'); pb2.innerHTML='&#128424; Print';
-    pb2.onclick=function(){ v3Print(r.oi); };
+    /* Ek qila do owners ka ho sakta hai (split — jese 467/12 ke Qila 4/7 mein Kashif + Afzal) — sab dikhao */
+    var html='';
+    list.forEach(function(r){
+      var o=r.o, pk=plotKanal(r.plot);
+      html += '<div class="oc-name">'+o.name+(o.role?' <span class="oc-role">'+o.role+'</span>':'')+'</div>'+
+        '<div class="ocrow"><span>Father</span><b>'+o.father+'</b></div>'+
+        '<div class="ocrow"><span>Khata No</span><b>'+o.khata+'</b></div>'+
+        (o.cnic ? '<div class="ocrow"><span>CNIC</span><b>'+o.cnic+'</b></div>' : '')+
+        '<div class="ocrow"><span>Mobile</span><b>'+o.phone+'</b></div>'+
+        '<div class="ocrow"><span>Muraba No</span><b>'+o.muraba+'</b></div>'+
+        '<div class="ocrow"><span>Qila No</span><b>'+r.plot.q+'</b></div>'+
+        '<div class="ocrow"><span>Area of this Qila</span><b>'+pk+' Kanal ('+F(pk*20)+' Marla)</b></div>'+
+        (r.plot.note ? '<div class="ocnote">'+r.plot.note+'</div>' : '')+
+        '<div class="ocrow tot"><span>Owner Total Land</span><b>'+o.totalKanal+' Kanal ('+F(o.totalKanal*20)+' Marla)</b></div>';
+      if(list.length>1) html += '<div class="btnrow"><button onclick="v3Print('+r.oi+')">&#128424; Print '+o.name+'</button></div>';
+    });
+    $('ocBody').innerHTML = html;
+    var pb2=$('ocPrint');
+    if(list.length===1){
+      pb2.style.display=''; pb2.innerHTML='&#128424; Print';
+      pb2.onclick=function(){ v3Print(list[0].oi); };
+    } else {
+      pb2.style.display='none';
+    }
     c.style.display='block';
   }
   var _drawTarget = window.drawTarget, _clearTarget = window.clearTarget;
@@ -2608,7 +2626,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* ================= Dashboard tabs (Records shamil) ================= */
   window.switchDashTab = function(t){
     if(t==='rc' && !unlocked){ requirePin(function(){ window.switchDashTab('rc'); }); return; }
-    ['ov','ly','pm','rc'].forEach(function(x){
+    ['ly','tl','rc','ov'].forEach(function(x){
       var el=$('tab-'+x), b=$('tabbtn-'+x);
       if(el) el.style.display = (x===t)?'block':'none';
       if(b) b.className = 'tab'+(x===t?' on':'');
@@ -2633,7 +2651,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         '<div class="ownhead"><b>'+o.name+'</b>'+(o.role?'<span class="owntag">'+o.role+'</span>':'')+'</div>'+
         '<div class="ownrow"><span>Father</span><b>'+o.father+'</b></div>'+
         '<div class="ownrow"><span>Khata No</span><b>'+o.khata+'</b></div>'+
-        '<div class="ownrow"><span>CNIC</span><b>'+o.cnic+'</b></div>'+
+        (o.cnic?'<div class="ownrow"><span>CNIC</span><b>'+o.cnic+'</b></div>':'')+
         '<div class="ownrow"><span>Mobile</span><b>'+o.phone+'</b></div>'+
         '<div class="ownrow"><span>Muraba No</span><b>'+o.muraba+'</b></div>'+
         '<div class="ownrow"><span>Qilas</span><b>'+qs+'</b></div>'+
@@ -2682,7 +2700,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       '<h2 class="ps-h">Land Details — Ownership Record</h2>'+
       '<table class="ps-info"><tr><th>Owner</th><td>'+o.name+'</td><th>Father</th><td>'+o.father+'</td></tr>'+
       '<tr><th>Khata No</th><td>'+o.khata+'</td><th>Muraba No</th><td>'+o.muraba+'</td></tr>'+
-      '<tr><th>CNIC</th><td>'+o.cnic+'</td><th>Mobile No</th><td>'+o.phone+'</td></tr></table>'+
+      '<tr><th>CNIC</th><td>'+(o.cnic||'—')+'</td><th>Mobile No</th><td>'+o.phone+'</td></tr></table>'+
       '<table class="ps-q"><thead><tr><th>Qila No</th><th>Area (Kanal)</th><th>Area (Marla)</th></tr></thead><tbody>'+rows+
       '<tr class="ps-tot"><td>Total Land</td><td>'+tot+' Kanal</td><td>'+F(tot*20)+' Marla &middot; '+D(acre,(tot%8)?2:0)+' Acre</td></tr></tbody></table>'+
       '<div class="ps-verify"><div class="ps-qr" id="psQr"></div>'+
@@ -2913,8 +2931,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     var vkey=resolveMurabbaNum(q);
     if(vkey){
       onPickM(vkey);
-      var qq=parseInt($('dashQ').value,10);
-      if(qq>=1&&qq<=25) onPickQ(String(qq));
       if(window.innerWidth<1100) toggleDash(false);
       return;
     }
@@ -2975,7 +2991,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* --- Dashboard tabs: Search moved to the hero (always visible); Records PIN behaviour barqarar --- */
   window.switchDashTab = function(t){
     if(t==='rc' && window.pinIsUnlocked && !pinIsUnlocked()){ requirePin(function(){ window.switchDashTab('rc'); }); return; }
-    ['ov','ly','pm','rc'].forEach(function(x){
+    ['ly','tl','rc','ov'].forEach(function(x){
       var el=$('tab-'+x), b=$('tabbtn-'+x);
       if(el) el.style.display = (x===t)?'block':'none';
       if(b) b.className = 'tab'+(x===t?' on':'');
@@ -3404,6 +3420,11 @@ body{background:#071f18}
 .combo-row:active,.combo-row.sel{background:rgba(201,162,39,.15)}
 .combo-empty{padding:12px 10px;color:#A9C6B4;font-size:13px}
 body.cleanview #find .combo-list,body.uihide #find .combo-list{display:none!important}
+
+/* ===== Sidebar refresh 2 (24 Nov 2026): clean segmented tabs, no pills ===== */
+.tabs{display:flex;gap:0;padding:0 10px;border-bottom:1px solid rgba(201,162,39,.28)}
+.tab{flex:1;min-width:0;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:#A9C6B4;padding:13px 1px 11px;font-size:12px;font-weight:700;min-height:46px;letter-spacing:0}
+.tab.on{background:transparent;border-bottom-color:#C9A227;color:#E3C565}
 </style>
 </body>
 </html>
