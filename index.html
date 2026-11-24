@@ -986,6 +986,31 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
   background:linear-gradient(180deg,#14532d,#0B3524); border:1px solid rgba(201,162,39,.55); color:#F5EFE0;}
 .combo-row:active{background:rgba(201,162,39,.18)}
 </style>
+<style>
+/* ===== Sidebar refresh (24 Nov 2026): main options in front, clean sections ===== */
+/* Hero — Village + Search always visible at the top of the panel (no tab needed) */
+.hero{flex-shrink:0;padding:14px 14px 12px;border-bottom:1px solid rgba(201,162,39,.28);background:rgba(2,6,23,.30)}
+.hero label{display:block;font-size:11px;font-weight:800;letter-spacing:.9px;color:#E3C565;text-transform:uppercase;margin:0 0 6px}
+.hero-village{margin-bottom:12px}
+.hero #villageSel{width:100%;box-sizing:border-box;padding:12px 10px;font-size:15px;border-radius:11px}
+.hero-search .searchrow{margin-bottom:6px}
+.hero-search .searchrow input{padding:12px 10px;font-size:14px}
+.hero-search .searchrow button{min-height:48px}
+.hero .hint{margin:8px 0 0}
+/* 4 tabs now (Search lives in the hero) — roomier on phones */
+.tabs{flex-shrink:0}
+/* Collapsible sections inside tab bodies — secondary tools tuck away, nothing removed */
+.tabbody details.sect{margin:0 0 4px}
+.tabbody details.sect summary{cursor:pointer;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#fbbf24;padding:12px 0 8px;list-style:none;outline:none}
+.tabbody details.sect summary::-webkit-details-marker{display:none}
+.tabbody details.sect summary::after{content:' \25B8';color:#94a3b8}
+.tabbody details.sect[open ] summary::after{content:' \25BE';color:#94a3b8}
+.tabbody details.sect summary:active{opacity:.75}
+/* Numberdar Login sits above the footer now (always reachable, out of the top flow) */
+#ndBtn{margin:10px 14px}
+/* Offline status lives inside Layers > Offline Satellite now */
+#setSect .offstat{border:1px solid rgba(201,162,39,.25);border-radius:10px;padding:8px 10px;margin:0 0 8px}
+</style>
 </head>
 <body>
 <div id="map"></div>
@@ -996,33 +1021,35 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div><b>ZameenMap</b><small>Chak 130/1-L &middot; Tehsil Khanpur</small></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
-  <div class="vrow"><span class="vlab">Village</span><select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select></div>
-  <div id="offStat" class="offstat">Checking offline store&hellip;</div>
-  <button id="ndBtn" class="ndlogin" onclick="numberdarLogin()">&#128272; Numberdar Login</button>
+  <!-- HERO — main options in front: Village + Search, always visible (24 Nov 2026 sidebar refresh) -->
+  <div class="hero">
+    <div class="hero-village">
+      <label for="villageSel">Village</label>
+      <select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select>
+    </div>
+    <div class="hero-search">
+      <label for="dashSearch">Search — mustatil, qila, khata, name</label>
+      <div class="searchrow">
+        <input id="dashSearch" list="murList" placeholder="Name, khata, murabba, qila, CNIC, number…" autocomplete="off" onkeydown="if(event.key==='Enter')dashSearchGo()">
+        <datalist id="murList"></datalist>
+        <button onclick="dashSearchGo()">Search</button>
+      </div>
+      <div id="gsRes" class="gsres" style="display:none"></div>
+      <div class="searchrow">
+        <input id="dashQ" type="number" min="1" max="25" placeholder="Qila number (1&#8211;25) &mdash; optional">
+        <button onclick="dashSearchGo()">Go</button>
+      </div>
+      <p class="hint">Name, khata or murabba — owner results need Numberdar Login.</p>
+    </div>
+  </div>
   <div class="tabs">
-    <button class="tab on" id="tabbtn-sr" onclick="switchDashTab('sr')">Search</button>
-    <button class="tab" id="tabbtn-ov" onclick="switchDashTab('ov')">Overview</button>
+    <button class="tab on" id="tabbtn-ov" onclick="switchDashTab('ov')">Overview</button>
     <button class="tab" id="tabbtn-ly" onclick="switchDashTab('ly')">Layers</button>
     <button class="tab" id="tabbtn-pm" onclick="switchDashTab('pm')">Measure</button>
     <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')">Records</button>
   </div>
 
-  <div class="tabbody" id="tab-sr">
-    <h5>Search</h5>
-    <div class="searchrow">
-      <input id="dashSearch" list="murList" placeholder="Name, khata, murabba, qila, CNIC, number…" autocomplete="off" onkeydown="if(event.key==='Enter')dashSearchGo()">
-      <datalist id="murList"></datalist>
-      <button onclick="dashSearchGo()">Search</button>
-    </div>
-    <div id="gsRes" class="gsres" style="display:none"></div>
-    <p class="hint">Name, khata or murabba — owner results need Numberdar Login.</p>
-    <div class="searchrow">
-      <input id="dashQ" type="number" min="1" max="25" placeholder="Qila number (1&#8211;25) &mdash; optional">
-      <button onclick="dashSearchGo()">Go</button>
-    </div>
-  </div>
-
-  <div class="tabbody" id="tab-ov" style="display:none">
+  <div class="tabbody" id="tab-ov">
     <div class="stats" id="dashStats"></div>
     <h5>&#128205; Live Location</h5>
     <div class="p-card">
@@ -1053,93 +1080,114 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="ndline">&#128241; 03458145930</div>
       <div class="ndline">&#9993; atifaliofficial75@gmail.com</div>
     </div>
-    <h5>&#127912; Legend</h5>
-    <div class="legend">
-      <div class="li"><span class="sw" style="background:#ef4444"></span>Mustatil boundary</div>
-      <div class="li"><span class="sw" style="background:#38bdf8"></span>Qila lines</div>
-      <div class="li"><span class="sw" style="background:#facc15"></span>Mustatil at your location</div>
-      <div class="li"><span class="sw" style="background:#34d399"></span>Your qila</div>
-      <div class="li"><span class="sw" style="background:#f59e0b"></span>Selected mustatil</div>
-      <div class="li"><span class="sw" style="background:#22c55e"></span>Selected qila</div>
-      <div class="li"><span class="sw" style="background:#a855f7"></span>Record qila (owner)</div>
-    </div>
-    <h5>&#128214; How to Use</h5>
-    <ul>
-      <li><b>Locate:</b> Overview tab &rarr; <b>Locate Me</b>.</li>
-      <li><b>Measure:</b> Measure tab — tap plot corners; area &amp; distance appear live.</li>
-      <li><b>Search:</b> Search tab — name, khata, murabba or qila.</li>
-      <li><b>Records:</b> Numberdar Login (PIN) &rarr; Records tab &rarr; printout.</li>
-      <li><b>Clean map:</b> the &#128065; button (top-right) hides everything; <b>Show</b> brings it back.</li>
-    </ul>
+    <details class="sect">
+      <summary>&#127912; Legend</summary>
+      <div class="legend">
+        <div class="li"><span class="sw" style="background:#ef4444"></span>Mustatil boundary</div>
+        <div class="li"><span class="sw" style="background:#38bdf8"></span>Qila lines</div>
+        <div class="li"><span class="sw" style="background:#facc15"></span>Mustatil at your location</div>
+        <div class="li"><span class="sw" style="background:#34d399"></span>Your qila</div>
+        <div class="li"><span class="sw" style="background:#f59e0b"></span>Selected mustatil</div>
+        <div class="li"><span class="sw" style="background:#22c55e"></span>Selected qila</div>
+        <div class="li"><span class="sw" style="background:#a855f7"></span>Record qila (owner)</div>
+      </div>
+    </details>
+    <details class="sect">
+      <summary>&#128214; How to Use</summary>
+      <ul>
+        <li><b>Locate:</b> Overview tab &rarr; <b>Locate Me</b>.</li>
+        <li><b>Measure:</b> Measure tab — tap plot corners; area &amp; distance appear live.</li>
+        <li><b>Search:</b> the search box at the top — name, khata, murabba or qila.</li>
+        <li><b>Records:</b> Numberdar Login (PIN) &rarr; Records tab &rarr; printout.</li>
+        <li><b>Clean map:</b> the &#128065; button (top-right) hides everything; <b>Show</b> brings it back.</li>
+      </ul>
+    </details>
   </div>
 
   <div class="tabbody" id="tab-ly" style="display:none">
-    <h5>&#128506; Map Layers</h5>
-    <div class="p-card" style="padding:2px 12px">
-    <div class="lrow"><div class="ln"><b>Satellite</b><small>Works offline once saved</small></div><label class="sw2"><input type="checkbox" id="lySat" checked onchange="lyToggleSat(this.checked)"><i></i></label></div>
-    <div class="lrow"><div class="ln"><b>Mustatil Grid</b><small>Red boundary lines</small></div><label class="sw2"><input type="checkbox" id="lyGrid" checked onchange="lyToggleGrid(this.checked)"><i></i></label></div>
-    <div class="lrow"><div class="ln"><b>All Qilas</b><small>Qila lines at zoom 16+</small></div><label class="sw2"><input type="checkbox" id="lyQila" onchange="lyToggleQila(this.checked)"><i></i></label></div>
-    <div class="lrow"><div class="ln"><b>Labels</b><small>Murabba and qila numbers</small></div><label class="sw2"><input type="checkbox" id="lyLbl" checked onchange="lyToggleLbl(this.checked)"><i></i></label></div>
-    <div class="lrow" style="border-bottom:0"><div class="ln"><b>Owners' Qilas</b><small>Record qilas — light purple</small></div><label class="sw2"><input type="checkbox" id="lyOwn" checked onchange="lyToggleOwn(this.checked)"><i></i></label></div>
-    </div>
-    <h5>Tap Tools</h5>
-    <div class="p-card" style="padding:2px 12px">
-    <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)"><i></i></label></div>
-    <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" checked onchange="setTapCoords(this.checked)"><i></i></label></div>
-    <div class="lrow" style="border-bottom:0"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
-    </div>
-    <h5>Map Style</h5>
-    <div class="btnrow" id="themeRow">
-      <button id="thSat" class="on2" onclick="v6SetTheme('sat')">Satellite</button>
-      <button id="thStreets" onclick="v6SetTheme('streets')">Streets</button>
-      <button id="thPlain" onclick="v6SetTheme('plain')">Plain</button>
-    </div>
-    <h5>Go To Location</h5>
-    <div class="searchrow">
-      <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)">
-      <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)">
-    </div>
-    <div class="btnrow"><button onclick="v6GoToDD()">&#128205; Go to Coordinates</button></div>
-    <div class="searchrow">
-      <input id="gtLatD" type="number" placeholder="Lat &#176;">
-      <input id="gtLatM" type="number" placeholder="Lat &#8242;">
-      <input id="gtLatS" type="number" placeholder="Lat &#8243;">
-    </div>
-    <div class="searchrow">
-      <input id="gtLngD" type="number" placeholder="Lng &#176;">
-      <input id="gtLngM" type="number" placeholder="Lng &#8242;">
-      <input id="gtLngS" type="number" placeholder="Lng &#8243;">
-    </div>
-    <div class="btnrow"><button onclick="v6GoToDMS()">&#128205; Go to DMS</button></div>
-    <h5>&#128190; My Saved Layers</h5>
-    <div class="btnrow">
-      <button onclick="v6SaveLayers()">&#128190; Save Layer</button>
-      <button onclick="v6RemoveLayers()">Remove Layers</button>
-    </div>
-    <h5>&#128736; Tools</h5>
-    <div id="dashQuick">
-      <button onclick="fitVillage()">Whole Village</button>
-      <button onclick="v6ResetView()">&#127968; Reset View</button>
-      <button onclick="toggleFull()">Fullscreen</button>
-      <button onclick="toggleCleanView()">Clean View</button>
-      <button onclick="shareLink()">Copy Link</button>
-    </div>
-    <div id="setSect">
-      <h5>&#128225; Offline Satellite</h5>
-      <p class="hint" id="satInfo">Download once with internet — after that the satellite works offline.</p>
-      <div class="bar"><i id="satBar"></i></div>
-      <button class="reset go" id="satBtn" onclick="downloadSat()">⬇ Download HD Satellite (Offline)</button>
-      <button class="reset" onclick="clearSat()">Delete Saved Satellite</button>
-      <button class="reset go" id="installBtn" onclick="installApp()">&#128241; Install App (Offline)</button>
-      <p class="hint" id="installHint">Installs ZameenMap on your home screen — then it opens directly as an app, no browser needed.</p>
-      <h5>&#9878; Grid Adjust</h5>
-      <p class="hint">If the grid looks slightly offset, move it in 5 m steps.</p>
-      <div class="pad">
-        <span></span><button onclick="nudge(5,0)">&#9650;</button><span></span>
-        <button onclick="nudge(0,-5)">&#9664;</button><span id="shiftTxt">0 m</span><button onclick="nudge(0,5)">&#9654;</button>
-        <span></span><button onclick="nudge(-5,0)">&#9660;</button><span></span>
+    <details class="sect" open>
+      <summary>&#128506; Map Layers</summary>
+      <div class="p-card" style="padding:2px 12px">
+      <div class="lrow"><div class="ln"><b>Satellite</b><small>Works offline once saved</small></div><label class="sw2"><input type="checkbox" id="lySat" checked onchange="lyToggleSat(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Mustatil Grid</b><small>Red boundary lines</small></div><label class="sw2"><input type="checkbox" id="lyGrid" checked onchange="lyToggleGrid(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>All Qilas</b><small>Qila lines at zoom 16+</small></div><label class="sw2"><input type="checkbox" id="lyQila" onchange="lyToggleQila(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Labels</b><small>Murabba and qila numbers</small></div><label class="sw2"><input type="checkbox" id="lyLbl" checked onchange="lyToggleLbl(this.checked)"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Owners' Qilas</b><small>Record qilas — light purple</small></div><label class="sw2"><input type="checkbox" id="lyOwn" checked onchange="lyToggleOwn(this.checked)"><i></i></label></div>
       </div>
-      <button class="reset" onclick="resetShift()">Reset</button>
+    </details>
+    <details class="sect" open>
+      <summary>Tap Tools</summary>
+      <div class="p-card" style="padding:2px 12px">
+      <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" onchange="setTapCoords(this.checked)"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
+      </div>
+    </details>
+    <details class="sect">
+      <summary>Map Style</summary>
+      <div class="btnrow" id="themeRow">
+        <button id="thSat" class="on2" onclick="v6SetTheme('sat')">Satellite</button>
+        <button id="thStreets" onclick="v6SetTheme('streets')">Streets</button>
+        <button id="thPlain" onclick="v6SetTheme('plain')">Plain</button>
+      </div>
+    </details>
+    <details class="sect">
+      <summary>Go To Location</summary>
+      <div class="searchrow">
+        <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)">
+        <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)">
+      </div>
+      <div class="btnrow"><button onclick="v6GoToDD()">&#128205; Go to Coordinates</button></div>
+      <div class="searchrow">
+        <input id="gtLatD" type="number" placeholder="Lat &#176;">
+        <input id="gtLatM" type="number" placeholder="Lat &#8242;">
+        <input id="gtLatS" type="number" placeholder="Lat &#8243;">
+      </div>
+      <div class="searchrow">
+        <input id="gtLngD" type="number" placeholder="Lng &#176;">
+        <input id="gtLngM" type="number" placeholder="Lng &#8242;">
+        <input id="gtLngS" type="number" placeholder="Lng &#8243;">
+      </div>
+      <div class="btnrow"><button onclick="v6GoToDMS()">&#128205; Go to DMS</button></div>
+    </details>
+    <details class="sect">
+      <summary>&#128190; My Saved Layers</summary>
+      <div class="btnrow">
+        <button onclick="v6SaveLayers()">&#128190; Save Layer</button>
+        <button onclick="v6RemoveLayers()">Remove Layers</button>
+      </div>
+    </details>
+    <details class="sect">
+      <summary>&#128736; Tools</summary>
+      <div id="dashQuick">
+        <button onclick="fitVillage()">Whole Village</button>
+        <button onclick="v6ResetView()">&#127968; Reset View</button>
+        <button onclick="toggleFull()">Fullscreen</button>
+        <button onclick="toggleCleanView()">Clean View</button>
+        <button onclick="shareLink()">Copy Link</button>
+      </div>
+    </details>
+    <div id="setSect">
+      <details class="sect" open>
+        <summary>&#128225; Offline Satellite</summary>
+        <div id="offStat" class="offstat">Checking offline store&hellip;</div>
+        <p class="hint" id="satInfo">Download once with internet — after that the satellite works offline.</p>
+        <div class="bar"><i id="satBar"></i></div>
+        <button class="reset go" id="satBtn" onclick="downloadSat()">⬇ Download HD Satellite (Offline)</button>
+        <button class="reset" onclick="clearSat()">Delete Saved Satellite</button>
+        <button class="reset go" id="installBtn" onclick="installApp()">&#128241; Install App (Offline)</button>
+        <p class="hint" id="installHint">Installs ZameenMap on your home screen — then it opens directly as an app, no browser needed.</p>
+      </details>
+      <details class="sect">
+        <summary>&#9878; Grid Adjust</summary>
+        <p class="hint">If the grid looks slightly offset, move it in 5 m steps.</p>
+        <div class="pad">
+          <span></span><button onclick="nudge(5,0)">&#9650;</button><span></span>
+          <button onclick="nudge(0,-5)">&#9664;</button><span id="shiftTxt">0 m</span><button onclick="nudge(0,5)">&#9654;</button>
+          <span></span><button onclick="nudge(-5,0)">&#9660;</button><span></span>
+        </div>
+        <button class="reset" onclick="resetShift()">Reset</button>
+      </details>
     </div>
   </div>
 
@@ -1191,16 +1239,18 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="btnrow"><button onclick="pmCopyCoords()">&#128203; Copy All Coordinates</button></div>
       <p class="hint">The latitude and longitude of every point (for example the four corners of a plot) — copy and use them anywhere.</p>
     </div>
-    <h5>Plot sizes &mdash; reference</h5>
-    <div class="presets"><table>
-      <tr><td>1 Marla</td><td>272.25 sq ft</td></tr>
-      <tr><td>3 Marla</td><td>816.75 sq ft</td></tr>
-      <tr><td>5 Marla</td><td>1,361.25 sq ft</td></tr>
-      <tr><td>7 Marla</td><td>1,905.75 sq ft</td></tr>
-      <tr><td>10 Marla</td><td>2,722.5 sq ft</td></tr>
-      <tr><td>1 Kanal (20 Marla)</td><td>5,445 sq ft</td></tr>
-      <tr><td>1 Qila / Acre (160 Marla)</td><td>43,560 sq ft</td></tr>
-    </table></div>
+    <details class="sect">
+      <summary>Plot sizes &mdash; reference</summary>
+      <div class="presets"><table>
+        <tr><td>1 Marla</td><td>272.25 sq ft</td></tr>
+        <tr><td>3 Marla</td><td>816.75 sq ft</td></tr>
+        <tr><td>5 Marla</td><td>1,361.25 sq ft</td></tr>
+        <tr><td>7 Marla</td><td>1,905.75 sq ft</td></tr>
+        <tr><td>10 Marla</td><td>2,722.5 sq ft</td></tr>
+        <tr><td>1 Kanal (20 Marla)</td><td>5,445 sq ft</td></tr>
+        <tr><td>1 Qila / Acre (160 Marla)</td><td>43,560 sq ft</td></tr>
+      </table></div>
+    </details>
   </div>
 
   <div class="tabbody" id="tab-rc" style="display:none">
@@ -1213,6 +1263,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
+  <button id="ndBtn" class="ndlogin" onclick="numberdarLogin()">&#128272; Numberdar Login</button>
   <div class="dash-foot"><div class="owner-name">Muhammad Atif</div><div class="owner-role">Numberdar &middot; Chak 130/1-L</div><div class="owner-ver">ZameenMap &middot; v7.8</div></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
@@ -2173,7 +2224,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
      mode; tap the chip to copy "lat, lng" (5 decimals, same precision as CORNERS).
      The X button hides it; switching village hides it too (setVillage). */
   window._tapLL = null;
-  var tapCoordOn = true; /* "Coordinates (Lat/Lng)" toggle — default ON */
+  var tapCoordOn = false; /* "Coordinates (Lat/Lng)" toggle — default OFF (chip shows only when the user turns it on) */
   window.showTapCoord = function(lat, lng){
     window._tapLL = { lat: lat, lng: lng };
     var c=document.getElementById('tapCoord'), s=document.getElementById('tapCoordTxt');
@@ -2331,7 +2382,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     { name:'Muhammad Kashif', father:'Muhammad Arshad', khata:'86', muraba:'467/12', role:'',
       cnic:'31301-9640717-5', phone:'03408295167',
       totalKanal:24,
-      plots:[{q:15},{q:16},{q:4, kanal:4, note:'Qila 4 mein sirf 4 Kanal hain'},{q:7, kanal:4, note:'Qila 7 mein sirf 4 Kanal hain (Qila 4 ke aamne saamne, north-south)'}] }
+      plots:[{q:15},{q:16},{q:4, kanal:4, note:'Qila 4 mein sirf 4 Kanal hain'},{q:7, kanal:4, note:'Qila 7 mein sirf 4 Kanal hain (Qila 4 ke aamne saamne, north-south)'}] },
+    { name:'Ashiq Ali', father:'Muhammad Tufail', khata:'262', muraba:'468/14', role:'',
+      cnic:'31301-1449964-3', phone:'03425902043',
+      totalKanal:40,
+      plots:[{q:3},{q:4},{q:5},{q:7},{q:8}] }
   ];
   /* NOTE (dev): Record 1 ke qilon ka per-qila jog 13x8+4 = 108 Kanal banta hai, lekin owner
      ke diye hue hisab ke mutabiq Kul Raqba 100 Kanal hi dikhaya jata hai (user confirmation
@@ -2917,10 +2972,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(e.key==='Escape' && document.body.classList.contains('cleanview')) toggleCleanView();
   });
 
-  /* --- Dashboard tabs: 'sr' (Search) shamil — v3 wala Records PIN behaviour barqarar --- */
+  /* --- Dashboard tabs: Search moved to the hero (always visible); Records PIN behaviour barqarar --- */
   window.switchDashTab = function(t){
     if(t==='rc' && window.pinIsUnlocked && !pinIsUnlocked()){ requirePin(function(){ window.switchDashTab('rc'); }); return; }
-    ['sr','ov','ly','pm','rc'].forEach(function(x){
+    ['ov','ly','pm','rc'].forEach(function(x){
       var el=$('tab-'+x), b=$('tabbtn-'+x);
       if(el) el.style.display = (x===t)?'block':'none';
       if(b) b.className = 'tab'+(x===t?' on':'');
@@ -2929,7 +2984,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   };
   window.openSearchTab = function(){
     if(window.toggleDash) toggleDash(true);
-    window.switchDashTab('sr');
     setTimeout(function(){ var i=$('dashSearch'); if(i) i.focus(); }, 330);
   };
 
