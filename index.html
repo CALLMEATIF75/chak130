@@ -823,6 +823,10 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .hint{font-size:11.5px;color:#94a3b8;line-height:1.5;margin:0 0 10px}
 .res{background:rgba(2,6,23,.75);border:1px solid #f59e0b;border-radius:14px;padding:4px 12px;margin:0 0 10px}
 .resline{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:#cbd5e1}
+.resline.tap{cursor:pointer;border-radius:9px;padding:8px 10px;margin:2px -8px;background:rgba(201,162,39,.10);border-bottom:1px solid rgba(201,162,39,.35)}
+.resline.tap span{color:#facc15;font-weight:700}
+.resline.tap:active{background:rgba(201,162,39,.24)}
+.unit-hint{font-size:11.5px;color:#94a3b8;margin:4px 0 6px;text-align:center}
 .resline:last-child{border-bottom:0}
 .resline b{color:#fff;font-variant-numeric:tabular-nums}
 .resline.big b{font-size:21px;color:#facc15}
@@ -872,6 +876,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #printSheet{display:none}
 @media print{
   @page{margin:13mm}
+  html,body{height:auto!important;overflow:visible!important}
   body>*{display:none!important}
   #printSheet{display:block!important;color:#111;background:#fff;font-family:Georgia,'Times New Roman',serif}
   #printSheet .ps-head{display:flex;gap:16px;align-items:center;border-bottom:3px double #166534;padding-bottom:12px}
@@ -884,8 +889,8 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
   #printSheet th{background:#e7f0e7;width:22%}
   #printSheet .ps-q td:nth-child(2),#printSheet .ps-q td:nth-child(3),#printSheet .ps-q td:nth-child(4){text-align:right}
   #printSheet .ps-q th:nth-child(2),#printSheet .ps-q th:nth-child(3),#printSheet .ps-q th:nth-child(4){text-align:right}
-  #printSheet .ps-page{page-break-after:always}
-  #printSheet .ps-page:last-child{page-break-after:auto}
+  #printSheet .ps-page{page-break-after:always;break-after:page}
+  #printSheet .ps-page:last-child{page-break-after:auto;break-after:auto}
   #printSheet .ps-tot td{font-weight:800;background:#e7f0e7;font-size:14.5px}
   #printSheet .ps-foot{display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px}
   #printSheet .ps-note{margin-top:22px;font-size:11.5px;color:#555;border-top:1px solid #bbb;padding-top:8px}
@@ -1020,15 +1025,11 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <aside id="dash" class="glass" aria-label="Dashboard">
   <div class="dash-head banner">
-    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div><b>ZameenMap</b><small>Chak 130/1-L &middot; Tehsil Khanpur</small></div></div>
+    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
-  <!-- HERO — main options in front: Village + Search, always visible (24 Nov 2026 sidebar refresh) -->
+  <!-- HERO — Search always visible (24 Nov 2026 sidebar refresh; village selector moved into the header) -->
   <div class="hero">
-    <div class="hero-village">
-      <label for="villageSel">Village</label>
-      <select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select>
-    </div>
     <div class="hero-search">
       <label for="dashSearch">Search — mustatil, qila, khata, name</label>
       <div class="searchrow">
@@ -1037,7 +1038,6 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <button onclick="dashSearchGo()">Search</button>
       </div>
       <div id="gsRes" class="gsres" style="display:none"></div>
-      <p class="hint">Name, khata or murabba — owner results need the PIN (open Land Records).</p>
     </div>
   </div>
   <div class="tabs">
@@ -1157,9 +1157,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <p class="hint">Tap the map to mark corners. <b>2 points</b> = distance; <b>3+</b> = area, live.</p>
     <div class="res" id="pmRes" style="display:none">
       <div class="resline mid"><span>Square Feet</span><b id="pmSqft">0</b></div>
-      <div class="resline" id="pmAcreRow" onclick="toggleUnitRow('pm','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="pmAcre">0</b></div>
-      <div class="resline" id="pmKanalRow" onclick="toggleUnitRow('pm','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="pmKanal">0</b></div>
+      <div class="resline tap" id="pmAcreRow" onclick="toggleUnitRow('pm','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="pmAcre">0</b></div>
+      <div class="resline tap" id="pmKanalRow" onclick="toggleUnitRow('pm','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="pmKanal">0</b></div>
       <div class="resline big" id="pmMarlaRow" style="display:none"><span>Marla</span><b id="pmMarla">0</b></div>
+      <div class="unit-hint">Tap Acre for Kanal &middot; Tap Kanal for Marla</div>
       <div class="resline"><span>Square Yard (Gaj)</span><b id="pmGaj">0</b></div>
       <div class="resline"><span>Square Meter</span><b id="pmSqm">0</b></div>
       <div class="resline mid"><span>Perimeter</span><b id="pmPeri">0</b></div>
@@ -1191,9 +1192,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="res" id="calcRes" style="display:none">
       <div class="resline big"><span>Total Area</span><b id="calcBreak">—</b></div>
       <div class="resline mid"><span>Square Feet</span><b id="calcSqftOut">0</b></div>
-      <div class="resline" id="calcAcreRow" onclick="toggleUnitRow('calc','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="calcAcre">0</b></div>
-      <div class="resline" id="calcKanalRow" onclick="toggleUnitRow('calc','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="calcKanal">0</b></div>
+      <div class="resline tap" id="calcAcreRow" onclick="toggleUnitRow('calc','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="calcAcre">0</b></div>
+      <div class="resline tap" id="calcKanalRow" onclick="toggleUnitRow('calc','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="calcKanal">0</b></div>
       <div class="resline big" id="calcMarlaRow" style="display:none"><span>Marla</span><b id="calcMarla">0</b></div>
+      <div class="unit-hint">Tap Acre for Kanal &middot; Tap Kanal for Marla</div>
       <div class="resline"><span>Square Yard (Gaj)</span><b id="calcGaj">0</b></div>
       <div class="resline"><span>Square Meter</span><b id="calcSqm">0</b></div>
     </div>
@@ -1263,7 +1265,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><div class="owner-name">Muhammad Atif</div><div class="owner-role">Numberdar &middot; Chak 130/1-L</div><div class="owner-ver">ZameenMap &middot; v7.8</div></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver">v7.8</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
@@ -2512,6 +2514,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
   /* ================= Owners highlight layer ================= */
   var ownLayer=null, ownOn=true;
+  /* Plot ki direction (part ya note se) — print aur highlight dono ke liye aik jaisi */
+  function plotDirOf(p){
+    if(p.part==='E'||p.part==='W'||p.part==='N'||p.part==='S') return {E:'East',W:'West',N:'North',S:'South'}[p.part];
+    var n=(p.note||'').toLowerCase();
+    if(n.indexOf('east side')>-1) return 'East';
+    if(n.indexOf('west side')>-1) return 'West';
+    if(n.indexOf('north side')>-1) return 'North';
+    if(n.indexOf('south side')>-1) return 'South';
+    if(n.indexOf('mashriqi')>-1) return 'East';
+    return '';
+  }
   function drawOwners(){
     if(!ownLayer) ownLayer = L.layerGroup();
     ownLayer.clearLayers();
@@ -2520,10 +2533,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       var m=MUR[o.muraba]; if(!m) return;
       o.plots.forEach(function(p){
         var rc=qRC(p.q), x0=m.gc+rc.col/5, y0=(m.gr-2)+rc.row/5;
-        var cs=(p.part==='E') ? geoRectLL(x0+0.1, y0, x0+0.2, y0+0.2)
-          : (p.part==='N') ? geoRectLL(x0, y0, x0+0.2, y0+0.1)
-          : (p.part==='S') ? geoRectLL(x0, y0+0.1, x0+0.2, y0+0.2)
-          : qCorners(m,p.q);
+        var k = p.kanal || 8, dir = plotDirOf(p), cs;
+        if(k>=8 || !dir){
+          cs = qCorners(m,p.q); /* poora qila, ya hissa ki side maloom nahi */
+        } else {
+          /* Partial plot: kanal ke mutabiq side strip (kanal/8 × qila) */
+          var w = 0.2*(k/8);
+          if(dir==='East') cs = geoRectLL(x0+0.2-w, y0, x0+0.2, y0+0.2);
+          else if(dir==='West') cs = geoRectLL(x0, y0, x0+w, y0+0.2);
+          else if(dir==='North') cs = geoRectLL(x0, y0, x0+0.2, y0+w);
+          else cs = geoRectLL(x0, y0+0.2-w, x0+0.2, y0+0.2); /* South */
+        }
         L.polygon(cs,{renderer:canvas, color:'#c084fc', weight:2, dashArray:p.kanal?'6 4':null,
           fillColor:'#a855f7', fillOpacity:.16, interactive:false}).addTo(ownLayer);
       });
@@ -2564,11 +2584,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       c.style.display='block';
       return;
     }
-    /* Ek qila do owners ka ho sakta hai (split — jese 467/12 ke Qila 4/7 mein Kashif + Afzal) — sab dikhao */
-    var html='';
-    list.forEach(function(r){
+    /* Ek qila do owners ka ho sakta hai (split — jese 467/12 ke Qila 4/7 mein Kashif + Afzal).
+       Split qila par card CHHOTA rehta hai: sirf naam + hissa ki list; naam par tap = us ki poori detail. */
+    function ownerDetailHtml(r, withPrint){
       var o=r.o, pk=plotKanal(r.plot);
-      html += '<div class="oc-name">'+o.name+(o.role?' <span class="oc-role">'+o.role+'</span>':'')+'</div>'+
+      var s = '<div class="oc-name">'+o.name+(o.role?' <span class="oc-role">'+o.role+'</span>':'')+'</div>'+
         '<div class="ocrow"><span>Father</span><b>'+o.father+'</b></div>'+
         '<div class="ocrow"><span>Khata No</span><b>'+o.khata+'</b></div>'+
         (o.cnic ? '<div class="ocrow"><span>CNIC</span><b>'+o.cnic+'</b></div>' : '')+
@@ -2578,8 +2598,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         '<div class="ocrow"><span>Area of this Qila</span><b>'+pk+' Kanal ('+F(pk*20)+' Marla)</b></div>'+
         (r.plot.note ? '<div class="ocnote">'+r.plot.note+'</div>' : '')+
         '<div class="ocrow tot"><span>Owner Total Land</span><b>'+o.totalKanal+' Kanal ('+F(o.totalKanal*20)+' Marla)</b></div>';
-      if(list.length>1) html += '<div class="btnrow"><button onclick="v3Print('+r.oi+')">&#128424; Print '+o.name+'</button></div>';
-    });
+      if(withPrint) s += '<div class="btnrow"><button onclick="v3Print('+r.oi+')">&#128424; Print '+o.name+'</button></div>';
+      return s;
+    }
+    var html='';
+    if(list.length===1){
+      html = ownerDetailHtml(list[0], false);
+    } else {
+      html = '<div class="oc-split">This qila is shared by '+list.length+' owners &mdash; tap a name for details.</div>';
+      list.forEach(function(r, idx){
+        var o=r.o, pk=plotKanal(r.plot);
+        html += '<div class="oc-mini" onclick="toggleOwnerDetail('+idx+')">'+
+          '<span class="oc-mini-name">'+o.name+'</span>'+
+          '<span class="oc-mini-share">'+pk+' Kanal</span>'+
+          '<span class="oc-mini-chev" id="ocChev'+idx+'">&#9656;</span></div>'+
+          '<div class="oc-detail" id="ocDetail'+idx+'" style="display:none">'+ownerDetailHtml(r, true)+'</div>';
+      });
+    }
     $('ocBody').innerHTML = html;
     var pb2=$('ocPrint');
     if(list.length===1){
@@ -2590,6 +2625,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     }
     c.style.display='block';
   }
+  window.toggleOwnerDetail = function(idx){
+    var d=document.getElementById('ocDetail'+idx); if(!d) return;
+    var open=d.style.display==='none';
+    d.style.display=open?'block':'none';
+    var ch=document.getElementById('ocChev'+idx); if(ch) ch.textContent=open?'\u25BE':'\u25B6';
+  };
   var _drawTarget = window.drawTarget, _clearTarget = window.clearTarget;
   window.drawTarget = function(fly){ _drawTarget(fly); showOwnerCard(); };
   window.clearTarget = function(){ _clearTarget(); hideOwnerCard(); };
@@ -3426,6 +3467,13 @@ body.uihide #menuBtn,body.uihide #hideBtn,body.uihide #zoomCtl{display:none!impo
 #ocBody{padding:10px 12px 2px}
 .oc-name{font-size:19px;font-weight:800;color:#fff;line-height:1.3;margin:0 0 4px;overflow-wrap:break-word}
 .oc-role{display:inline-block;vertical-align:2px;background:#7e22ce;color:#fff;font-size:10px;font-weight:800;letter-spacing:.4px;border-radius:99px;padding:2.5px 8px;margin-left:4px;white-space:nowrap}
+.oc-split{font-size:12px;color:#c084fc;font-weight:700;padding:2px 0 8px}
+.oc-mini{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid rgba(192,132,252,.4);border-radius:10px;background:rgba(126,34,206,.12);margin-bottom:6px;cursor:pointer}
+.oc-mini:active{background:rgba(126,34,206,.25)}
+.oc-mini-name{flex:1;font-weight:800;color:#fff;font-size:14px}
+.oc-mini-share{color:#facc15;font-weight:800;font-size:13px;white-space:nowrap}
+.oc-mini-chev{color:#c084fc;font-weight:800}
+.oc-detail{padding:2px 2px 8px}
 .ocrow.tot{background:rgba(245,158,11,.13);border:1px solid rgba(184,134,11,.5);border-radius:9px;padding:7px 8px;margin-top:7px}
 #ownerCard .btnrow{padding:0 12px 12px;margin:8px 0 0}
 #ownerCard .btnrow button{background:#14532d;border-color:#166534;font-weight:800}
@@ -3495,6 +3543,16 @@ body{background:#071f18}
 .owner-name{font-size:15px;font-weight:800;letter-spacing:2.5px;color:#E3C565;text-transform:uppercase}
 .owner-role{font-size:11px;color:#A9C6B4;margin-top:2px;letter-spacing:.6px}
 .owner-ver{font-size:10px;color:#7d9c8a;letter-spacing:.5px;margin-top:4px}
+/* Compact header: village selector beside the logo (24 Nov 2026 sidebar polish) */
+.brand-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.dash-head #villageSel{width:100%;box-sizing:border-box;padding:5px 7px;font-size:12.5px;border-radius:8px}
+.dash-head.banner{padding:12px 14px 10px}
+/* Compact one-line footer */
+.dash-foot{display:flex;align-items:baseline;justify-content:center;gap:5px;flex-wrap:wrap;padding:7px 12px calc(env(safe-area-inset-bottom,0px) + 7px);font-size:11px}
+.dash-foot .owner-name{font-size:12px;font-weight:800;letter-spacing:1.2px;color:#E3C565;text-transform:uppercase}
+.dash-foot .owner-dot{color:#64748b}
+.dash-foot .owner-role{font-size:11px;color:#A9C6B4;letter-spacing:.3px;margin-top:0}
+.dash-foot .owner-ver{font-size:10px;color:#7d9c8a;letter-spacing:.3px;margin-top:0}
 .leaflet-control-scale-line{background:rgba(8,34,25,.85)!important;border-color:#A9C6B4!important;color:#D8E4DA!important}
 @media print{
   #printSheet .ps-foot{align-items:flex-end}
