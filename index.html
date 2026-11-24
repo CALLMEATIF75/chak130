@@ -882,8 +882,10 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
   #printSheet table{width:100%;border-collapse:collapse;margin-bottom:14px}
   #printSheet th,#printSheet td{border:1px solid #666;padding:7px 9px;font-size:13.5px;text-align:left}
   #printSheet th{background:#e7f0e7;width:22%}
-  #printSheet .ps-q td:nth-child(2),#printSheet .ps-q td:nth-child(3){text-align:right}
-  #printSheet .ps-q th:nth-child(2),#printSheet .ps-q th:nth-child(3){text-align:right}
+  #printSheet .ps-q td:nth-child(2),#printSheet .ps-q td:nth-child(3),#printSheet .ps-q td:nth-child(4){text-align:right}
+  #printSheet .ps-q th:nth-child(2),#printSheet .ps-q th:nth-child(3),#printSheet .ps-q th:nth-child(4){text-align:right}
+  #printSheet .ps-page{page-break-after:always}
+  #printSheet .ps-page:last-child{page-break-after:auto}
   #printSheet .ps-tot td{font-weight:800;background:#e7f0e7;font-size:14.5px}
   #printSheet .ps-foot{display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px}
   #printSheet .ps-note{margin-top:22px;font-size:11.5px;color:#555;border-top:1px solid #bbb;padding-top:8px}
@@ -1155,9 +1157,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <p class="hint">Tap the map to mark corners. <b>2 points</b> = distance; <b>3+</b> = area, live.</p>
     <div class="res" id="pmRes" style="display:none">
       <div class="resline mid"><span>Square Feet</span><b id="pmSqft">0</b></div>
-      <div class="resline big"><span>Marla</span><b id="pmMarla">0</b></div>
-      <div class="resline"><span>Kanal</span><b id="pmKanal">0</b></div>
-      <div class="resline"><span>Acre</span><b id="pmAcre">0</b></div>
+      <div class="resline" id="pmAcreRow" onclick="toggleUnitRow('pm','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="pmAcre">0</b></div>
+      <div class="resline" id="pmKanalRow" onclick="toggleUnitRow('pm','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="pmKanal">0</b></div>
+      <div class="resline big" id="pmMarlaRow" style="display:none"><span>Marla</span><b id="pmMarla">0</b></div>
       <div class="resline"><span>Square Yard (Gaj)</span><b id="pmGaj">0</b></div>
       <div class="resline"><span>Square Meter</span><b id="pmSqm">0</b></div>
       <div class="resline mid"><span>Perimeter</span><b id="pmPeri">0</b></div>
@@ -1189,9 +1191,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="res" id="calcRes" style="display:none">
       <div class="resline big"><span>Total Area</span><b id="calcBreak">—</b></div>
       <div class="resline mid"><span>Square Feet</span><b id="calcSqftOut">0</b></div>
-      <div class="resline big"><span>Marla</span><b id="calcMarla">0</b></div>
-      <div class="resline"><span>Kanal</span><b id="calcKanal">0</b></div>
-      <div class="resline"><span>Acre</span><b id="calcAcre">0</b></div>
+      <div class="resline" id="calcAcreRow" onclick="toggleUnitRow('calc','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="calcAcre">0</b></div>
+      <div class="resline" id="calcKanalRow" onclick="toggleUnitRow('calc','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="calcKanal">0</b></div>
+      <div class="resline big" id="calcMarlaRow" style="display:none"><span>Marla</span><b id="calcMarla">0</b></div>
       <div class="resline"><span>Square Yard (Gaj)</span><b id="calcGaj">0</b></div>
       <div class="resline"><span>Square Meter</span><b id="calcSqm">0</b></div>
     </div>
@@ -2321,7 +2323,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     document.getElementById('pmSqft').textContent = dzFmt(sqft);
     document.getElementById('pmMarla').textContent = dzDec(marla,2);
     document.getElementById('pmKanal').textContent = dzDec(sqft/5445, sqft/5445<10?3:2);
-    document.getElementById('pmAcre').textContent = dzDec(sqft/43560, sqft/43560<1?4:3) + ' Acre · ' + dzDec(sqft/5445, 2) + ' Kanal · ' + dzDec(marla, 2) + ' Marla';
+    document.getElementById('pmAcre').textContent = dzDec(sqft/43560, sqft/43560<1?4:3);
     document.getElementById('pmGaj').textContent = dzDec(sqft/9,1);
     document.getElementById('pmSqm').textContent = dzDec(areaM2, areaM2<100?2:1);
     var periTxt = (peri>=1000 ? dzDec(peri/1000,2)+' km' : Math.round(peri)+' m') + ' · ' + dzFmt(peri*3.28084) + ' ft';
@@ -2685,12 +2687,27 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     + '<circle cx="50" cy="40" r="7" fill="#166534" stroke="#ffffff" stroke-width="2"/></svg>';
   window.v3Print = function(oi){
     if(!unlocked){ requirePin(function(){ v3Print(oi); }); return; }
-    var o=OWNERS[oi], sheet=$('printSheet'); if(!o || !sheet) return;
-    var rows=o.plots.map(function(p){
-      var k=plotKanal(p);
-      return '<tr><td>Qila '+p.q+'</td><td>'+k+'</td><td>'+F(k*20)+'</td></tr>';
-    }).join('');
-    var tot=o.totalKanal, acre=tot/8;
+    var base=OWNERS[oi], sheet=$('printSheet'); if(!base || !sheet) return;
+    /* Group: same person = same Khata No OR same CNIC (khali CNIC se match nahi).
+       Aik shakhs ke tamam records aik sath print hote hain — har murabba alag page,
+       aur aakhri page par kul total. */
+    var group = OWNERS.filter(function(o){
+      return (o.khata && base.khata && o.khata===base.khata) || (o.cnic && base.cnic && o.cnic===base.cnic);
+    });
+    if(!group.length) group=[base];
+    /* Direction: part ('E'/'W'/'N'/'S') se, warna note mein "East side" / "West side" /
+       "North side" / "South side" se. Note mein dono taraf likhi ho (jaise "north-south")
+       to direction nahi batayi jati. */
+    function plotDir(p){
+      if(p && p.part){ var m={E:'East',W:'West',N:'North',S:'South'}; if(m[p.part]) return m[p.part]; }
+      var n=String((p && p.note)||'').toLowerCase();
+      if(n.indexOf('east side')>=0) return 'East';
+      if(n.indexOf('west side')>=0) return 'West';
+      if(n.indexOf('north side')>=0) return 'North';
+      if(n.indexOf('south side')>=0) return 'South';
+      if(n.indexOf('mashriqi')>=0) return 'East';
+      return '';
+    }
     var SEAL = '<svg class="ps-seal-svg" width="106" height="106" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'
       + '<defs><path id="psSealArc" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/></defs>'
       + '<circle cx="60" cy="60" r="58" fill="none" stroke="#166534" stroke-width="2.5"/>'
@@ -2699,32 +2716,78 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       + '<text x="60" y="57" text-anchor="middle" font-size="14" font-weight="800" fill="#166534">130/1-L</text>'
       + '<text x="60" y="71" text-anchor="middle" font-size="8" letter-spacing="1.5" fill="#166534">NUMBERDAR</text>'
       + '<text x="60" y="82" text-anchor="middle" font-size="7" fill="#166534">DIGITAL RECORD</text></svg>';
-    sheet.innerHTML =
-      '<div class="ps-head">'+LOGO_SVG+
+    function headHtml(){
+      return '<div class="ps-head">'+LOGO_SVG+
       '<div class="ps-titles"><h1>Chak No. 130/1-L</h1>'+
       '<p>Tehsil Khanpur &middot; District Rahim Yar Khan &middot; Punjab</p>'+
       '<p class="ps-doc">DIGITAL LAND RECORD</p>'+
-      '<p class="ps-nd">Numberdar: Muhammad Atif</p></div></div>'+
-      '<h2 class="ps-h">Land Details — Ownership Record</h2>'+
+      '<p class="ps-nd">Numberdar: Muhammad Atif</p></div></div>';
+    }
+    function footHtml(){
+      return '<div class="ps-foot"><div>Generated: '+new Date().toLocaleDateString('en-GB')+'</div><div class="ps-sign"><div class="ps-sign-name">Muhammad Atif</div><div class="ps-sign-line"></div><div class="ps-sign-role">Numberdar, Chak 130/1-L</div></div></div>'+
+      '<p class="ps-note">This printout was prepared from the Chak 130/1-L digital land record — for information only.</p>';
+    }
+    function recordPage(o, idx){
+      var rows=o.plots.map(function(p){
+        var k=plotKanal(p), d=plotDir(p);
+        return '<tr><td>Qila '+p.q+'</td><td>'+k+'</td><td>'+F(k*20)+'</td><td>'+(d||'—')+'</td></tr>';
+      }).join('');
+      var tot=o.totalKanal, acre=tot/8;
+      return '<div class="ps-page">'+headHtml()+
+      '<h2 class="ps-h">Land Details — Ownership Record'+(group.length>1 ? ' (Page '+(idx+1)+' of '+(group.length+1)+')' : '')+'</h2>'+
       '<table class="ps-info"><tr><th>Owner</th><td>'+o.name+'</td><th>Father</th><td>'+o.father+'</td></tr>'+
       '<tr><th>Khata No</th><td>'+o.khata+'</td><th>Muraba No</th><td>'+o.muraba+'</td></tr>'+
       '<tr><th>CNIC</th><td>'+(o.cnic||'—')+'</td><th>Mobile No</th><td>'+o.phone+'</td></tr></table>'+
-      '<table class="ps-q"><thead><tr><th>Qila No</th><th>Area (Kanal)</th><th>Area (Marla)</th></tr></thead><tbody>'+rows+
-      '<tr class="ps-tot"><td>Total Land</td><td>'+tot+' Kanal</td><td>'+F(tot*20)+' Marla &middot; '+D(acre,(tot%8)?2:0)+' Acre</td></tr></tbody></table>'+
-      '<div class="ps-verify"><div class="ps-qr" id="psQr"></div>'+
+      '<table class="ps-q"><thead><tr><th>Qila No</th><th>Area (Kanal)</th><th>Area (Marla)</th><th>Direction</th></tr></thead><tbody>'+rows+
+      '<tr class="ps-tot"><td>Total Land</td><td>'+tot+' Kanal</td><td>'+F(tot*20)+' Marla &middot; '+D(acre,(tot%8)?2:0)+' Acre</td><td></td></tr></tbody></table>'+
+      '<div class="ps-verify"><div class="ps-qr" id="psQr'+idx+'"></div>'+
       '<div class="ps-ref"><b>Verify this record</b><br>Scan the QR code or open the digital map:<br>https://callmeatif75.github.io/chak130/<br>Record: '+o.name+' &middot; Khata No '+o.khata+' &middot; Muraba No '+o.muraba+'</div>'+
       '<div class="ps-seal">'+SEAL+'</div></div>'+
-      '<div class="ps-foot"><div>Generated: '+new Date().toLocaleDateString('en-GB')+'</div><div class="ps-sign"><div class="ps-sign-name">Muhammad Atif</div><div class="ps-sign-line"></div><div class="ps-sign-role">Numberdar, Chak 130/1-L</div></div></div>'+
-      '<p class="ps-note">This printout was prepared from the Chak 130/1-L digital land record — for information only.</p>';
-    var qrBox=$('psQr');
-    if(qrBox && window.qrcode){
-      try{
-        var qr=qrcode(0,'M');
-        qr.addData('https://callmeatif75.github.io/chak130/\nChak 130/1-L - Digital Land Record\nOwner: '+o.name+'\nKhata No: '+o.khata+'\nMuraba No: '+o.muraba);
-        qr.make();
-        qrBox.innerHTML=qr.createSvgTag({cellSize:3,margin:6,scalable:true});
-      }catch(e){ qrBox.innerHTML=''; }
+      footHtml()+'</div>';
     }
+    function totalPage(){
+      var grandK=0;
+      var perMur=group.map(function(o){
+        grandK+=o.totalKanal;
+        return '<tr><td>Muraba '+o.muraba+'</td><td>'+o.totalKanal+'</td><td>'+F(o.totalKanal*20)+'</td><td>'+D(o.totalKanal/8,(o.totalKanal%8)?2:0)+'</td></tr>';
+      }).join('');
+      var dirTot={East:0,West:0,North:0,South:0,Full:0};
+      group.forEach(function(o){ o.plots.forEach(function(p){
+        var d=plotDir(p), k=plotKanal(p);
+        if(d && dirTot[d]!==undefined) dirTot[d]+=k; else dirTot.Full+=k;
+      }); });
+      var dirRows='';
+      ['East','West','North','South','Full'].forEach(function(d){
+        if(dirTot[d]>0){
+          var label = d==='Full' ? 'Full Qila (no side)' : d+' side';
+          dirRows+='<tr><td>'+label+'</td><td>'+dirTot[d]+'</td><td>'+F(dirTot[d]*20)+'</td><td>'+D(dirTot[d]/8,(dirTot[d]%8)?2:0)+'</td></tr>';
+        }
+      });
+      return '<div class="ps-page">'+headHtml()+
+      '<h2 class="ps-h">Total Land — All Records (Page '+(group.length+1)+' of '+(group.length+1)+')</h2>'+
+      '<table class="ps-info"><tr><th>Owner</th><td>'+base.name+'</td><th>Father</th><td>'+base.father+'</td></tr>'+
+      '<tr><th>Khata No</th><td>'+base.khata+'</td><th>CNIC</th><td>'+(base.cnic||'—')+'</td></tr></table>'+
+      '<h2 class="ps-h">Land by Muraba</h2>'+
+      '<table class="ps-q"><thead><tr><th>Muraba No</th><th>Total (Kanal)</th><th>Total (Marla)</th><th>Total (Acre)</th></tr></thead><tbody>'+perMur+
+      '<tr class="ps-tot"><td>Grand Total</td><td>'+grandK+' Kanal</td><td>'+F(grandK*20)+' Marla</td><td>'+D(grandK/8,(grandK%8)?2:0)+' Acre</td></tr></tbody></table>'+
+      (dirRows ? '<h2 class="ps-h">Land by Direction</h2>'+
+      '<table class="ps-q"><thead><tr><th>Direction</th><th>Total (Kanal)</th><th>Total (Marla)</th><th>Total (Acre)</th></tr></thead><tbody>'+dirRows+'</tbody></table>' : '')+
+      footHtml()+'</div>';
+    }
+    var html = group.map(function(o,i){ return recordPage(o,i); }).join('');
+    if(group.length>1) html += totalPage();
+    sheet.innerHTML = html;
+    group.forEach(function(o,i){
+      var qrBox=$('psQr'+i);
+      if(qrBox && window.qrcode){
+        try{
+          var qr=qrcode(0,'M');
+          qr.addData('https://callmeatif75.github.io/chak130/\nChak 130/1-L - Digital Land Record\nOwner: '+o.name+'\nKhata No: '+o.khata+'\nMuraba No: '+o.muraba);
+          qr.make();
+          qrBox.innerHTML=qr.createSvgTag({cellSize:3,margin:6,scalable:true});
+        }catch(e){ qrBox.innerHTML=''; }
+      }
+    });
     setTimeout(function(){ window.print(); }, 60);
   };
 
@@ -2768,7 +2831,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('pmSqft').textContent=F(sqft);
     $('pmMarla').textContent=D(marla,2);
     $('pmKanal').textContent=D(sqft/5445, (sqft/5445)<10?3:2);
-    $('pmAcre').textContent=D(sqft/43560, (sqft/43560)<1?4:3) + ' Acre · ' + D(sqft/5445, 2) + ' Kanal · ' + D(marla, 2) + ' Marla';
+    $('pmAcre').textContent=D(sqft/43560, (sqft/43560)<1?4:3);
     $('pmGaj').textContent=D(sqft/9,1);
     $('pmSqm').textContent=D(areaM2, areaM2<100?2:1);
     var periTxt=fmtDist(peri);
@@ -2818,6 +2881,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     map.doubleClickZoom.disable();
     map.on('click', mClick);
     $('pmRes').style.display='block';
+    if(window.resetUnitRows) window.resetUnitRows('pm');
     $('pmChip').style.display='block';
     $('pmBar').style.display='flex';
     if(window.showToast) showToast('Measure on — tap the map to add points');
@@ -2835,7 +2899,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     mDone=true; mDraw();
   };
   window.pmUndo = function(){ if(mPts.length){ mPts.pop(); mDone=false; mDraw(); } };
-  window.pmClear = function(){ mPts=[]; mDone=false; mDraw(); if(mOn && window.showToast) showToast('Measurement cleared'); };
+  window.pmClear = function(){ mPts=[]; mDone=false; mDraw(); if(window.resetUnitRows) window.resetUnitRows('pm'); if(mOn && window.showToast) showToast('Measurement cleared'); };
 
   /* ================= Comprehensive Search ================= */
   function collectVals(o, arr){
@@ -3252,6 +3316,7 @@ window.__v7 = window.__v6;
     var sqft = direct > 0 ? direct : num('calcLen') * num('calcWid');
     var box = document.getElementById('calcRes'); if(!box) return;
     if(!(sqft > 0)){ box.style.display = 'none'; return; }
+    if(box.style.display === 'none' && window.resetUnitRows) window.resetUnitRows('calc');
     var acres = Math.floor(sqft / 43560);
     var rem = sqft - acres * 43560;
     var kanal = Math.floor(rem / 5445);
@@ -3265,7 +3330,7 @@ window.__v7 = window.__v6;
     document.getElementById('calcSqftOut').textContent = fmt(sqft, 2);
     document.getElementById('calcMarla').textContent = fmt(sqft / 272.25, 2);
     document.getElementById('calcKanal').textContent = fmt(sqft / 5445, 3);
-    document.getElementById('calcAcre').textContent = fmt(sqft / 43560, 4) + ' Acre · ' + fmt(sqft / 5445, 2) + ' Kanal · ' + fmt(sqft / 272.25, 2) + ' Marla';
+    document.getElementById('calcAcre').textContent = fmt(sqft / 43560, 4);
     document.getElementById('calcGaj').textContent = fmt(sqft / 9, 1);
     document.getElementById('calcSqm').textContent = fmt(sqft * 0.09290304, 2);
     box.style.display = 'block';
@@ -3273,6 +3338,32 @@ window.__v7 = window.__v6;
   window.calcLandClear = function(){
     ['calcLen','calcWid','calcSqft'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
     var box = document.getElementById('calcRes'); if(box) box.style.display = 'none';
+    if(window.resetUnitRows) window.resetUnitRows('calc');
+  };
+  /* Drill-down (user, 24 Nov): Acre par tap -> Kanal dikhe, Kanal par tap -> Marla dikhe.
+     Sab aik sath nahi — sirf Marla/Kanal ke liye; baqi kuch nahi badla. */
+  window.toggleUnitRow = function(p, which){
+    var kr = document.getElementById(p+'KanalRow'), mr = document.getElementById(p+'MarlaRow'), ar = document.getElementById(p+'AcreRow');
+    function setArrow(row, label, open){ if(row){ var s=row.querySelector('span'); if(s) s.textContent = label + (open ? ' ▾' : ' ▸'); } }
+    if(which==='kanal'){
+      if(!kr) return;
+      var show = kr.style.display==='none';
+      kr.style.display = show ? '' : 'none';
+      setArrow(ar, 'Acre', show);
+      if(!show){ if(mr) mr.style.display='none'; setArrow(kr, 'Kanal', false); }
+    } else if(which==='marla'){
+      if(!mr) return;
+      var showM = mr.style.display==='none';
+      mr.style.display = showM ? '' : 'none';
+      setArrow(kr, 'Kanal', showM);
+    }
+  };
+  window.resetUnitRows = function(p){
+    var kr = document.getElementById(p+'KanalRow'), mr = document.getElementById(p+'MarlaRow'), ar = document.getElementById(p+'AcreRow');
+    if(kr) kr.style.display='none';
+    if(mr) mr.style.display='none';
+    if(ar){ var s=ar.querySelector('span'); if(s) s.textContent='Acre ▸'; }
+    if(kr){ var ks=kr.querySelector('span'); if(ks) ks.textContent='Kanal ▸'; }
   };
   window.__calcLand = { version:'v7.8', convert:function(sqft){ return {sqft:sqft, marla:sqft/272.25, kanal:sqft/5445, acre:sqft/43560}; } };
 })();
