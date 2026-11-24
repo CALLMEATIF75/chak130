@@ -797,11 +797,21 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .stat{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:13px;padding:9px 10px}
 .stat b{display:block;font-size:17px;color:#fde68a;font-variant-numeric:tabular-nums}
 .stat small{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
-.tabs{display:flex;gap:6px;padding:10px 14px 0}
-.tab{flex:1;min-width:0;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:8px 2px;font-size:12.5px;font-weight:700;min-height:54px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 14px 0}
+.tab{min-width:0;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:14px;padding:14px 4px;font-size:12.5px;font-weight:700;min-height:78px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .tab.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}
-.tab-ic{font-size:20px;line-height:1}
-.tab-tx{font-size:11px;font-weight:700;line-height:1.1}
+.tab-ic{font-size:28px;line-height:1}
+.tab-tx{font-size:13px;font-weight:700;line-height:1.1}
+/* Home view — jab koi panel khula na ho to khali jagah ki bajaye gaon ki maloomat + guide */
+.home-view{padding:14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.home-view h5{margin:14px 0 8px;font-size:13px;color:#fbbf24}
+.home-view h5:first-child{margin-top:0}
+.home-view p{margin:0 0 8px;font-size:12.5px;color:#cbd5e1;line-height:1.65}
+.home-view .card{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:12px;padding:12px;margin:0 0 10px}
+.home-view .hstat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
+.home-view .hstat:last-child{border-bottom:0}
+.home-view .hstat b{color:#fbbf24;font-size:14px}
+.home-view .hstat span{color:#cbd5e1}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
 .tabbody h5:first-child{margin-top:0}
@@ -1049,6 +1059,24 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <button class="tab" id="tabbtn-tl" onclick="switchDashTab('tl')"><span class="tab-ic">🛠️</span><span class="tab-tx">Tools</span></button>
     <button class="tab" id="tabbtn-rc" onclick="switchDashTab('rc')"><span class="tab-ic">📋</span><span class="tab-tx">Land Records</span></button>
     <button class="tab" id="tabbtn-ov" onclick="switchDashTab('ov')"><span class="tab-ic">📊</span><span class="tab-tx">Overview</span></button>
+  </div>
+
+  <!-- Home view — koi panel khula na ho to khali jagah ki bajaye ye dikhe (footer neeche hi rehta hai) -->
+  <div class="home-view" id="homeView">
+    <h5>Chak 130/1-L</h5>
+    <div class="card">
+      <div class="hstat"><span>Villages on map</span><b>13</b></div>
+      <div class="hstat"><span>Murabbas (130)</span><b>56</b></div>
+      <div class="hstat"><span>Qilas (130)</span><b>1,400</b></div>
+      <div class="hstat"><span>Land records</span><b>7</b></div>
+    </div>
+    <h5>How to use</h5>
+    <div class="card">
+      <p>Tap a murabba on the map to see its 25 qilas.</p>
+      <p>Tap a qila to see its 8 kanals inside it.</p>
+      <p>Tap a kanal to see its 20 marlas inside it.</p>
+      <p>Tap a tab above for Map Layers, Tools, Land Records or Overview.</p>
+    </div>
   </div>
 
   <div class="tabbody" id="tab-ov" style="display:none">
@@ -3213,6 +3241,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function syncHeroForPanel(){
     var hero=document.querySelector('#dash .hero');
     if(hero) hero.style.display = curPanel ? 'none' : '';
+    var hv=document.getElementById('homeView');
+    if(hv) hv.style.display = curPanel ? 'none' : '';
   }
   function closePanel(){
     curPanel=null;
