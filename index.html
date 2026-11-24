@@ -2321,7 +2321,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     document.getElementById('pmSqft').textContent = dzFmt(sqft);
     document.getElementById('pmMarla').textContent = dzDec(marla,2);
     document.getElementById('pmKanal').textContent = dzDec(sqft/5445, sqft/5445<10?3:2);
-    document.getElementById('pmAcre').textContent = dzDec(sqft/43560, sqft/43560<1?4:3);
+    document.getElementById('pmAcre').textContent = dzDec(sqft/43560, sqft/43560<1?4:3) + ' Acre · ' + dzDec(sqft/5445, 2) + ' Kanal · ' + dzDec(marla, 2) + ' Marla';
     document.getElementById('pmGaj').textContent = dzDec(sqft/9,1);
     document.getElementById('pmSqm').textContent = dzDec(areaM2, areaM2<100?2:1);
     var periTxt = (peri>=1000 ? dzDec(peri/1000,2)+' km' : Math.round(peri)+' m') + ' · ' + dzFmt(peri*3.28084) + ' ft';
@@ -2768,7 +2768,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('pmSqft').textContent=F(sqft);
     $('pmMarla').textContent=D(marla,2);
     $('pmKanal').textContent=D(sqft/5445, (sqft/5445)<10?3:2);
-    $('pmAcre').textContent=D(sqft/43560, (sqft/43560)<1?4:3);
+    $('pmAcre').textContent=D(sqft/43560, (sqft/43560)<1?4:3) + ' Acre · ' + D(sqft/5445, 2) + ' Kanal · ' + D(marla, 2) + ' Marla';
     $('pmGaj').textContent=D(sqft/9,1);
     $('pmSqm').textContent=D(areaM2, areaM2<100?2:1);
     var periTxt=fmtDist(peri);
@@ -3265,7 +3265,7 @@ window.__v7 = window.__v6;
     document.getElementById('calcSqftOut').textContent = fmt(sqft, 2);
     document.getElementById('calcMarla').textContent = fmt(sqft / 272.25, 2);
     document.getElementById('calcKanal').textContent = fmt(sqft / 5445, 3);
-    document.getElementById('calcAcre').textContent = fmt(sqft / 43560, 4);
+    document.getElementById('calcAcre').textContent = fmt(sqft / 43560, 4) + ' Acre · ' + fmt(sqft / 5445, 2) + ' Kanal · ' + fmt(sqft / 272.25, 2) + ' Marla';
     document.getElementById('calcGaj').textContent = fmt(sqft / 9, 1);
     document.getElementById('calcSqm').textContent = fmt(sqft * 0.09290304, 2);
     box.style.display = 'block';
