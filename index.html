@@ -1084,7 +1084,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     </div>
     <h5>Tap Tools</h5>
     <div class="p-card" style="padding:2px 12px">
-    <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" checked onchange="setTapPin(this.checked)"><i></i></label></div>
+    <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)"><i></i></label></div>
     <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" checked onchange="setTapCoords(this.checked)"><i></i></label></div>
     <div class="lrow" style="border-bottom:0"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
     </div>
@@ -2195,7 +2195,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
      Three separate toggles in the Layers tab ("Tap Tools"); each works on its own.
      Tap pin: one marker only — tapping elsewhere MOVES it. Compass: static
      north-up rose (the map never rotates, so the arrow always points up). */
-  var tapPinOn = true, tapPin = null, lastTap = null;
+  var tapPinOn = false, tapPin = null, lastTap = null; /* default OFF — pin shows only when the user turns "Tap pin" on */
   var compassOn = false; /* "Compass (North)" toggle — default OFF */
   function tapPinIcon(){
     return L.divIcon({className:'tappin', html:'<svg width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 1C7.3 1 1 7.3 1 15c0 10.5 14 26 14 26s14-15.5 14-26C29 7.3 22.7 1 15 1z" fill="#ef4444" stroke="#ffffff" stroke-width="2"/><circle cx="15" cy="15" r="5.5" fill="#ffffff"/></svg>', iconSize:[30,42], iconAnchor:[15,42]});
