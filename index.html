@@ -760,10 +760,24 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #loader.hide{opacity:0;pointer-events:none}
 #loader .spin{width:44px;height:44px;border-radius:50%;border:4px solid #1e293b;border-top-color:#fbbf24;animation:ldspin 1s linear infinite}
 @keyframes ldspin{to{transform:rotate(360deg)}}
-#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:4000;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 230px);z-index:4000;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#north{position:absolute;z-index:900;top:calc(env(safe-area-inset-top,0px) + 10px);right:10px;background:rgba(15,23,42,.85);border:1px solid #334155;border-radius:12px;color:#fbbf24;font-weight:800;font-size:14px;width:40px;height:40px;display:none;align-items:center;justify-content:center}
-@media(min-width:768px){#north{display:flex}}
+/* Compass (North) — hidden until the "Compass (North)" toggle in Layers is on.
+   Fixed below the Hide button (top-right) so it never covers it. The ui-hide /
+   clean-view / print rules that mention #north still hide it in those modes. */
+#north{position:fixed;z-index:900;top:calc(env(safe-area-inset-top,0px) + 64px);right:10px;width:48px;height:48px;border-radius:50%;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.55);color:#E3C565;display:none;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none}
+#north .cmp{position:relative;width:100%;height:100%;font-weight:800}
+#north .cmp i{position:absolute;font-style:normal;font-size:10px;line-height:1;color:#cbd5e1}
+#north .cmp .n{top:3px;left:50%;transform:translateX(-50%);color:#facc15;font-size:11px}
+#north .cmp .e{right:4px;top:50%;transform:translateY(-50%)}
+#north .cmp .s{bottom:3px;left:50%;transform:translateX(-50%)}
+#north .cmp .w{left:4px;top:50%;transform:translateY(-50%)}
+#north .cmp .a{position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);font-size:15px;color:#facc15}
+/* Tap pin marker (Leaflet divIcon) — bright red teardrop, visible on satellite */
+.tappin{background:transparent;border:0}
+/* Tap chip: flex row so the text and the dismiss button sit side by side */
+#tapCoord{align-items:center;gap:10px}
+#tapCoordX{flex-shrink:0;width:26px;height:26px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#e2e8f0;font-size:13px;line-height:1;cursor:pointer;padding:0}
 #map.measuring{cursor:crosshair}
 /* Dashboard drawer */
 #dash{position:fixed;z-index:1500;top:0;left:0;bottom:0;width:344px;max-width:90vw;transform:translateX(-106%);transition:transform .28s ease;display:flex;flex-direction:column;border-radius:0 20px 20px 0;border-left:0}
@@ -775,17 +789,14 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .brand small{font-size:11px;color:#94a3b8}
 .vrow{display:flex;align-items:center;gap:8px;padding:10px 14px 2px}
 .vrow .vlab{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94a3b8;text-transform:uppercase}
-.vtabbar{display:flex;gap:6px;padding:8px 14px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.vtabbar::-webkit-scrollbar{display:none}
-.vtab{flex:0 0 auto;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:10px 12px;font-size:13px;font-weight:700;min-height:44px;min-width:64px;cursor:pointer;white-space:nowrap}
-.vtab.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}
+#villageSel{flex:1;min-width:0;background:#07271C;color:#fff;border:1px solid rgba(201,162,39,.45);border-radius:9px;padding:8px;font-size:13.5px;font-weight:700}
 .xbtn{width:36px;height:36px;min-width:36px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:16px}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px 4px}
 .stat{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:13px;padding:9px 10px}
 .stat b{display:block;font-size:17px;color:#fde68a;font-variant-numeric:tabular-nums}
 .stat small{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
 .tabs{display:flex;gap:6px;padding:10px 14px 0}
-.tab{flex:1;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:10px 4px;font-size:13px;font-weight:700;min-height:44px}
+.tab{flex:1;min-width:0;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:10px 2px;font-size:12.5px;font-weight:700;min-height:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tab.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
@@ -832,7 +843,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #dashQuick button{flex:1;border:1px solid #334155;background:#1e293b;color:#e2e8f0;border-radius:11px;min-height:42px;font-size:12px;font-weight:700}
 @media print{#dash,#loader,#toast,.fab,#top,#find,#north,#panel{display:none!important}}
 /* ===== v3: Paimaish toolbar, Owner card, Records, Search results, Print ===== */
-#pmBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 138px);z-index:1300;display:none;gap:6px;align-items:center;border-radius:14px;padding:6px;max-width:94vw}
+#pmBar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 172px);z-index:1300;display:none;gap:6px;align-items:center;border-radius:14px;padding:6px;max-width:94vw}
 #pmBar button{border:1px solid #334155;background:#1e293b;color:#e2e8f0;border-radius:10px;min-height:44px;padding:0 12px;font-size:13px;font-weight:800;white-space:nowrap}
 #pmBar button:active{transform:scale(.96)}
 #pmBar .fin{background:#065f46;border-color:#10b981;color:#fff}
@@ -985,8 +996,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div><b>ZameenMap</b><small>Chak 130/1-L &middot; Tehsil Khanpur</small></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
-  <div class="vrow"><span class="vlab">Village</span></div>
-  <div class="vtabbar" id="villageTabs" role="tablist" aria-label="Village"></div>
+  <div class="vrow"><span class="vlab">Village</span><select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select></div>
   <div id="offStat" class="offstat">Checking offline store&hellip;</div>
   <button id="ndBtn" class="ndlogin" onclick="numberdarLogin()">&#128272; Numberdar Login</button>
   <div class="tabs">
@@ -1071,6 +1081,12 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="lrow"><div class="ln"><b>All Qilas</b><small>Qila lines at zoom 16+</small></div><label class="sw2"><input type="checkbox" id="lyQila" onchange="lyToggleQila(this.checked)"><i></i></label></div>
     <div class="lrow"><div class="ln"><b>Labels</b><small>Murabba and qila numbers</small></div><label class="sw2"><input type="checkbox" id="lyLbl" checked onchange="lyToggleLbl(this.checked)"><i></i></label></div>
     <div class="lrow" style="border-bottom:0"><div class="ln"><b>Owners' Qilas</b><small>Record qilas — light purple</small></div><label class="sw2"><input type="checkbox" id="lyOwn" checked onchange="lyToggleOwn(this.checked)"><i></i></label></div>
+    </div>
+    <h5>Tap Tools</h5>
+    <div class="p-card" style="padding:2px 12px">
+    <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" checked onchange="setTapPin(this.checked)"><i></i></label></div>
+    <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" checked onchange="setTapCoords(this.checked)"><i></i></label></div>
+    <div class="lrow" style="border-bottom:0"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
     </div>
     <h5>Map Style</h5>
     <div class="btnrow" id="themeRow">
@@ -1199,8 +1215,8 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
   <div class="dash-foot"><div class="owner-name">Muhammad Atif</div><div class="owner-role">Numberdar &middot; Chak 130/1-L</div><div class="owner-ver">ZameenMap &middot; v7.8</div></div>
 </aside>
-<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
-<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span></div>
+<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
+<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
 
@@ -1218,6 +1234,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 <button id="menuBtn" class="floatbtn" onclick="toggleDash()" aria-label="Menu — open panel">&#9776;</button>
 <button id="hideBtn" class="floatbtn" onclick="toggleUiHide()" aria-label="Hide interface">&#128065;</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
+<div id="north" aria-label="North is up"><span class="cmp"><i class="n">N</i><i class="e">E</i><i class="s">S</i><i class="w">W</i><span class="a">&#9650;</span></span></div>
 
 <div id="pmBar" class="glass">
   <span id="pmBarInfo">0 points</span>
@@ -1486,6 +1503,10 @@ function resolveMurabbaNum(s){
     for(j=0;j<arr.length;j++){ if(arr[j][0].split('/')[0]==String(n)) return 'V'+vv+':'+arr[j][0]; }
     return null;
   }
+  /* On 130, a bare block number means 130's own block first (e.g. '468' -> 130's 468/… cell, not 129's). */
+  if(curVillage==='130'){
+    for(j=0;j<NAMES.length;j++){ if(NAMES[j].split('/')[0]==String(n)) return NAMES[j]; }
+  }
   if(curVillage!=='130'){ hit=firstCellOfBlock(curVillage); if(hit) return hit; }
   for(i=0;i<VILLAGE_ORDER.length;i++){
     v=VILLAGE_ORDER[i]; if(v==='130') continue;
@@ -1585,7 +1606,7 @@ function init(){
   map.on('dragstart',function(){following=false;setFollowBtn()});
   map.on('click',onMapClick);
   fillSelects();
-  fillVillageTabs();
+  fillVillageSel();
   openDB().then(function(){ if(satOn) satLayer.addTo(map); setSatBtn(); satStatus(); });
   refresh(); startGPS();
 }
@@ -1645,6 +1666,7 @@ function refresh(){
 /* ===== Tap select: 1st tap = murabba (its qilas only), 2nd tap = qila ===== */
 function onMapClick(e){
   if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng);
+  if(window.placeTapPin) placeTapPin(e.latlng);
   var h=locate(e.latlng.lat,e.latlng.lng);
   if(!h){ clearTarget(); return; }
   if(target && target.m===h.name) target.q=(target.q===h.q)?null:h.q;
@@ -1736,17 +1758,14 @@ document.addEventListener('pointerdown', function(e){
 /* ===== Search / target ===== */
 function fillSelects(){ /* v7.2: combobox lists render on demand — nothing to pre-fill */ }
 
-/* ===== Multi-village: village tab bar (replaces the old <select>) ===== */
-function villageTabLabel(v){ return v+'/1-L'; }
-function fillVillageTabs(){
-  var bar=document.getElementById('villageTabs'); if(!bar) return;
-  bar.innerHTML=VILLAGE_ORDER.map(function(v){
-    return '<button type="button" role="tab" class="vtab'+(v===curVillage?' on':'')+'" data-v="'+v+'" aria-selected="'+(v===curVillage)+'" onclick="setVillage(\''+v+'\',true)">'+villageTabLabel(v)+'</button>';
-  }).join('');
-  var act=bar.querySelector('.vtab.on'); if(act && act.scrollIntoView) act.scrollIntoView({block:'nearest',inline:'center'});
+/* ===== Multi-village: village selector ===== */
+function fillVillageSel(){
+  var sel=document.getElementById('villageSel'); if(!sel) return;
+  sel.innerHTML=VILLAGE_ORDER.map(function(v){ return '<option value="'+v+'"'+(v===curVillage?' selected':'')+'>'+villageLabel(v)+'</option>'; }).join('');
 }
 function updateVillageUI(){
   var label=villageLabel(curVillage);
+  document.title='ZameenMap — '+label;
   var bs=document.querySelector('#dash .brand small'); if(bs) bs.textContent=label+' \u00b7 Tehsil Khanpur';
   var ov=document.getElementById('ovVillage'); if(ov) ov.textContent=label;
   if(window.dzStats) dzStats();
@@ -1754,15 +1773,12 @@ function updateVillageUI(){
 function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
-  var bar=document.getElementById('villageTabs');
-  if(bar){
-    var bs=bar.querySelectorAll('.vtab'), i, act=null;
-    for(i=0;i<bs.length;i++){ var on=bs[i].getAttribute('data-v')===v; bs[i].classList.toggle('on',on); bs[i].setAttribute('aria-selected',on?'true':'false'); if(on) act=bs[i]; }
-    if(act && act.scrollIntoView) act.scrollIntoView({block:'nearest',inline:'center'});
-  }
+  var sel=document.getElementById('villageSel'); if(sel) sel.value=v;
   updateVillageUI();
   if(!map) return; /* init() not done yet — map parts below need the map */
   userHit=null; /* GPS nearest highlight belonged to the old village — only the new village may show */
+  following=false; if(window.setFollowBtn) setFollowBtn(); /* user chose to look elsewhere — stop GPS follow from yanking the view back to their location */
+  if(window.hideTapCoord) hideTapCoord(); /* the chip showed the old village's tap — hide it */
   clearTarget();
   buildGrid();
   var ext=gridExtent();
@@ -1774,6 +1790,7 @@ function onPickM(v){
   if(!v){ clearTarget(); return; }
   var vm=VMUR[v];
   if(vm && vm.village!==curVillage) setVillage(vm.village,false);
+  else if(!vm && MUR[v] && curVillage!=='130') setVillage('130',false); /* 130 murabba picked from another village — show the 130 grid, not a floating highlight */
   target={m:v,q:null}; syncSelects(); drawTarget(true);
 }
 function onPickQ(v){ if(!target) return; target.q=v?parseInt(v,10):null; drawTarget(true); }
@@ -1845,11 +1862,20 @@ function allTiles(){
   return list;
 }
 function satStatus(){
-  var total=allTiles().length;
-  dbCount().then(function(n){
-    document.getElementById('satInfo').textContent='The village has '+total+' HD tiles (about '+Math.round(total*0.012)+' MB). Saved: '+n+'.'+(n>=total&&total>0?' HD satellite saved — works offline.':'');
+  /* Per-village count: dbCount() is the GLOBAL tile total (all villages), so
+     comparing it with this village's total wrongly reported other villages
+     as "saved" once 130's tiles were in the store. Count this village's own
+     tiles instead (batched dbHas — async, the text updates when done). */
+  var list=allTiles(), total=list.length, saved=0, i=0;
+  function step(){
+    var batch=[];
+    for(var k=0;k<8 && i<list.length;k++,i++){ (function(t){ batch.push(dbHas(t[0]+'/'+t[1]+'/'+t[2]).then(function(h){ if(h) saved++; })); })(list[i]); }
+    return Promise.all(batch).then(function(){ if(i<list.length) return step(); });
+  }
+  step().then(function(){
+    document.getElementById('satInfo').textContent='The village has '+total+' HD tiles (about '+Math.round(total*0.012)+' MB). Saved: '+saved+'.'+(saved>=total&&total>0?' HD satellite saved — works offline.':'');
     var os=document.getElementById('offStat');
-    if(os){ os.textContent = (n>=total&&total>0) ? '\u25CF HD satellite saved — works offline ('+n+' tiles)' : (n>0 ? '\u25CF Offline ready — '+n+' satellite tiles saved' : '\u25CB Satellite not saved yet — Layers tab, Offline Satellite'); os.style.color = n>0 ? '#34d399' : '#94a3b8'; }
+    if(os){ os.textContent = (saved>=total&&total>0) ? '\u25CF HD satellite saved — works offline ('+saved+' tiles)' : (saved>0 ? '\u25CF Offline ready — '+saved+' of '+total+' satellite tiles saved for this village' : '\u25CB Satellite not saved yet — Layers tab, Offline Satellite'); os.style.color = saved>0 ? '#34d399' : '#94a3b8'; }
   });
 }
 function downloadSat(){
@@ -2104,6 +2130,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       document.getElementById('lyGrid').checked = map.hasLayer(mLayer);
       document.getElementById('lyQila').checked = !!qilaAll;
       document.getElementById('lyLbl').checked = window.C130_LABELS!==false;
+      var tp=document.getElementById('lyTapPin'); if(tp) tp.checked=tapPinOn;
+      var tc=document.getElementById('lyTapCoord'); if(tc) tc.checked=tapCoordOn;
+      var cp=document.getElementById('lyCompass'); if(cp) cp.checked=compassOn;
     }catch(e){}
   }
   window.dzSyncLayers = dzSyncLayers;
@@ -2141,14 +2170,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('show'); },2600);
   };
   /* Tap coordinate chip (24 Nov 2026): show lat/lng of the last tapped point in any
-     mode; tap the chip to copy "lat, lng" (5 decimals, same precision as CORNERS). */
+     mode; tap the chip to copy "lat, lng" (5 decimals, same precision as CORNERS).
+     The X button hides it; switching village hides it too (setVillage). */
   window._tapLL = null;
+  var tapCoordOn = true; /* "Coordinates (Lat/Lng)" toggle — default ON */
   window.showTapCoord = function(lat, lng){
     window._tapLL = { lat: lat, lng: lng };
     var c=document.getElementById('tapCoord'), s=document.getElementById('tapCoordTxt');
     if(!c || !s) return;
     s.textContent = 'Lat ' + lat.toFixed(5) + ' \u00b7 Lng ' + lng.toFixed(5);
-    c.style.display = 'block';
+    if(tapCoordOn) c.style.display = 'flex';
+  };
+  window.hideTapCoord = function(){
+    var c=document.getElementById('tapCoord'); if(c) c.style.display='none';
   };
   window.copyTapCoord = function(){
     var p=window._tapLL; if(!p) return;
@@ -2157,6 +2191,38 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ if(window.showToast) showToast(txt); }); }
     else if(window.showToast) showToast(txt);
   };
+  /* TAP-TOOLS-START — Tap pin + Coordinates toggle + Compass toggle (24 Nov 2026).
+     Three separate toggles in the Layers tab ("Tap Tools"); each works on its own.
+     Tap pin: one marker only — tapping elsewhere MOVES it. Compass: static
+     north-up rose (the map never rotates, so the arrow always points up). */
+  var tapPinOn = true, tapPin = null, lastTap = null;
+  var compassOn = false; /* "Compass (North)" toggle — default OFF */
+  function tapPinIcon(){
+    return L.divIcon({className:'tappin', html:'<svg width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 1C7.3 1 1 7.3 1 15c0 10.5 14 26 14 26s14-15.5 14-26C29 7.3 22.7 1 15 1z" fill="#ef4444" stroke="#ffffff" stroke-width="2"/><circle cx="15" cy="15" r="5.5" fill="#ffffff"/></svg>', iconSize:[30,42], iconAnchor:[15,42]});
+  }
+  window.placeTapPin = function(latlng){
+    lastTap = latlng;
+    if(!tapPin) tapPin = L.marker(latlng, {interactive:false, keyboard:false, icon:tapPinIcon()});
+    else tapPin.setLatLng(latlng);
+    if(tapPinOn && map && !map.hasLayer(tapPin)) tapPin.addTo(map);
+  };
+  window.setTapPin = function(on){
+    tapPinOn = !!on;
+    if(!map) return;
+    if(tapPinOn){ if(tapPin && lastTap && !map.hasLayer(tapPin)) tapPin.addTo(map); }
+    else if(tapPin && map.hasLayer(tapPin)) map.removeLayer(tapPin);
+  };
+  window.setTapCoords = function(on){
+    tapCoordOn = !!on;
+    if(tapCoordOn){ if(window._tapLL) showTapCoord(window._tapLL.lat, window._tapLL.lng); }
+    else hideTapCoord();
+  };
+  window.setCompass = function(on){
+    compassOn = !!on;
+    var n=document.getElementById('north'); if(!n) return;
+    n.style.display = compassOn ? 'flex' : 'none';
+  };
+  /* TAP-TOOLS-END */
 
   /* ================= PAIMAISH (Measurement) ================= */
   var pmOn=false, pmPts=[], pmGroup=null;
@@ -2524,6 +2590,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   window.v3ShowOwner = function(oi){
     if(!unlocked){ requirePin(function(){ v3ShowOwner(oi); }); return; }
     var o=OWNERS[oi]; if(!o) return;
+    if(window.setVillage && curVillage!=='130') setVillage('130',false); /* owners are 130 records — show the 130 grid, not a floating highlight */
     target={m:o.muraba, q:o.plots[0].q};
     syncSelects(); drawTarget(true);
     if(window.innerWidth<1100) toggleDash(false);
@@ -2815,7 +2882,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
   /* test hooks */
   window.__v3 = { owners:OWNERS, byKey:OWN_BY_KEY, search:gSearch, go:gGo,
-    pm:{ pts:function(){ return mPts; }, done:function(){ return mDone; } },
+    pm:{ pts:function(){ return mPts; }, done:function(){ return mDone; }, refresh:function(){ mDraw(); } },
     route:function(){ return showRoute; },
     pin:{ unlocked:pinIsUnlocked, submit:pinSubmit, lock:lockRecords, require:requirePin,
           hashOf:sha256Sync, lockedHits:function(){ return lastLockedHits; } } };
@@ -2978,16 +3045,12 @@ window.v6SetUnits=function(u){
   window.V6_UNITS = (u==='m') ? 'm' : 'ft';
   try{ localStorage.setItem('c130units', window.V6_UNITS); }catch(e){}
   paintUnits();
-  /* refresh live measure readouts by replaying the points through the measure tool */
+  /* refresh live measure readouts in the new unit — the old replay (fake map
+     clicks) only ran while measuring, moved the tap chip, and flashed a
+     misleading 'Measurement cleared' toast */
   try{
-    var pts=(window.__v3 && __v3.pm) ? __v3.pm.pts().slice() : [];
-    var bar=$('pmBar'), on = bar && bar.style.display==='flex';
-    if(pts.length && on){
-      var wasDone=__v3.pm.done();
-      pmClear();
-      pts.forEach(function(p){ map.fire('click',{latlng:L.latLng(p.lat,p.lng)}); });
-      if(wasDone && window.pmFinish) pmFinish();
-    }
+    var pm=(window.__v3 && __v3.pm) ? __v3.pm : null;
+    if(pm && pm.pts().length && pm.refresh) pm.refresh();
   }catch(e){}
 };
 
@@ -3185,7 +3248,7 @@ body.uihide #menuBtn,body.uihide #hideBtn,body.uihide #zoomCtl{display:none!impo
 #dashQuick button{flex:1 1 30%}
 #loc{margin-top:0}
 /* record card */
-#ownerCard{left:10px;right:10px;max-width:420px;bottom:calc(env(safe-area-inset-bottom,0px) + 64px);padding:0;overflow:hidden;border:1px solid rgba(184,134,11,.6)}
+#ownerCard{left:10px;right:10px;max-width:420px;bottom:calc(env(safe-area-inset-bottom,0px) + 118px);padding:0;overflow:hidden;border:1px solid rgba(184,134,11,.6)}
 .oc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;background:linear-gradient(180deg,rgba(184,134,11,.25),rgba(184,134,11,.07));border-bottom:1px solid rgba(184,134,11,.55);padding:10px 12px}
 .oc-head-t{min-width:0}
 .oc-kicker{display:block;font-size:13px;font-weight:800;letter-spacing:2.5px;color:#facc15}
