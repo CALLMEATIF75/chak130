@@ -775,7 +775,10 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .brand small{font-size:11px;color:#94a3b8}
 .vrow{display:flex;align-items:center;gap:8px;padding:10px 14px 2px}
 .vrow .vlab{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94a3b8;text-transform:uppercase}
-#villageSel{flex:1;min-width:0;background:#07271C;color:#fff;border:1px solid rgba(201,162,39,.45);border-radius:9px;padding:8px;font-size:13.5px;font-weight:700}
+.vtabbar{display:flex;gap:6px;padding:8px 14px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.vtabbar::-webkit-scrollbar{display:none}
+.vtab{flex:0 0 auto;border:1px solid #334155;background:#1e293b;color:#cbd5e1;border-radius:11px;padding:10px 12px;font-size:13px;font-weight:700;min-height:44px;min-width:64px;cursor:pointer;white-space:nowrap}
+.vtab.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}
 .xbtn{width:36px;height:36px;min-width:36px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:16px}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px 4px}
 .stat{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:13px;padding:9px 10px}
@@ -982,7 +985,8 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div><b>ZameenMap</b><small>Chak 130/1-L &middot; Tehsil Khanpur</small></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
-  <div class="vrow"><span class="vlab">Village</span><select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select></div>
+  <div class="vrow"><span class="vlab">Village</span></div>
+  <div class="vtabbar" id="villageTabs" role="tablist" aria-label="Village"></div>
   <div id="offStat" class="offstat">Checking offline store&hellip;</div>
   <button id="ndBtn" class="ndlogin" onclick="numberdarLogin()">&#128272; Numberdar Login</button>
   <div class="tabs">
@@ -1581,7 +1585,7 @@ function init(){
   map.on('dragstart',function(){following=false;setFollowBtn()});
   map.on('click',onMapClick);
   fillSelects();
-  fillVillageSel();
+  fillVillageTabs();
   openDB().then(function(){ if(satOn) satLayer.addTo(map); setSatBtn(); satStatus(); });
   refresh(); startGPS();
 }
@@ -1732,10 +1736,14 @@ document.addEventListener('pointerdown', function(e){
 /* ===== Search / target ===== */
 function fillSelects(){ /* v7.2: combobox lists render on demand — nothing to pre-fill */ }
 
-/* ===== Multi-village: village selector ===== */
-function fillVillageSel(){
-  var sel=document.getElementById('villageSel'); if(!sel) return;
-  sel.innerHTML=VILLAGE_ORDER.map(function(v){ return '<option value="'+v+'"'+(v===curVillage?' selected':'')+'>'+villageLabel(v)+'</option>'; }).join('');
+/* ===== Multi-village: village tab bar (replaces the old <select>) ===== */
+function villageTabLabel(v){ return v+'/1-L'; }
+function fillVillageTabs(){
+  var bar=document.getElementById('villageTabs'); if(!bar) return;
+  bar.innerHTML=VILLAGE_ORDER.map(function(v){
+    return '<button type="button" role="tab" class="vtab'+(v===curVillage?' on':'')+'" data-v="'+v+'" aria-selected="'+(v===curVillage)+'" onclick="setVillage(\''+v+'\',true)">'+villageTabLabel(v)+'</button>';
+  }).join('');
+  var act=bar.querySelector('.vtab.on'); if(act && act.scrollIntoView) act.scrollIntoView({block:'nearest',inline:'center'});
 }
 function updateVillageUI(){
   var label=villageLabel(curVillage);
@@ -1746,9 +1754,15 @@ function updateVillageUI(){
 function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
-  var sel=document.getElementById('villageSel'); if(sel) sel.value=v;
+  var bar=document.getElementById('villageTabs');
+  if(bar){
+    var bs=bar.querySelectorAll('.vtab'), i, act=null;
+    for(i=0;i<bs.length;i++){ var on=bs[i].getAttribute('data-v')===v; bs[i].classList.toggle('on',on); bs[i].setAttribute('aria-selected',on?'true':'false'); if(on) act=bs[i]; }
+    if(act && act.scrollIntoView) act.scrollIntoView({block:'nearest',inline:'center'});
+  }
   updateVillageUI();
   if(!map) return; /* init() not done yet — map parts below need the map */
+  userHit=null; /* GPS nearest highlight belonged to the old village — only the new village may show */
   clearTarget();
   buildGrid();
   var ext=gridExtent();
