@@ -1192,6 +1192,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
   <div class="dash-foot"><div class="owner-name">Muhammad Atif</div><div class="owner-role">Numberdar &middot; Chak 130/1-L</div><div class="owner-ver">ZameenMap &middot; v7.8</div></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
+<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
 
@@ -1530,6 +1531,7 @@ function refresh(){
 
 /* ===== Tap select: 1st tap = murabba (its qilas only), 2nd tap = qila ===== */
 function onMapClick(e){
+  if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng);
   var h=locate(e.latlng.lat,e.latlng.lng);
   if(!h){ clearTarget(); return; }
   if(target && target.m===h.name) target.q=(target.q===h.q)?null:h.q;
@@ -1957,6 +1959,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
     clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('show'); },2600);
   };
+  /* Tap coordinate chip (24 Nov 2026): show lat/lng of the last tapped point in any
+     mode; tap the chip to copy "lat, lng" (5 decimals, same precision as CORNERS). */
+  window._tapLL = null;
+  window.showTapCoord = function(lat, lng){
+    window._tapLL = { lat: lat, lng: lng };
+    var c=document.getElementById('tapCoord'), s=document.getElementById('tapCoordTxt');
+    if(!c || !s) return;
+    s.textContent = 'Lat ' + lat.toFixed(5) + ' \u00b7 Lng ' + lng.toFixed(5);
+    c.style.display = 'block';
+  };
+  window.copyTapCoord = function(){
+    var p=window._tapLL; if(!p) return;
+    var txt = p.lat.toFixed(5) + ', ' + p.lng.toFixed(5);
+    function done(){ if(window.showToast) showToast('Coordinates copied: ' + txt); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ if(window.showToast) showToast(txt); }); }
+    else if(window.showToast) showToast(txt);
+  };
 
   /* ================= PAIMAISH (Measurement) ================= */
   var pmOn=false, pmPts=[], pmGroup=null;
@@ -1988,7 +2007,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     map.on('click', onMapClick);
     map.doubleClickZoom.enable();
   }
-  function pmClick(e){ pmPts.push(e.latlng); pmDraw(); }
+  function pmClick(e){ pmPts.push(e.latlng); if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng); pmDraw(); }
   window.pmUndo = function(){ if(pmPts.length){ pmPts.pop(); pmDraw(); } };
   window.pmClear = function(){ pmPts=[]; pmDraw(); };
   function pmDraw(){
@@ -2445,7 +2464,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
   function mClick(e){
     if(mDone){ if(window.showToast) showToast('Measurement is finished — press Clear to start a new one'); return; }
-    mPts.push(e.latlng); mDraw();
+    mPts.push(e.latlng); if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng); mDraw();
   }
   function mStop(){
     mOn=false;
