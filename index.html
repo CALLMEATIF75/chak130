@@ -1463,7 +1463,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.13';
+var APP_VERSION='7.14';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1934,10 +1934,10 @@ function refresh(){
    3rd tap kanal = us ke andar 20 marla boxes. Dobara wohi kanal tap = wapas kanal view. */
 function onMapClick(e){
   /* Drop-a-Pin mode (Naqsha style): this tap IS the mark — drop the blue
-     pin exactly here, then disarm. Before showTapCoord / drill-down. */
+     pin exactly here (stays armed for the next pin). Before showTapCoord /
+     drill-down. */
   if(markMode){
-    markMode=false; syncMarkFab();
-    if(window.clearGotoPins) window.clearGotoPins();
+    /* STICKY multi-pin: stay armed, every tap adds another pin. */
     dropGoto(e.latlng.lat,e.latlng.lng,false,'drop');
     var h=locateAnywhere(e.latlng.lat,e.latlng.lng);
     if(h && h.village!==curVillage) setVillage(h.village,false);
@@ -2452,14 +2452,16 @@ function homeGoto(){
   var hl=document.getElementById('homeLoc');
   if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
 }
-/* ===== Drop a Pin — Naqsha Zameen style (25 Nov 2026) =====
+/* ===== Drop a Pin — Naqsha Zameen style, MULTI-PIN (25 Nov 2026) =====
    Naqsha's "Drop a Pin": tap the button once to ARM it, then tap the map —
    a BLUE teardrop pin drops exactly where you tapped, with that point's
-   coordinates in a black label underneath. ONE-SHOT: after one drop the
-   tool disarms itself. A new mark replaces the previous marked pin.
-   (The old homeMark dropped the pin at the MAP CENTRE — with GPS following
-   on, that was the user's own location, which is exactly what the user
-   complained about on 25 Nov 13:34. It is removed.) */
+   coordinates in a black label underneath. MULTI-PIN (user, 25 Nov 13:59):
+   the tool STAYS armed, so every tap drops another pin and they all stay
+   on the map; tap Pin/Mark again to stop. (Naqsha itself is one-shot, but
+   the user asked for multiple pins.) The coords chip always shows the
+   LATEST pin. (The old homeMark dropped the pin at the MAP CENTRE — with
+   GPS following on, that was the user's own location, which is exactly what
+   the user complained about on 25 Nov 13:34. It is removed.) */
 var markMode=false;
 function syncMarkFab(){
   var b=document.getElementById('fabPin'); if(b) b.classList.toggle('on',markMode);
@@ -2473,7 +2475,7 @@ function startMarkMode(){
   var hm=document.getElementById('homeMeasureBtn');
   if(hm && hm.className.indexOf(' on')>=0 && window.toggleMeasure) window.toggleMeasure();
   markMode=true; syncMarkFab();
-  if(window.showToast) showToast('Pin lagane ke liye map par tap karein. Dobara Pin dabayein to cancel.');
+  if(window.showToast) showToast('Pin lagane ke liye map par tap karein — jitne chahein lagayein. Band karne ke liye dobara Pin dabayein.');
 }
 function stopMarkMode(){ markMode=false; syncMarkFab(); }
 function toggleMarkMode(){ if(markMode) stopMarkMode(); else startMarkMode(); }
