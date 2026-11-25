@@ -1006,7 +1006,18 @@ body.cleanview #rail{display:none!important}
 #find{max-width:460px}
 #selMFilter{flex:1.1;min-width:64px;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:6px 7px;font-size:12.5px;font-weight:600}
 #selMFilter::placeholder{color:#64748b}
-.lbl-goto{background:rgba(15,23,42,.94);color:#facc15;font-weight:800;font-size:11.5px;padding:2px 9px;border-radius:8px;border:1px solid #f59e0b;white-space:nowrap}
+/* Marked pins — Naqsha Zameen style (25 Nov 2026): a teardrop pin whose tip
+   sits on the point, with the point's coordinates in a label underneath.
+   Go-to pins are RED with a white "Lat: X, Lng: Y" label; dropped pins are
+   BLUE with a black "X, Y" label. (The old .lbl-goto was a dark label only.) */
+.mk{display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.mk .pin-red,.mk .pin-blue{width:20px;height:20px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5);position:relative}
+.mk .pin-red{background:#ef4444}
+.mk .pin-blue{background:#2563eb}
+.mk .pin-red::after,.mk .pin-blue::after{content:'';position:absolute;left:5px;top:5px;width:6px;height:6px;border-radius:50%;background:#fff}
+.mk-lbl{margin-top:2px;padding:3px 8px;border-radius:8px;font-size:11.5px;font-weight:800;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+.mk-lbl.goto{background:#fff;color:#111827}
+.mk-lbl.drop{background:#111827;color:#fff}
 .btnrow button.on2{background:#1d4ed8;border-color:#60a5fa;color:#fff}
 body.theme-streets #map{background:#e9e4d6;background-image:linear-gradient(rgba(100,90,60,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(100,90,60,.08) 1px,transparent 1px);background-size:40px 40px}
 body.theme-plain #map{background:#f4f1ea;background-image:none}
@@ -1086,7 +1097,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <button class="qtool" onclick="homeLocate()"><span class="qi">📍</span>My Location</button>
       <button class="qtool" onclick="showLastMarkCoord()"><span class="qi">🎯</span>Coordinates</button>
       <button class="qtool" id="homeMeasureBtn" onclick="homeMeasure()"><span class="qi">📏</span>Measure</button>
-      <button class="qtool" onclick="homeMark()"><span class="qi">📌</span>Mark</button>
+      <button class="qtool" id="qtoolMark" onclick="toggleMarkMode()"><span class="qi">📌</span>Mark</button>
     </div>
     <div class="searchrow" id="homeCoordRow">
       <input id="hgLat" type="text" inputmode="decimal" placeholder="Latitude">
@@ -1376,16 +1387,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
 <div id="mapFabs">
   <button class="mapfab" onclick="fabLocate()">📍 <span>Location</span></button>
-  <button class="mapfab" onclick="mapCoordToggle()">🎯 <span>Coords</span></button>
-  <button class="mapfab" onclick="homeMark()">📌 <span>Pin</span></button>
+  <button class="mapfab" onclick="showLastMarkCoord()">🎯 <span>Coords</span></button>
+  <button class="mapfab" id="fabPin" onclick="toggleMarkMode()">📌 <span>Pin</span></button>
   <button class="mapfab" onclick="homeMeasure()">📏 <span>Measure</span></button>
   <button class="mapfab" onclick="mapVillageToggle()">🗺️ <span>Villages</span></button>
-</div>
-<div id="mapCoordBox" class="mapbox" style="display:none">
-  <div class="mapbox-h"><b>Go to Coordinates</b><button onclick="mapCoordHide()" aria-label="Close">✕</button></div>
-  <div class="searchrow"><input id="mgLat" type="text" inputmode="decimal" placeholder="Latitude"><input id="mgLng" type="text" inputmode="decimal" placeholder="Longitude"></div>
-  <p class="hint" style="margin:6px 0">Paste "28.47, 70.68" into Latitude — it splits automatically.</p>
-  <button class="big" onclick="mapGoto()">Go</button>
 </div>
 <div id="mapVillageBox" class="mapbox" style="display:none">
   <div class="mapbox-h"><b id="mapVillageTitle">All Villages</b><button onclick="mapVillageHide()" aria-label="Close">✕</button></div>
@@ -1458,7 +1463,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.12';
+var APP_VERSION='7.13';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1928,6 +1933,19 @@ function refresh(){
    1st tap murabba = us ke 25 qila boxes. 2nd tap qila = us ke andar 8 kanal boxes.
    3rd tap kanal = us ke andar 20 marla boxes. Dobara wohi kanal tap = wapas kanal view. */
 function onMapClick(e){
+  /* Drop-a-Pin mode (Naqsha style): this tap IS the mark — drop the blue
+     pin exactly here, then disarm. Before showTapCoord / drill-down. */
+  if(markMode){
+    markMode=false; syncMarkFab();
+    if(window.clearGotoPins) window.clearGotoPins();
+    dropGoto(e.latlng.lat,e.latlng.lng,false,'drop');
+    var h=locateAnywhere(e.latlng.lat,e.latlng.lng);
+    if(h && h.village!==curVillage) setVillage(h.village,false);
+    detect(e.latlng.lat,e.latlng.lng);
+    var hl=document.getElementById('homeLoc');
+    if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
+    return;
+  }
   if(window.showTapCoord) showTapCoord(e.latlng.lat,e.latlng.lng);
   if(window.placeTapPin) placeTapPin(e.latlng);
   var h=locate(e.latlng.lat,e.latlng.lng);
@@ -2067,9 +2085,15 @@ function villageListRender(q){
   });
   list.innerHTML=rows||'<div class="village-empty">No village found</div>';
 }
+/* Village picker (25 Nov 2026): opening it shows the FULL list of all 27
+   villages (clear view). Before this, the input was pre-filled with the
+   current village ("Chak 130/1-L"), so the filter showed only that one row
+   and the other villages never appeared until the text was deleted by hand.
+   Typing still filters; Escape/blur restores the current village's name. */
 function villageListShow(){
   var inp=document.getElementById('villageSearch'); if(!inp) return;
-  villageListRender(inp.value);
+  inp.value='';
+  villageListRender('');
   document.getElementById('villageList').hidden=false;
 }
 function villageListHide(){
@@ -2081,6 +2105,8 @@ function villagePick(v){
   villageListHide();
 }
 function villagePickFirst(){
+  var inp=document.getElementById('villageSearch');
+  if(!inp || !inp.value.trim()){ villageListHide(); return; }
   var b=document.querySelector('#villageList .village-item');
   if(b) villagePick(b.getAttribute('data-v'));
 }
@@ -2426,16 +2452,31 @@ function homeGoto(){
   var hl=document.getElementById('homeLoc');
   if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
 }
-function homeMark(){
-  if(!map) return;
-  var c=map.getCenter();
-  dropGoto(c.lat,c.lng,false);
-  var h=locateAnywhere(c.lat,c.lng);
-  if(h && h.village!==curVillage) setVillage(h.village,false);
-  detect(c.lat,c.lng);
-  var hl=document.getElementById('homeLoc');
-  if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
+/* ===== Drop a Pin — Naqsha Zameen style (25 Nov 2026) =====
+   Naqsha's "Drop a Pin": tap the button once to ARM it, then tap the map —
+   a BLUE teardrop pin drops exactly where you tapped, with that point's
+   coordinates in a black label underneath. ONE-SHOT: after one drop the
+   tool disarms itself. A new mark replaces the previous marked pin.
+   (The old homeMark dropped the pin at the MAP CENTRE — with GPS following
+   on, that was the user's own location, which is exactly what the user
+   complained about on 25 Nov 13:34. It is removed.) */
+var markMode=false;
+function syncMarkFab(){
+  var b=document.getElementById('fabPin'); if(b) b.classList.toggle('on',markMode);
+  var q=document.getElementById('qtoolMark'); if(q) q.classList.toggle('on',markMode);
 }
+function startMarkMode(){
+  if(window.setPinAddMode) setPinAddMode(false);
+  /* Measure swaps the map click handler to its own — stop it first so the
+     mark tap reaches onMapClick. (mOn lives in block 7's IIFE and is not
+     visible here, so the Measure button's own 'on' class is the state.) */
+  var hm=document.getElementById('homeMeasureBtn');
+  if(hm && hm.className.indexOf(' on')>=0 && window.toggleMeasure) window.toggleMeasure();
+  markMode=true; syncMarkFab();
+  if(window.showToast) showToast('Pin lagane ke liye map par tap karein. Dobara Pin dabayein to cancel.');
+}
+function stopMarkMode(){ markMode=false; syncMarkFab(); }
+function toggleMarkMode(){ if(markMode) stopMarkMode(); else startMarkMode(); }
 function homeMeasure(){
   if(window.toggleMeasure) window.toggleMeasure();
 }
@@ -2450,32 +2491,7 @@ function fabLocate(){
   var acc=gpsAccNote(lastAcc).replace(/&nbsp;/g,' ').trim().replace(/^·\s*/,'');
   if(window.showToast) showToast(txt+(acc ? ' · '+acc : ''));
 }
-function mapBoxCloseAll(){ var a=document.getElementById('mapCoordBox'); if(a) a.style.display='none'; var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; }
-window.mapCoordToggle=function(){
-  var b=document.getElementById('mapCoordBox'); if(!b) return;
-  var open=b.style.display!=='none';
-  mapBoxCloseAll();
-  if(!open){ b.style.display='block'; var a=document.getElementById('mgLat'); if(a) a.focus(); }
-};
-window.mapCoordHide=function(){ var b=document.getElementById('mapCoordBox'); if(b) b.style.display='none'; };
-function parseMapCoords(){
-  var la=(document.getElementById('mgLat')||{}).value||'', ln=(document.getElementById('mgLng')||{}).value||'';
-  if(!ln && la.indexOf(',')>=0){ var p=la.split(','); la=p[0]; ln=p[1]||''; }
-  var lat=parseFloat(String(la).trim()), lng=parseFloat(String(ln).trim());
-  if(isNaN(lat)||isNaN(lng)||lat<-90||lat>90||lng<-180||lng>180) return null;
-  return {lat:lat,lng:lng};
-}
-window.mapGoto=function(){
-  var c=parseMapCoords();
-  if(!c){ if(window.showToast) showToast('Enter a valid latitude (-90..90) and longitude (-180..180)'); return; }
-  dropGoto(c.lat,c.lng,false);
-  var h=locateAnywhere(c.lat,c.lng);
-  if(h && h.village!==curVillage) setVillage(h.village,false);
-  detect(c.lat,c.lng);
-  var hl=document.getElementById('homeLoc');
-  if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
-  mapCoordHide();
-};
+function mapBoxCloseAll(){ var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; }
 window.mapVillageToggle=function(){
   var b=document.getElementById('mapVillageBox'); if(!b) return;
   var open=b.style.display!=='none';
@@ -4015,12 +4031,19 @@ window.v6DmsToDeg=function(d,m,s){
   var sign = d<0 ? -1 : 1;
   return sign*(Math.abs(d)+Math.abs(m)/60+Math.abs(s)/3600);
 };
-/* dropGoto is GLOBAL on purpose (window.dropGoto): homeMark/homeGoto/mapGoto
-   in the main script call it bare. It used to be a plain function inside this
-   file's IIFE, so those calls threw "dropGoto is not defined" (25 Nov 2026). */
-window.dropGoto=function(lat,lng,silent){
+/* dropGoto is GLOBAL on purpose (window.dropGoto): homeGoto, v6GoToDD /
+   v6GoToDMS and mark mode in the main script call it bare. It used to be a
+   plain function inside this file's IIFE, so those calls threw "dropGoto is
+   not defined" (25 Nov 2026).
+   kind: 'drop' = Naqsha dropped pin (BLUE teardrop + black "lat, lng"
+   label); anything else = Naqsha Go To pin (RED teardrop + white
+   "Lat: X, Lng: Y" label). */
+window.dropGoto=function(lat,lng,silent,kind){
   if(!gotoLayer) gotoLayer=L.layerGroup().addTo(map);
-  L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="lbl-goto">&#128205; '+lat.toFixed(5)+', '+lng.toFixed(5)+'</span>',iconSize:[170,18],iconAnchor:[85,20]})}).addTo(gotoLayer);
+  var isDrop = kind==='drop';
+  var pin='<i class="'+(isDrop?'pin-blue':'pin-red')+'"></i>';
+  var lbl=isDrop ? lat.toFixed(5)+', '+lng.toFixed(5) : 'Lat: '+lat.toFixed(5)+', Lng: '+lng.toFixed(5);
+  L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="mk">'+pin+'<span class="mk-lbl '+(isDrop?'drop':'goto')+'">'+lbl+'</span></span>',iconSize:[180,46],iconAnchor:[90,20]})}).addTo(gotoLayer);
   gotoPts.push({lat:lat,lng:lng});
   if(!silent){
     following=false; if(window.setFollowBtn) setFollowBtn();
@@ -4029,6 +4052,9 @@ window.dropGoto=function(lat,lng,silent){
     if(window.showMarkCoord) showMarkCoord(lat,lng);
   }
 };
+/* clearGotoPins: remove all marked pins (in-memory only). Mark mode calls
+   this before each new drop so one marked pin replaces the previous one. */
+window.clearGotoPins=function(){ gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers(); };
 window.v6GoToDD=function(){
   var lat=parseFloat($('gtLat').value), lng=parseFloat($('gtLng').value);
   if(isNaN(lat)||isNaN(lng)){ if(window.showToast) showToast('Enter a valid latitude and longitude'); return; }
@@ -4214,8 +4240,9 @@ document.addEventListener('keydown', function(e){
 #find{right:10px}
 body.cleanview #menuBtn,body.cleanview #themeBtn,body.cleanview #zoomCtl,body.cleanview #mapFabs,body.cleanview .mapbox{display:none!important}
 body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #zoomCtl,body.uihide #mapFabs,body.uihide .mapbox{display:none!important}
-#mapFabs{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:1100;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+#mapFabs{position:fixed;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:1100;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .mapfab{display:flex;align-items:center;gap:6px;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:22px;padding:9px 12px;font-size:12.5px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer}
+.mapfab.on{background:#f59e0b;color:#111827;border-color:#f59e0b}
 .mapfab:active{transform:scale(.94)}
 .mapbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 130px);z-index:1200;width:min(92vw,420px);background:rgba(2,6,23,.94);border:1px solid rgba(201,162,39,.5);border-radius:14px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
 .mapbox-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
