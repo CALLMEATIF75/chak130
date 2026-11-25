@@ -965,7 +965,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 /* --- Full Screen Clean View --- */
 #cleanExit{display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:10px;z-index:2500;width:44px;height:44px;border-radius:50%;border:1px solid #475569;background:rgba(15,23,42,.85);color:#fff;font-size:18px;align-items:center;justify-content:center;cursor:pointer}
 body.cleanview #cleanExit{display:flex}
-body.cleanview #top,body.cleanview .fab,body.cleanview #find,body.cleanview #panel,body.cleanview #north,body.cleanview #pmBar,body.cleanview #ownerCard,body.cleanview #pmChip,body.cleanview #dash{display:none!important}
+body.cleanview #top,body.cleanview .fab,body.cleanview #find,body.cleanview #panel,body.cleanview #north,body.cleanview #pmBar,body.cleanview #ownerCard,body.cleanview #pmChip,body.cleanview #dash,body.cleanview #villageChip{display:none!important}
 body.cleanview .leaflet-control-attribution{margin:0!important}
 body.cleanview .leaflet-control-scale{margin-bottom:12px!important}
 /* --- Paimaish: points ke coordinates --- */
@@ -1384,6 +1384,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <button id="menuBtn" class="floatbtn" onclick="toggleDash()" aria-label="Menu — open panel">&#9776;</button>
 <button id="themeBtn" class="floatbtn" onclick="cycleTheme()" aria-label="Switch map style">🛰️</button>
+<button id="villageChip" onclick="mapVillageToggle()" aria-label="Current village — tap to change village">Chak 130/1-L</button>
 <button id="fabLocate" class="floatbtn" onclick="fabLocate()" aria-label="My location">📍</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
 <div id="mapFabs">
@@ -1464,7 +1465,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.17';
+var APP_VERSION='7.18';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2126,6 +2127,7 @@ function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
   var l=villageLabelEl(); if(l) l.textContent=villageLabel(v);
+  if(window.renderVillageChip) renderVillageChip(); /* the map screen itself shows the village name */
   var vl=document.getElementById('villageList'); if(vl && !vl.hidden){ var f=document.getElementById('villageFilter'); villageListRender(f?f.value:''); }
   updateVillageUI();
   if(!map) return; /* init() not done yet — map parts below need the map */
@@ -2504,6 +2506,10 @@ window.mapVillageToggle=function(){
   var open=b.style.display!=='none';
   mapBoxCloseAll();
   if(!open){ mapVillageRender(''); b.style.display='block'; var a=document.getElementById('mapVillageSearch'); if(a){ a.value=''; a.focus(); } }
+};
+/* Current-village chip (v7.18): shows the active village on the map screen. */
+window.renderVillageChip=function(){
+  var c=document.getElementById('villageChip'); if(c) c.textContent=villageLabel(curVillage);
 };
 window.mapVillageHide=function(){ var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; };
 window.mapVillageRender=function(q){
@@ -4290,7 +4296,7 @@ window.__v7 = window.__v6;
 #showUi{display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:8px;z-index:1250;align-items:center;gap:6px;padding:7px 13px;border-radius:99px;border:1px solid #475569;background:rgba(15,23,42,.88);color:#e2e8f0;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #showUi:active{transform:scale(.95)}
 body.uihide #showUi{display:flex}
-body.uihide #top,body.uihide #rail,body.uihide .fab,body.uihide #find,body.uihide #panel,body.uihide #dash,body.uihide #pmBar,body.uihide #pmChip,body.uihide #north,body.uihide #ownerCard,body.uihide #cleanExit,body.uihide .leaflet-control-scale{display:none!important}
+body.uihide #top,body.uihide #rail,body.uihide .fab,body.uihide #find,body.uihide #panel,body.uihide #dash,body.uihide #pmBar,body.uihide #pmChip,body.uihide #north,body.uihide #ownerCard,body.uihide #cleanExit,body.uihide #villageChip,body.uihide .leaflet-control-scale{display:none!important}
 </style>
 <button id="showUi" onclick="toggleUiHide()" aria-label="Show interface">&#9776;<span>Show</span></button>
 <script>
@@ -4424,6 +4430,9 @@ body{background:#071f18}
 .lrow .ln small{color:#A9C6B4}
 #find select,#selMFilter{background:#07271C;border-color:rgba(201,162,39,.3);color:#fff}
 .floatbtn{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5);color:#E3C565}
+/* Current-village chip (v7.18): the map screen itself must say which village
+   it is showing — the sidebar is closed most of the time. Tap = change village. */
+#villageChip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:1100;max-width:56vw;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 #zoomCtl{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5)}
 #zoomCtl button{color:#E3C565}
 #zoomCtl button+button{border-top-color:rgba(201,162,39,.3)}
