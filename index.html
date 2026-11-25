@@ -704,7 +704,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .zoom{display:flex;flex-direction:column;border-radius:15px;overflow:hidden;border:1px solid #334155;background:rgba(15,23,42,.92)}
 .zoom button{width:42px;height:38px;background:none;border:0;color:#e2e8f0;font-size:22px;font-weight:700}
 .zoom button+button{border-top:1px solid #334155}
-#find{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);right:auto;width:min(92vw,300px);bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:12px;padding:3px;display:flex;gap:4px}
+#find{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);right:auto;width:min(96vw,400px);bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:12px;padding:3px;display:flex;gap:4px}
 #find select{flex:1;min-width:0;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:5px 4px;font-size:12px;font-weight:600}
 #find select:disabled{opacity:.5}
 #panel{position:absolute;z-index:1001;right:66px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:220px;border-radius:16px;padding:12px;display:none}
@@ -1387,7 +1387,6 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 <button id="fabLocate" class="floatbtn" onclick="fabLocate()" aria-label="My location">📍</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
 <div id="mapFabs">
-  <button class="mapfab" onclick="showLastMarkCoord()"><span class="mi">🎯</span><span>Coords</span></button>
   <button class="mapfab" id="fabPin" onclick="toggleMarkMode()"><span class="mi">📌</span><span>Pin</span></button>
   <button class="mapfab" id="fabUndo" onclick="undoLastMark()"><span class="mi">↩</span><span>Undo</span></button>
   <button class="mapfab" onclick="homeMeasure()"><span class="mi">📏</span><span>Measure</span></button>
@@ -1465,7 +1464,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.16';
+var APP_VERSION='7.17';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2653,6 +2652,15 @@ function pinFromLatLng(lat,lng){
 function loadPins(){
   try{ pins=JSON.parse(localStorage.getItem(pinStoreKey())||'[]')||[]; }catch(e){ pins=[]; }
   pinSeq=pins.reduce(function(m,p){ return Math.max(m, p.seq||0); }, 0);
+  /* Seed the undo history (v7.17): pins loaded from storage are undoable
+     too — Undo must remove a pin added in an earlier session, not only
+     pins dropped in this session. Dedupe so a re-load never double-pushes. */
+  var st=window._pinUndoStack||(window._pinUndoStack=[]);
+  pins.forEach(function(p){
+    var seen=false;
+    for(var i=0;i<st.length;i++){ if(st[i].kind==='mypin' && st[i].seq===p.seq){ seen=true; break; } }
+    if(!seen) st.push({kind:'mypin',seq:p.seq});
+  });
   renderPins();
 }
 function savePins(){ try{ localStorage.setItem(pinStoreKey(), JSON.stringify(pins)); }catch(e){} }
@@ -4073,6 +4081,7 @@ window.dropGoto=function(lat,lng,silent,kind){
     var st=window._pinUndoStack||(window._pinUndoStack=[]);
     st.push({kind:'mark',ref:entry});
   }
+  return entry;
 };
 /* clearGotoPins: remove all marked pins (in-memory only). Utility — used by
    the Tools tab's Remove Layers flow and by anything that needs a clean
@@ -4151,7 +4160,11 @@ function loadLayers(){
   if(!raw) return;
   try{
     var data=JSON.parse(raw);
-    (data.goto||[]).forEach(function(g){ dropGoto(g.lat,g.lng,true,g.kind||'goto'); });
+    (data.goto||[]).forEach(function(g){
+      var ent=dropGoto(g.lat,g.lng,true,g.kind||'goto');
+      /* Seed the undo history (v7.17): restored mark pins are undoable too. */
+      if(ent){ var st=window._pinUndoStack||(window._pinUndoStack=[]); var seen=false; for(var i=0;i<st.length;i++){ if(st[i].ref===ent){ seen=true; break; } } if(!seen) st.push({kind:'mark',ref:ent}); }
+    });
     if(data.pm && data.pm.pts && data.pm.pts.length && window.__v3){
       var bar=$('pmBar'), on = bar && bar.style.display==='flex';
       if(!on) window.toggleMeasure();
@@ -4313,7 +4326,7 @@ body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #fabLocate,body.uihide #z
 /* Bottom action bar (25 Nov 2026, v7.15): the 5 floating pills stacked on the
    left looked unprofessional — now ONE horizontal line at the very bottom,
    icon + tiny label per button, plus Add Pin. */
-#mapFabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:1100;display:flex;gap:2px;background:rgba(8,34,25,.94);border:1px solid rgba(201,162,39,.5);border-radius:16px;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.4);max-width:96vw}
+#mapFabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:1100;display:flex;gap:2px;background:rgba(8,34,25,.94);border:1px solid rgba(201,162,39,.5);border-radius:16px;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.4);width:min(96vw,400px)}
 .mapfab{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:#E3C565;border-radius:12px;padding:6px 2px;font-size:10.5px;font-weight:700;white-space:nowrap;cursor:pointer}
 .mapfab .mi{font-size:20px;line-height:1}
 .mapfab.on{background:#f59e0b;color:#111827;border-color:#f59e0b}
