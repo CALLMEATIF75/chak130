@@ -1201,7 +1201,8 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="p-card" style="padding:2px 12px">
       <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)"><i></i></label></div>
       <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" onchange="setTapCoords(this.checked)"><i></i></label></div>
-      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Kanal / Marla</b><small>Kanal &amp; marla boxes on qila tap</small></div><label class="sw2"><input type="checkbox" id="lyKanalMarla" onchange="setKanalMarla(this.checked)"><i></i></label></div>
       </div>
     </details>
     <details class="sect">
@@ -1210,6 +1211,13 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="lrow"><div class="ln"><b>Abadi Plots</b><small>138 plots from the hand-drawn sketch</small></div><label class="sw2"><input type="checkbox" id="abadiToggle" onchange="toggleAbadi()"><i></i></label></div>
       <div class="lrow" style="border-bottom:0"><div class="ln"><b>Find Plot</b><small>Plot number 1–96, or strip 1–42</small></div><div style="display:flex;gap:6px;align-items:center"><input id="abadiPlotNo" type="number" min="1" max="96" placeholder="No." style="width:64px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-weight:700"><button onclick="abadiGoTo()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(201,162,39,.5);background:#0E5C3A;color:#E3C565;font-weight:700;cursor:pointer">Go</button></div></div>
       <p class="hint">Sketch-based — plots are approximate, anchored to the talab + school pins. Only for Chak 130/1-L.</p>
+      </div>
+    </details>
+    <details class="sect">
+      <summary>🛣️ Street View</summary>
+      <div class="p-card" style="padding:2px 12px">
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Streets</b><small>Roads at their real karam widths + chowks</small></div><label class="sw2"><input type="checkbox" id="streetToggle" onchange="toggleStreets()"><i></i></label></div>
+      <p class="hint">Streets drawn at their real karam widths (7/8/9 karam) — tap a street for its width, a chowk for its size. A house or wall inside the street band is encroaching (qabza) on the road.</p>
       </div>
     </details>
     <details class="sect">
@@ -1473,7 +1481,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.23';
+var APP_VERSION='7.24';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1615,8 +1623,37 @@ var NAMES = Object.keys(MUR).sort(function(a,b){var x=a.split('/'),y=b.split('/'
    v7.22: the whole row 1 (A,B,C,D) shifted north 0.00021 deg (~23 m) — v7.21 moved
    plot 73 alone, which left 72/71 a row below it on the phone; the charagah moved
    north by the same amount so it stays above row 1.
-   Plots are APPROXIMATE, not surveyed. Format: plots/strip [nLat,wLng,sLat,eLng,cluster?]. */
-var ABADI={"plots":{"81":[28.48152,70.67629,28.48141,70.67673,"A"],"80":[28.48152,70.67675,28.48128,70.67719,"A"],"82":[28.48139,70.67629,28.48128,70.67673,"A"],"79":[28.48152,70.67733,28.48128,70.67776,"B"],"78":[28.48152,70.67778,28.48128,70.67821,"B"],"77":[28.48152,70.67823,28.48128,70.67866,"B"],"76":[28.48152,70.67882,28.48128,70.67925,"C"],"75":[28.48152,70.67927,28.48128,70.67969,"C"],"74":[28.48152,70.67971,28.48128,70.68014,"C"],"73":[28.48151,70.68028,28.48129,70.68072,"D"],"72":[28.48152,70.68075,28.48141,70.68119,"D"],"71":[28.48139,70.68075,28.48128,70.68119,"D"],"83":[28.48095,70.67629,28.48084,70.67673,"E"],"37":[28.48095,70.67675,28.4807,70.67719,"E"],"84":[28.48082,70.67629,28.4807,70.67673,"E"],"85":[28.48068,70.67629,28.48057,70.67673,"E"],"38":[28.48068,70.67675,28.48044,70.67719,"E"],"86":[28.48055,70.67629,28.48044,70.67673,"E"],"87":[28.48042,70.67629,28.4803,70.67673,"E"],"39":[28.48042,70.67675,28.48017,70.67719,"E"],"88":[28.48028,70.67629,28.48017,70.67673,"E"],"36":[28.48095,70.67733,28.4807,70.67776,"F"],"10":[28.48095,70.67778,28.4807,70.67821,"F"],"11":[28.48095,70.67823,28.4807,70.67866,"F"],"35":[28.48068,70.67733,28.48044,70.67776,"F"],"9":[28.48068,70.67778,28.48044,70.67821,"F"],"12":[28.48068,70.67823,28.48044,70.67866,"F"],"34":[28.48042,70.67733,28.48017,70.67776,"F"],"8":[28.48042,70.67778,28.48017,70.67821,"F"],"1":[28.48042,70.67823,28.48017,70.67866,"F"],"13":[28.48095,70.67882,28.4807,70.67925,"G"],"16":[28.48095,70.67927,28.4807,70.67969,"G"],"17":[28.48095,70.67971,28.4807,70.68014,"G"],"14":[28.48068,70.67882,28.48043,70.67925,"G"],"15":[28.48068,70.67927,28.48043,70.67969,"G"],"18":[28.48068,70.67971,28.48043,70.68014,"G"],"2":[28.48041,70.67882,28.48016,70.67925,"G"],"3":[28.48041,70.67927,28.48016,70.67969,"G"],"19":[28.48041,70.67971,28.48016,70.68014,"G"],"56":[28.48095,70.68028,28.4807,70.68072,"H"],"70":[28.48095,70.68075,28.48083,70.68119,"H"],"69":[28.48082,70.68075,28.4807,70.68119,"H"],"55":[28.48068,70.68028,28.48043,70.68072,"H"],"68":[28.48068,70.68075,28.48056,70.68119,"H"],"67":[28.48055,70.68075,28.48043,70.68119,"H"],"54":[28.48041,70.68028,28.48016,70.68072,"H"],"66":[28.48041,70.68075,28.48029,70.68119,"H"],"65":[28.48028,70.68075,28.48016,70.68119,"H"],"89":[28.48003,70.67629,28.47991,70.67673,"I"],"40":[28.48003,70.67675,28.47978,70.67719,"I"],"90":[28.4799,70.67629,28.47978,70.67673,"I"],"91":[28.47976,70.67629,28.47964,70.67673,"I"],"41":[28.47976,70.67675,28.47951,70.67719,"I"],"92":[28.47963,70.67629,28.47951,70.67673,"I"],"93":[28.47949,70.67629,28.47937,70.67673,"I"],"42":[28.47949,70.67675,28.47924,70.67719,"I"],"94":[28.47936,70.67629,28.47924,70.67673,"I"],"33":[28.48003,70.67733,28.47978,70.67776,"J"],"7":[28.48003,70.67778,28.47978,70.67821,"J"],"6":[28.48003,70.67823,28.47978,70.67866,"J"],"32":[28.47976,70.67733,28.47951,70.67776,"J"],"29":[28.47976,70.67778,28.47951,70.67821,"J"],"28":[28.47976,70.67823,28.47951,70.67866,"J"],"31":[28.47949,70.67733,28.47924,70.67776,"J"],"30":[28.47949,70.67778,28.47924,70.67821,"J"],"27":[28.47949,70.67823,28.47924,70.67866,"J"],"5":[28.48004,70.67882,28.47979,70.67925,"K"],"4":[28.48004,70.67927,28.47979,70.67969,"K"],"20":[28.48004,70.67971,28.47979,70.68014,"K"],"25":[28.47977,70.67882,28.47951,70.67925,"K"],"24":[28.47977,70.67927,28.47951,70.67969,"K"],"21":[28.47977,70.67971,28.47951,70.68014,"K"],"26":[28.47949,70.67882,28.47924,70.67925,"K"],"23":[28.47949,70.67927,28.47924,70.67969,"K"],"22":[28.47949,70.67971,28.47924,70.68014,"K"],"53":[28.48004,70.68028,28.47992,70.68072,"L"],"64":[28.48004,70.68075,28.47992,70.68119,"L"],"52":[28.4799,70.68028,28.47965,70.68072,"L"],"63":[28.4799,70.68075,28.47979,70.68119,"L"],"62":[28.47977,70.68075,28.47965,70.68119,"L"],"51":[28.47963,70.68028,28.47924,70.68072,"L"],"61":[28.47963,70.68075,28.47951,70.68119,"L"],"60":[28.47949,70.68075,28.47938,70.68119,"L"],"59":[28.47936,70.68075,28.47924,70.68119,"L"],"95":[28.47912,70.67629,28.47904,70.67673,"M"],"43":[28.47912,70.67675,28.47894,70.67719,"M"],"96":[28.47902,70.67629,28.47894,70.67673,"M"],"44":[28.47912,70.67733,28.47894,70.67776,"N"],"45":[28.47912,70.67778,28.47894,70.67821,"N"],"46":[28.47912,70.67823,28.47894,70.67866,"N"],"47":[28.47912,70.67882,28.47896,70.67925,"O"],"48":[28.47912,70.67927,28.47896,70.67969,"O"],"49":[28.47912,70.67971,28.47896,70.68014,"O"],"50":[28.47912,70.68028,28.47896,70.68072,"P"],"58":[28.47912,70.68075,28.47905,70.68119,"P"],"57":[28.47903,70.68075,28.47896,70.68119,"P"]},"strip":{"1":[28.47882,70.67629,28.47874,70.67662],"2":[28.47882,70.67664,28.47874,70.67697],"3":[28.47882,70.67699,28.47874,70.67732],"4":[28.47882,70.67734,28.47874,70.67768],"5":[28.47882,70.6777,28.47874,70.67803],"6":[28.47882,70.67805,28.47874,70.67838],"7":[28.47882,70.6784,28.47874,70.67873],"8":[28.4788,70.67875,28.47874,70.67908],"9":[28.4788,70.6791,28.47874,70.67943],"10":[28.4788,70.67945,28.47874,70.67978],"11":[28.4788,70.6798,28.47874,70.68014],"12":[28.4788,70.68016,28.47874,70.68049],"13":[28.4788,70.68051,28.47874,70.68084],"14":[28.4788,70.68086,28.47874,70.68119],"28":[28.47872,70.67629,28.47858,70.67662],"27":[28.47872,70.67664,28.47858,70.67697],"26":[28.47872,70.67699,28.47858,70.67732],"25":[28.47872,70.67734,28.47858,70.67768],"24":[28.47872,70.6777,28.47858,70.67803],"23":[28.47872,70.67805,28.47858,70.67838],"22":[28.47872,70.6784,28.47858,70.67873],"21":[28.47872,70.67875,28.47858,70.67908],"20":[28.47872,70.6791,28.47858,70.67943],"19":[28.47872,70.67945,28.47858,70.67978],"18":[28.47872,70.6798,28.47858,70.68014],"17":[28.47872,70.68016,28.47858,70.68049],"16":[28.47872,70.68051,28.47858,70.68084],"15":[28.47872,70.68086,28.47858,70.68119],"29":[28.47856,70.67629,28.47843,70.67662],"30":[28.47856,70.67664,28.47843,70.67697],"31":[28.47856,70.67699,28.47843,70.67732],"32":[28.47856,70.67734,28.47843,70.67768],"33":[28.47856,70.6777,28.47843,70.67803],"34":[28.47856,70.67805,28.47843,70.67838],"35":[28.47856,70.6784,28.47843,70.67873],"36":[28.47856,70.67875,28.47843,70.67908],"37":[28.47856,70.6791,28.47843,70.67943],"38":[28.47856,70.67945,28.47843,70.67978],"39":[28.47856,70.6798,28.47843,70.68014],"40":[28.47856,70.68016,28.47843,70.68049],"41":[28.47856,70.68051,28.47843,70.68084],"42":[28.47856,70.68086,28.47843,70.68119]},"talab":[28.479,70.67718,28.4793,70.67754],"school":[28.47824,70.67713,28.47882,70.67779],"charagah":[28.48183,70.67628,28.48153,70.68267],"basti":[28.48162,70.6812,28.47842,70.68267],"owners":{"73":{"name":"Muhammad Arshad","area":"2 kanal","note":"1 kanal house + 1 kanal khali"},"25":{"area":"1 kanal 12 marla"},"26":{"area":"2 kanal"},"27":{"area":"2 kanal"},"28":{"area":"1 kanal 12 marla"},"29":{"area":"2 kanal"},"30":{"area":"2 kanal"},"31":{"area":"2 kanal"},"32":{"area":"2 kanal"},"74":{"area":"2 kanal"},"75":{"area":"2 kanal"},"76":{"area":"2 kanal"}}};
+   v7.24: per-cluster satellite check (25 Nov) — most clusters sit on their houses
+   within 5-10 m; fixed the two clear errors: school south edge 20 m too far south
+   (box now 64 wide x 44 tall, matching the real yard) and the E/I west strips
+   (83-88, 89-94) 5 m too far west onto the road (shifted east). Plot 44 (on the
+   pond), cluster M (43/95/96) and the strip need the user's ground truth — NOT
+   guessed. STREETS (v7.24): 27 street segments + 12 chowks from the sketch's karam
+   widths (7/8/9 karam), each drawn at its real width centred in the gap between
+   clusters; toggleable "Street View" — tap a street for its width, a chowk for
+   its size. The road is centred in the gap (the fit leaves ~23 m of slack between
+   rows 1 and 2); if a road hugs one side, the user will say so.
+   v7.24 QA fixes (25 Nov, before deploy): (1) the school rect overlapped strip
+   plots 3,4,24-26,31-33 — the sketch says the school sits WEST of strip plots 1-4,
+   so the strip now starts at the school's east edge (70.67779) and its 42 plots
+   re-fit into the narrower width (school itself NOT moved — it is the pinned
+   landmark). (2) Four street widths are DEFAULTS, not sketch readings (G-H, J-N,
+   K-O, L-P — no width written; default 7 karam): streets carry est=1 and show
+   '~7 karam' / '(andaza)' instead of presenting the guess as fact. (3) Chowk C22
+   showed a fake '7.5 karam' (average of the 8-karam F-J street west and the
+   7-karam G-K street east) — chowks now carry karam_h_w/karam_h_e and the popup
+   shows both crossing widths. (4) Missing roads added from CLEAR karam labels:
+   the 9-karam road BELOW the strip, the 7-karam west lanes west of clusters A and
+   M, and the road above the strip is 9 karam throughout (clear labels supersede
+   the faint 7-karam N-STRIP label). (5) Popups now show feet too (1 karam = 5.5
+   ft: 7 = 38.5 ft, 8 = 44 ft, 9 = 49.5 ft). (6) Turning Street View on forces the
+   Satellite basemap — the 'Streets'/'Plain' theme hides the satellite, and the
+   houses/walls are the qabza evidence. Performance: Abadi + street rectangles
+   render on the canvas renderer (the SVG renderer made the map slow with 180+
+   shapes on). Format: plots/strip [nLat,wLng,sLat,eLng,cluster?]; streets
+   [nLat,wLng,sLat,eLng,karam,est]; chowks [nLat,wLng,sLat,eLng,karam_v,karam_h,karam_h_w,karam_h_e].
+   Plots are APPROXIMATE, not surveyed. */
+var ABADI={"plots":{"81":[28.48152,70.67629,28.48141,70.67673,"A"],"80":[28.48152,70.67675,28.48128,70.67719,"A"],"82":[28.48139,70.67629,28.48128,70.67673,"A"],"79":[28.48152,70.67733,28.48128,70.67776,"B"],"78":[28.48152,70.67778,28.48128,70.67821,"B"],"77":[28.48152,70.67823,28.48128,70.67866,"B"],"76":[28.48152,70.67882,28.48128,70.67925,"C"],"75":[28.48152,70.67927,28.48128,70.67969,"C"],"74":[28.48152,70.67971,28.48128,70.68014,"C"],"73":[28.48151,70.68028,28.48129,70.68072,"D"],"72":[28.48152,70.68075,28.48141,70.68119,"D"],"71":[28.48139,70.68075,28.48128,70.68119,"D"],"83":[28.48095,70.67634,28.48084,70.67678,"E"],"37":[28.48095,70.67675,28.4807,70.67719,"E"],"84":[28.48082,70.67634,28.4807,70.67678,"E"],"85":[28.48068,70.67634,28.48057,70.67678,"E"],"38":[28.48068,70.67675,28.48044,70.67719,"E"],"86":[28.48055,70.67634,28.48044,70.67678,"E"],"87":[28.48042,70.67634,28.4803,70.67678,"E"],"39":[28.48042,70.67675,28.48017,70.67719,"E"],"88":[28.48028,70.67634,28.48017,70.67678,"E"],"36":[28.48095,70.67733,28.4807,70.67776,"F"],"10":[28.48095,70.67778,28.4807,70.67821,"F"],"11":[28.48095,70.67823,28.4807,70.67866,"F"],"35":[28.48068,70.67733,28.48044,70.67776,"F"],"9":[28.48068,70.67778,28.48044,70.67821,"F"],"12":[28.48068,70.67823,28.48044,70.67866,"F"],"34":[28.48042,70.67733,28.48017,70.67776,"F"],"8":[28.48042,70.67778,28.48017,70.67821,"F"],"1":[28.48042,70.67823,28.48017,70.67866,"F"],"13":[28.48095,70.67882,28.4807,70.67925,"G"],"16":[28.48095,70.67927,28.4807,70.67969,"G"],"17":[28.48095,70.67971,28.4807,70.68014,"G"],"14":[28.48068,70.67882,28.48043,70.67925,"G"],"15":[28.48068,70.67927,28.48043,70.67969,"G"],"18":[28.48068,70.67971,28.48043,70.68014,"G"],"2":[28.48041,70.67882,28.48016,70.67925,"G"],"3":[28.48041,70.67927,28.48016,70.67969,"G"],"19":[28.48041,70.67971,28.48016,70.68014,"G"],"56":[28.48095,70.68028,28.4807,70.68072,"H"],"70":[28.48095,70.68075,28.48083,70.68119,"H"],"69":[28.48082,70.68075,28.4807,70.68119,"H"],"55":[28.48068,70.68028,28.48043,70.68072,"H"],"68":[28.48068,70.68075,28.48056,70.68119,"H"],"67":[28.48055,70.68075,28.48043,70.68119,"H"],"54":[28.48041,70.68028,28.48016,70.68072,"H"],"66":[28.48041,70.68075,28.48029,70.68119,"H"],"65":[28.48028,70.68075,28.48016,70.68119,"H"],"89":[28.48003,70.67634,28.47991,70.67678,"I"],"40":[28.48003,70.67675,28.47978,70.67719,"I"],"90":[28.4799,70.67634,28.47978,70.67678,"I"],"91":[28.47976,70.67634,28.47964,70.67678,"I"],"41":[28.47976,70.67675,28.47951,70.67719,"I"],"92":[28.47963,70.67634,28.47951,70.67678,"I"],"93":[28.47949,70.67634,28.47937,70.67678,"I"],"42":[28.47949,70.67675,28.47924,70.67719,"I"],"94":[28.47936,70.67634,28.47924,70.67678,"I"],"33":[28.48003,70.67733,28.47978,70.67776,"J"],"7":[28.48003,70.67778,28.47978,70.67821,"J"],"6":[28.48003,70.67823,28.47978,70.67866,"J"],"32":[28.47976,70.67733,28.47951,70.67776,"J"],"29":[28.47976,70.67778,28.47951,70.67821,"J"],"28":[28.47976,70.67823,28.47951,70.67866,"J"],"31":[28.47949,70.67733,28.47924,70.67776,"J"],"30":[28.47949,70.67778,28.47924,70.67821,"J"],"27":[28.47949,70.67823,28.47924,70.67866,"J"],"5":[28.48004,70.67882,28.47979,70.67925,"K"],"4":[28.48004,70.67927,28.47979,70.67969,"K"],"20":[28.48004,70.67971,28.47979,70.68014,"K"],"25":[28.47977,70.67882,28.47951,70.67925,"K"],"24":[28.47977,70.67927,28.47951,70.67969,"K"],"21":[28.47977,70.67971,28.47951,70.68014,"K"],"26":[28.47949,70.67882,28.47924,70.67925,"K"],"23":[28.47949,70.67927,28.47924,70.67969,"K"],"22":[28.47949,70.67971,28.47924,70.68014,"K"],"53":[28.48004,70.68028,28.47992,70.68072,"L"],"64":[28.48004,70.68075,28.47992,70.68119,"L"],"52":[28.4799,70.68028,28.47965,70.68072,"L"],"63":[28.4799,70.68075,28.47979,70.68119,"L"],"62":[28.47977,70.68075,28.47965,70.68119,"L"],"51":[28.47963,70.68028,28.47924,70.68072,"L"],"61":[28.47963,70.68075,28.47951,70.68119,"L"],"60":[28.47949,70.68075,28.47938,70.68119,"L"],"59":[28.47936,70.68075,28.47924,70.68119,"L"],"95":[28.47912,70.67629,28.47905,70.67673,"M"],"43":[28.47912,70.67675,28.47896,70.67719,"M"],"96":[28.47903,70.67629,28.47896,70.67673,"M"],"44":[28.47912,70.67733,28.47896,70.67776,"N"],"45":[28.47912,70.67778,28.47896,70.67821,"N"],"46":[28.47912,70.67823,28.47896,70.67866,"N"],"47":[28.47912,70.67882,28.47896,70.67925,"O"],"48":[28.47912,70.67927,28.47896,70.67969,"O"],"49":[28.47912,70.67971,28.47896,70.68014,"O"],"50":[28.47912,70.68028,28.47896,70.68072,"P"],"58":[28.47912,70.68075,28.47905,70.68119,"P"],"57":[28.47903,70.68075,28.47896,70.68119,"P"]},"strip":{"1":[28.4788,70.6778,28.47874,70.67802],"2":[28.4788,70.67804,28.47874,70.67827],"3":[28.4788,70.67829,28.47874,70.67851],"4":[28.4788,70.67853,28.47874,70.67875],"5":[28.4788,70.67877,28.47874,70.679],"6":[28.4788,70.67902,28.47874,70.67924],"7":[28.4788,70.67926,28.47874,70.67948],"8":[28.4788,70.67951,28.47874,70.67973],"9":[28.4788,70.67975,28.47874,70.67997],"10":[28.4788,70.67999,28.47874,70.68022],"11":[28.4788,70.68024,28.47874,70.68046],"12":[28.4788,70.68048,28.47874,70.6807],"13":[28.4788,70.68072,28.47874,70.68095],"14":[28.4788,70.68097,28.47874,70.68119],"28":[28.47872,70.6778,28.47858,70.67802],"27":[28.47872,70.67804,28.47858,70.67827],"26":[28.47872,70.67829,28.47858,70.67851],"25":[28.47872,70.67853,28.47858,70.67875],"24":[28.47872,70.67877,28.47858,70.679],"23":[28.47872,70.67902,28.47858,70.67924],"22":[28.47872,70.67926,28.47858,70.67948],"21":[28.47872,70.67951,28.47858,70.67973],"20":[28.47872,70.67975,28.47858,70.67997],"19":[28.47872,70.67999,28.47858,70.68022],"18":[28.47872,70.68024,28.47858,70.68046],"17":[28.47872,70.68048,28.47858,70.6807],"16":[28.47872,70.68072,28.47858,70.68095],"15":[28.47872,70.68097,28.47858,70.68119],"29":[28.47856,70.6778,28.47843,70.67802],"30":[28.47856,70.67804,28.47843,70.67827],"31":[28.47856,70.67829,28.47843,70.67851],"32":[28.47856,70.67853,28.47843,70.67875],"33":[28.47856,70.67877,28.47843,70.679],"34":[28.47856,70.67902,28.47843,70.67924],"35":[28.47856,70.67926,28.47843,70.67948],"36":[28.47856,70.67951,28.47843,70.67973],"37":[28.47856,70.67975,28.47843,70.67997],"38":[28.47856,70.67999,28.47843,70.68022],"39":[28.47856,70.68024,28.47843,70.68046],"40":[28.47856,70.68048,28.47843,70.6807],"41":[28.47856,70.68072,28.47843,70.68095],"42":[28.47856,70.68097,28.47843,70.68119]},"talab":[28.479,70.67718,28.4793,70.67754],"school":[28.47842,70.67713,28.47882,70.67779],"charagah":[28.48183,70.67628,28.48153,70.68267],"basti":[28.48162,70.6812,28.47842,70.68267],"owners":{"73":{"name":"Muhammad Arshad","area":"2 kanal","note":"1 kanal house + 1 kanal khali"},"25":{"area":"1 kanal 12 marla"},"26":{"area":"2 kanal"},"27":{"area":"2 kanal"},"28":{"area":"1 kanal 12 marla"},"29":{"area":"2 kanal"},"30":{"area":"2 kanal"},"31":{"area":"2 kanal"},"32":{"area":"2 kanal"},"74":{"area":"2 kanal"},"75":{"area":"2 kanal"},"76":{"area":"2 kanal"}},"streets":{"A-B":[28.48153,70.6772,28.48127,70.67732,7,0],"B-C":[28.48153,70.67867,28.48127,70.67881,8,0],"C-D":[28.48153,70.68015,28.48127,70.68027,7,0],"E-F":[28.48096,70.6772,28.48016,70.67732,7,0],"F-G":[28.48096,70.67867,28.48015,70.67881,8,0],"G-H":[28.48096,70.68015,28.48015,70.68027,7,1],"I-J":[28.48004,70.6772,28.47923,70.67732,7,0],"J-K":[28.48005,70.67867,28.47923,70.67881,8,0],"K-L":[28.48005,70.68015,28.47923,70.68027,7,0],"M-N":[28.47913,70.6772,28.47895,70.67732,7,0],"N-O":[28.47913,70.67867,28.47895,70.67881,8,0],"O-P":[28.47913,70.68015,28.47895,70.68027,7,0],"A-E":[28.48117,70.67628,28.48106,70.6772,7,0],"B-F":[28.48117,70.67732,28.48106,70.67867,7,0],"C-G":[28.48117,70.67881,28.48106,70.68015,7,0],"D-H":[28.48117,70.68027,28.48106,70.6812,7,0],"E-I":[28.48016,70.67628,28.48004,70.6772,8,0],"F-J":[28.48016,70.67732,28.48004,70.67867,8,0],"G-K":[28.48015,70.67881,28.48005,70.68015,7,0],"H-L":[28.48015,70.68027,28.48005,70.6812,7,0],"I-M":[28.47923,70.67628,28.47913,70.6772,7,0],"J-N":[28.47923,70.67732,28.47913,70.67867,7,1],"K-O":[28.47923,70.67881,28.47913,70.68015,7,1],"L-P":[28.47923,70.68027,28.47913,70.6812,7,1],"N-STRIP":[28.47894,70.67732,28.47881,70.67867,9,0],"O-STRIP":[28.47894,70.67881,28.47881,70.68015,9,0],"P-STRIP":[28.47894,70.68027,28.47881,70.6812,9,0],"BELOW-STRIP":[28.47842,70.67779,28.47828,70.68267,9,0],"WEST-A":[28.48153,70.67616,28.48127,70.67628,7,0],"WEST-M":[28.47913,70.67616,28.47895,70.67628,7,0]},"chowks":{"C11":[28.48117,70.6772,28.48106,70.67732,7.0,7.0,7,7],"C12":[28.48016,70.6772,28.48004,70.67732,7.0,8.0,8,8],"C13":[28.47923,70.6772,28.47913,70.67732,7.0,7.0,7,7],"C14":[28.47894,70.6772,28.47881,70.67732,7.0,9.0,9,9],"C21":[28.48117,70.67867,28.48106,70.67881,8.0,7.0,7,7],"C22":[28.48016,70.67867,28.48004,70.67881,8.0,7.5,8,7],"C23":[28.47923,70.67867,28.47913,70.67881,8.0,7.0,7,7],"C24":[28.47894,70.67867,28.47881,70.67881,8.0,9.0,9,9],"C31":[28.48117,70.68015,28.48106,70.68027,7.0,7.0,7,7],"C32":[28.48015,70.68015,28.48005,70.68027,7.0,7.0,7,7],"C33":[28.47923,70.68015,28.47913,70.68027,7.0,7.0,7,7],"C34":[28.47894,70.68015,28.47881,70.68027,7.0,9.0,9,9]}};;
 var VILLAGES = {
   '94': {label:'Chak 94/1-L', cells:[["388/13",-9,4],["406/10",-6,-3],["406/11",-6,-2],["406/12",-6,-1],["406/14",-5,-3],["406/15",-5,-2],["406/16",-5,-1],["407/3",-8,2],["407/4",-8,3],["407/7",-7,2],["407/8",-7,3],["407/9",-6,0],["407/10",-6,1],["407/11",-6,2],["407/12",-6,3],["407/13",-5,0],["407/14",-5,1],["407/15",-5,2],["407/16",-5,3],["408/1",-8,4],["408/5",-7,4],["408/9",-6,4],["408/13",-5,4],["426/2",-4,-3],["426/3",-4,-2],["426/4",-4,-1],["426/6",-3,-3],["426/7",-3,-2],["426/8",-3,-1],["426/10",-2,-3],["426/11",-2,-2],["426/12",-2,-1],["426/13",-1,-4],["426/14",-1,-3],["426/15",-1,-2],["426/16",-1,-1],["427/1",-4,0],["427/2",-4,1],["427/3",-4,2],["427/4",-4,3],["427/5",-3,0],["427/6",-3,1],["427/9",-2,0],["427/10",-2,1],["427/13",-1,0],["427/14",-1,1],["428/1",-4,4]]},
   '95': {label:'Chak 95/1-L', cells:[["368/7",-15,6],["368/8",-15,7],["368/11",-14,6],["368/12",-14,7],["368/15",-13,6],["368/16",-13,7],["369/2",-16,9],["369/3",-16,10],["369/4",-16,11],["369/5",-15,8],["369/6",-15,9],["369/7",-15,10],["369/8",-15,11],["369/9",-14,8],["369/10",-14,9],["369/11",-14,10],["369/12",-14,11],["369/13",-13,8],["369/14",-13,9],["369/15",-13,10],["369/16",-13,11],["370/1",-16,12],["370/5",-15,12],["370/9",-14,12],["370/13",-13,12],["388/2",-12,5],["388/3",-12,6],["388/4",-12,7],["388/6",-11,5],["388/7",-11,6],["388/8",-11,7],["388/10",-10,5],["388/11",-10,6],["388/12",-10,7],["388/14",-9,5],["388/15",-9,6],["388/16",-9,7],["389/1",-12,8],["389/2",-12,9],["389/3",-12,10],["389/4",-12,11],["389/5",-11,8],["389/6",-11,9],["389/7",-11,10],["389/8",-11,11],["389/9",-10,8],["389/10",-10,9],["389/11",-10,10],["389/12",-10,11],["389/13",-9,8],["389/14",-9,9],["389/15",-9,10],["389/16",-9,11],["390/1",-12,12],["390/5",-11,12],["390/9",-10,12],["390/13",-9,12],["408/2",-8,5],["408/3",-8,6],["408/4",-8,7],["409/1",-8,8]]},
@@ -1859,6 +1896,7 @@ function drawSelQila(){
    Aik kanal = 20 marla (5 cols x 4 rows, har marla 2x4.5 karam = 9 sq karam). */
 var kanalLayer=L.layerGroup(), marlaLayer=L.layerGroup();
 var selKanal=null, selMarla=null; /* selected kanal (1-8) / marla (1-20) inside the selected qila */
+var kanalMarlaOn=false; /* "Kanal / Marla" toggle (25 Nov 2026) — default OFF: kanal/marla boxes show only when the user turns this on */
 function bilinPt(c,fx,fy){
   var nw=c[0], ne=c[1], se=c[2], sw=c[3];
   return [
@@ -1892,6 +1930,7 @@ function geoOfTap(lat,lng){
   return (curVillage==='130') ? llToGeo(lat,lng) : affineGeo(lat,lng,curVillage);
 }
 function drawKanalBoxes(){
+  if(!kanalMarlaOn){ kanalLayer.clearLayers(); if(map.hasLayer(kanalLayer)) map.removeLayer(kanalLayer); return; }
   kanalLayer.clearLayers();
   if(!target || !target.q){ if(map.hasLayer(kanalLayer)) map.removeLayer(kanalLayer); return; }
   var m=murByKey(target.m);
@@ -1904,6 +1943,7 @@ function drawKanalBoxes(){
   if(!map.hasLayer(kanalLayer)) map.addLayer(kanalLayer);
 }
 function drawMarlaBoxes(){
+  if(!kanalMarlaOn){ marlaLayer.clearLayers(); if(map.hasLayer(marlaLayer)) map.removeLayer(marlaLayer); return; }
   marlaLayer.clearLayers();
   if(!target || !target.q || !selKanal){ if(map.hasLayer(marlaLayer)) map.removeLayer(marlaLayer); return; }
   var m=murByKey(target.m), kc=kanalCorners(m,target.q,selKanal);
@@ -1921,6 +1961,14 @@ function clearDrill(){
   if(map.hasLayer(kanalLayer)) map.removeLayer(kanalLayer);
   if(map.hasLayer(marlaLayer)) map.removeLayer(marlaLayer);
 }
+/* Kanal / Marla toggle (25 Nov 2026): OFF = qila tap selects/highlights the qila but NO kanal
+   boxes appear; ON = the drill-down works as before (qila -> 8 kanal boxes, kanal -> 20 marla).
+   Turning it OFF clears any boxes already showing. Default OFF, not persisted. */
+window.setKanalMarla = function(on){
+  kanalMarlaOn = !!on;
+  if(!kanalMarlaOn){ clearDrill(); }
+  else { drawKanalBoxes(); drawMarlaBoxes(); }
+};
 
 function addQLabels(m,vb,sel){
   for(var q=1;q<=25;q++){
@@ -2153,6 +2201,7 @@ function setVillage(v, fit){
   curVillage=v;
   var l=villageLabelEl(); if(l) l.textContent=villageLabel(v);
   if(v!=='130' && typeof abadiHide==='function') abadiHide(); /* Abadi is 130-only */
+  if(v!=='130' && typeof streetHide==='function') streetHide(); /* Streets are 130-only */
   if(window.renderVillageChip) renderVillageChip(); /* the map screen itself shows the village name */
   var vl=document.getElementById('villageList'); if(vl && !vl.hidden){ var f=document.getElementById('villageFilter'); villageListRender(f?f.value:''); }
   updateVillageUI();
@@ -2544,16 +2593,16 @@ function abadiOwnerText(n){ var o=(ABADI.owners||{})[n]; if(!o) return ''; var t
 function abadiBuild(){
   if(abadiLayer) return;
   abadiLayer=L.layerGroup(); abadiLabels=L.layerGroup();
-  var plotStyle={color:'#f59e0b',weight:1.5,fillColor:'#f59e0b',fillOpacity:0.18};
-  var stripStyle={color:'#38bdf8',weight:1.5,fillColor:'#38bdf8',fillOpacity:0.18};
+  var plotStyle={color:'#d97706',weight:2,fillColor:'#f59e0b',fillOpacity:0.22,renderer:canvas};
+  var stripStyle={color:'#0284c7',weight:2,fillColor:'#38bdf8',fillOpacity:0.22,renderer:canvas};
   function rect(b,style,txt){ var r=L.rectangle([[b[0],b[1]],[b[2],b[3]]],style); if(txt) r.bindPopup(txt); return r; }
   var n;
   for(n in ABADI.plots){ var p=ABADI.plots[n]; abadiLayer.addLayer(rect([p[0],p[1],p[2],p[3]],plotStyle,'<b>Plot '+n+'</b> · Cluster '+p[4]+abadiOwnerText(n)+'<br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
   for(n in ABADI.strip){ var q=ABADI.strip[n]; abadiLayer.addLayer(rect([q[0],q[1],q[2],q[3]],stripStyle,'<b>Strip Plot '+n+'</b><br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
-  abadiLayer.addLayer(rect(ABADI.talab,{color:'#0ea5e9',weight:2,fillColor:'#0ea5e9',fillOpacity:0.35},'<b>Talab (Pond)</b><br><small>468/5, Qila 25 · ~35×33 m</small>'));
-  abadiLayer.addLayer(rect(ABADI.school,{color:'#22c55e',weight:2,fillColor:'#22c55e',fillOpacity:0.25},'<b>Girls Primary School 130/1-L</b><br><small>468/6, Qila 5 · 8 kanal</small>'));
-  abadiLayer.addLayer(rect(ABADI.charagah,{color:'#84cc16',weight:1.5,fillColor:'#84cc16',fillOpacity:0.12,dashArray:'6 4'},'<b>Charagah</b><br><small>Grazing land (north band)</small>'));
-  abadiLayer.addLayer(rect(ABADI.basti,{color:'#a78bfa',weight:1.5,fillColor:'#a78bfa',fillOpacity:0.10,dashArray:'6 4'},'<b>Basti Bahadur</b><br><small>Eastern settlement area</small>'));
+  abadiLayer.addLayer(rect(ABADI.talab,{color:'#0369a1',weight:2,fillColor:'#0ea5e9',fillOpacity:0.42,renderer:canvas},'<b>Talab (Pond)</b><br><small>468/5, Qila 25 · ~35×33 m</small>'));
+  abadiLayer.addLayer(rect(ABADI.school,{color:'#15803d',weight:2,fillColor:'#22c55e',fillOpacity:0.30,renderer:canvas},'<b>Girls Primary School 130/1-L</b><br><small>468/6, Qila 5 · 8 kanal</small>'));
+  abadiLayer.addLayer(rect(ABADI.charagah,{color:'#65a30d',weight:1.5,fillColor:'#84cc16',fillOpacity:0.15,dashArray:'6 4',renderer:canvas},'<b>Charagah</b><br><small>Grazing land (north band)</small>'));
+  abadiLayer.addLayer(rect(ABADI.basti,{color:'#7c3aed',weight:1.5,fillColor:'#a78bfa',fillOpacity:0.14,dashArray:'6 4',renderer:canvas},'<b>Basti Bahadur</b><br><small>Eastern settlement area</small>'));
   for(n in ABADI.plots){ var p2=ABADI.plots[n]; abadiLabels.addLayer(L.marker([(p2[0]+p2[2])/2,(p2[1]+p2[3])/2],{icon:L.divIcon({className:'abadi-lbl',html:n,iconSize:[24,16],iconAnchor:[12,8]}),interactive:false})); }
   for(n in ABADI.strip){ var q2=ABADI.strip[n]; abadiLabels.addLayer(L.marker([(q2[0]+q2[2])/2,(q2[1]+q2[3])/2],{icon:L.divIcon({className:'abadi-lbl abadi-lbl-strip',html:n,iconSize:[24,16],iconAnchor:[12,8]}),interactive:false})); }
 }
@@ -2588,6 +2637,52 @@ function abadiHide(){
   abadiOn=false;
   var t=document.getElementById('abadiToggle'); if(t) t.checked=false;
   if(map){ if(abadiLayer && map.hasLayer(abadiLayer)) map.removeLayer(abadiLayer); if(abadiLabels && map.hasLayer(abadiLabels)) map.removeLayer(abadiLabels); }
+}
+/* ===== Street View (v7.24, 25 Nov 2026): the village streets at their real karam
+   widths (7/8/9 karam from the sketch) + the 12 chowks where they cross. Each street
+   is drawn at its karam width, centred in the gap between the clusters, so a house
+   or wall sitting inside the street band is visibly encroaching (qabza) on the road.
+   Toggleable on its own (default OFF); 130-only like the Abadi layer. Tap a street
+   for its width (karam + metres); tap a chowk for its size. */
+var streetLayer=null, streetLabels=null, streetsOn=false, streetZoomBound=false;
+function streetBuild(){
+  if(streetLayer) return;
+  streetLayer=L.layerGroup(); streetLabels=L.layerGroup();
+  var stStyle={color:'#334155',weight:2,fillColor:'#e2e8f0',fillOpacity:0.45,renderer:canvas};
+  var chStyle={color:'#6d28d9',weight:2,fillColor:'#a78bfa',fillOpacity:0.35,renderer:canvas};
+  function rect(b,style,txt){ var r=L.rectangle([[b[0],b[1]],[b[2],b[3]]],style); if(txt) r.bindPopup(txt); return r; }
+  var n, s2, m2;
+  for(n in ABADI.streets){ s2=ABADI.streets[n]; m2=Math.round(s2[4]*1.6764*10)/10; var ft2=Math.round(s2[4]*5.5*10)/10; var est2=s2[5]===1; var sub2=n==='BELOW-STRIP'?'South of the bottom strip (below plots 29\u201342)':n==='WEST-A'?'West of cluster A':n==='WEST-M'?'West of cluster M':'Between clusters '+n.split('-')[0]+' and '+n.split('-')[1];
+    streetLayer.addLayer(rect([s2[0],s2[1],s2[2],s2[3]],stStyle,'<b>Street '+n.replace('-',' \u2013 ')+'</b><br>'+s2[4]+' karam'+(est2?' (andaza)':'')+' \u00b7 '+m2+' m \u00b7 '+ft2+' ft<br><small>'+sub2+' \u00b7 Abadi, Chak 130/1-L</small>'));
+    streetLabels.addLayer(L.marker([(s2[0]+s2[2])/2,(s2[1]+s2[3])/2],{icon:L.divIcon({className:'street-lbl',html:(est2?'\u2248':'')+s2[4]+' karam',iconSize:[56,16],iconAnchor:[28,8]}),interactive:false})); }
+  for(n in ABADI.chowks){ var c2=ABADI.chowks[n]; var mv=Math.round(c2[4]*1.6764*10)/10, mh=Math.round(c2[5]*1.6764*10)/10; var fv=Math.round(c2[4]*5.5*10)/10, fh=Math.round(c2[5]*5.5*10)/10; var hw=c2[6], he=c2[7]; var ktxt, ftxt, klbl;
+    if(hw!==undefined && he!==undefined && hw!==he){ var mhw=Math.round(hw*1.6764*10)/10, mhe=Math.round(he*1.6764*10)/10; var fhw=Math.round(hw*5.5*10)/10, fhe=Math.round(he*5.5*10)/10; ktxt=c2[4]+' karam (N\u2013S) \u00d7 '+hw+' karam (W) / '+he+' karam (E)'; ftxt=mv+' m \u00b7 '+mhw+'/'+mhe+' m \u00b7 '+fv+' ft \u00b7 '+fhw+'/'+fhe+' ft'; klbl=c2[4]+'\u00d7'+hw+'/'+he; }
+    else { ktxt=c2[4]+' \u00d7 '+c2[5]+' karam'; ftxt=mv+' \u00d7 '+mh+' m \u00b7 '+fv+' \u00d7 '+fh+' ft'; klbl=c2[4]+'\u00d7'+c2[5]; }
+    streetLayer.addLayer(rect([c2[0],c2[1],c2[2],c2[3]],chStyle,'<b>Chowk '+n+'</b><br>'+ktxt+'<br>'+ftxt+'<br><small>Abadi, Chak 130/1-L</small>'));
+    streetLabels.addLayer(L.marker([(c2[0]+c2[2])/2,(c2[1]+c2[3])/2],{icon:L.divIcon({className:'chowk-lbl',html:klbl,iconSize:[40,16],iconAnchor:[20,8]}),interactive:false})); }
+}
+function streetSyncLabels(){
+  if(!streetLayer || !map) return;
+  var show=streetsOn && map.getZoom()>=16;
+  if(show && !map.hasLayer(streetLabels)) map.addLayer(streetLabels);
+  if(!show && map.hasLayer(streetLabels)) map.removeLayer(streetLabels);
+}
+window.toggleStreets=function(){
+  if(curVillage!=='130'){ if(window.showToast) showToast('Streets sirf Chak 130/1-L ke liye hain'); var t=document.getElementById('streetToggle'); if(t) t.checked=false; return; }
+  streetsOn=!streetsOn;
+  var tg=document.getElementById('streetToggle'); if(tg) tg.checked=streetsOn;
+  if(streetsOn){
+    if(window.v6SetTheme && window.theme!=='sat'){ try{ window.v6SetTheme('sat'); }catch(e){} }
+    streetBuild();
+    if(map){ map.addLayer(streetLayer); if(!streetZoomBound){ streetZoomBound=true; map.on('zoomend',streetSyncLabels); } streetSyncLabels(); map.fitBounds([[28.47842,70.67628],[28.48162,70.68267]],{padding:[20,20]}); }
+  } else {
+    if(map){ if(map.hasLayer(streetLayer)) map.removeLayer(streetLayer); if(map.hasLayer(streetLabels)) map.removeLayer(streetLabels); }
+  }
+};
+function streetHide(){
+  streetsOn=false;
+  var t=document.getElementById('streetToggle'); if(t) t.checked=false;
+  if(map){ if(streetLayer && map.hasLayer(streetLayer)) map.removeLayer(streetLayer); if(streetLabels && map.hasLayer(streetLabels)) map.removeLayer(streetLabels); }
 }
 window.mapVillageHide=function(){ var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; };
 window.mapVillageRender=function(q){
@@ -3082,8 +3177,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(window._markLL) showMarkCoord(window._markLL.lat,window._markLL.lng);
     else if(window.showToast) showToast('Pehle Mark dabayein — pin ki coordinates yahan dikhein gi');
   };
-  /* TAP-TOOLS-START — Tap pin + Coordinates toggle + Compass toggle (24 Nov 2026).
-     Three separate toggles in the Layers tab ("Tap Tools"); each works on its own.
+  /* TAP-TOOLS-START — Tap pin + Coordinates toggle + Compass toggle (24 Nov 2026) + Kanal/Marla (25 Nov).
+     Four separate toggles in the Layers tab ("Tap Tools"); each works on its own.
+     Kanal/Marla lives in block 2 (window.setKanalMarla) because the drill-down boxes are there.
      Tap pin: one marker only — tapping elsewhere MOVES it. Compass: static
      north-up rose (the map never rotates, so the arrow always points up). */
   var tapPinOn = false, tapPin = null, lastTap = null; /* default OFF — pin shows only when the user turns "Tap pin" on */
@@ -4480,7 +4576,7 @@ body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #fabLocate,body.uihide #z
 body{background:#071f18}
 #map{background:#071f18;background-image:linear-gradient(rgba(201,162,39,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.05) 1px,transparent 1px)}
 .glass{background:rgba(8,34,25,.93);border-color:rgba(201,162,39,.28)}
-.dash-head.banner{background:linear-gradient(135deg,#0E3B2C 0%,#0A2E23 55%,#071f18 100%);border-bottom:2px solid #C9A227}
+.dash-head.banner{background:linear-gradient(135deg,#0F4028 0%,#0A2E23 55%,#061A13 100%);border-bottom:2px solid #C9A227;box-shadow:0 2px 14px rgba(0,0,0,.35)}
 .dash-head.banner .brand b{color:#E3C565;font-size:19px;letter-spacing:.3px}
 .dash-head.banner .brand small{color:#A9C6B4}
 .offstat{background:rgba(4,24,17,.6);color:#A9C6B4;border-bottom-color:rgba(201,162,39,.18)}
@@ -4511,11 +4607,14 @@ body{background:#071f18}
 .floatbtn{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5);color:#E3C565}
 /* Current-village chip (v7.18): the map screen itself must say which village
    it is showing — the sidebar is closed most of the time. Tap = change village. */
-#villageChip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:1100;max-width:56vw;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#villageChip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:1100;max-width:56vw;background:linear-gradient(135deg,rgba(12,52,36,.95),rgba(6,26,19,.95));border:1px solid rgba(227,197,101,.65);color:#F0D47A;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 1px rgba(227,197,101,.12)}
 /* Abadi plot numbers (v7.19): shown only at zoom 16+ */
-.abadi-lbl{background:rgba(8,34,25,.85);border:1px solid rgba(245,158,11,.7);color:#fcd34d;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px}
+.abadi-lbl{background:rgba(8,34,25,.92);border:1px solid rgba(245,158,11,.75);color:#fcd34d;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.55)}
 .abadi-lbl-strip{border-color:rgba(56,189,248,.7);color:#7dd3fc}
-#zoomCtl{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5)}
+/* Street View labels (v7.24): street widths + chowk sizes, shown only at zoom 16+ */
+.street-lbl{background:rgba(255,255,255,.95);border:1px solid #334155;color:#0f172a;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.chowk-lbl{background:linear-gradient(135deg,rgba(139,92,246,.95),rgba(109,40,217,.95));border:1px solid #8b5cf6;color:#fff;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+#zoomCtl{background:linear-gradient(135deg,rgba(12,52,36,.95),rgba(6,26,19,.95));border-color:rgba(227,197,101,.65)}
 #zoomCtl button{color:#E3C565}
 #zoomCtl button+button{border-top-color:rgba(201,162,39,.3)}
 #showUi{background:rgba(8,34,25,.94);border-color:#C9A227;color:#E3C565}
