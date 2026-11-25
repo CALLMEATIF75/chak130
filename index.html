@@ -1205,6 +1205,14 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       </div>
     </details>
     <details class="sect">
+      <summary>🏠 Abadi (Settlement)</summary>
+      <div class="p-card" style="padding:2px 12px">
+      <div class="lrow"><div class="ln"><b>Abadi Plots</b><small>138 plots from the hand-drawn sketch</small></div><label class="sw2"><input type="checkbox" id="abadiToggle" onchange="toggleAbadi()"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Find Plot</b><small>Plot number 1–96, or strip 1–42</small></div><div style="display:flex;gap:6px;align-items:center"><input id="abadiPlotNo" type="number" min="1" max="96" placeholder="No." style="width:64px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-weight:700"><button onclick="abadiGoTo()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(201,162,39,.5);background:#0E5C3A;color:#E3C565;font-weight:700;cursor:pointer">Go</button></div></div>
+      <p class="hint">Sketch-based — plots are approximate, anchored to the talab + school pins. Only for Chak 130/1-L.</p>
+      </div>
+    </details>
+    <details class="sect">
       <summary>Map Style</summary>
       <div class="btnrow" id="themeRow">
         <button id="thSat" class="on2" onclick="v6SetTheme('sat')">Satellite</button>
@@ -1465,7 +1473,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.18';
+var APP_VERSION='7.19';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1592,6 +1600,12 @@ var NAMES = Object.keys(MUR).sort(function(a,b){var x=a.split('/'),y=b.split('/'
    at 40 cells/village, so the PDF lattice alone cannot complete the map. Each entry: ['M/K', gc, gr] — a CELL,
    the map's murabba unit. Qilas are the standard 5x5 snake, 1-25 — the
    Naqsha tool's 1-16 killa numbers are NEVER used as qila numbers. */
+/* Abadi layer (v7.19): Chak 130/1-L settlement plots from the hand-drawn sketch.
+   Anchored to the talab (28.47915, 70.67736) + school (28.47853, 70.67746) pins and
+   fitted to the measured settlement extent (N 28.48162, S 28.47842, W 70.67628, E 70.68267).
+   Piecewise fit (talab-anchored, N/S/E/W scales differ — the sketch is schematic).
+   Plots are APPROXIMATE, not surveyed. Format: plots/strip [nLat,wLng,sLat,eLng,cluster?]. */
+var ABADI={"plots":{"81":[28.48112,70.67629,28.48089,70.67648,"A"],"80":[28.48112,70.67651,28.48064,70.6767,"A"],"82":[28.48087,70.67629,28.48064,70.67648,"A"],"79":[28.48112,70.67672,28.48089,70.67692,"B"],"78":[28.48112,70.67694,28.48089,70.67713,"B"],"77":[28.48112,70.67715,28.48089,70.67735,"B"],"76":[28.48112,70.67737,28.48089,70.67801,"C"],"75":[28.48112,70.67803,28.48089,70.67868,"C"],"74":[28.48112,70.6787,28.48089,70.67934,"C"],"73":[28.48112,70.67936,28.48064,70.68,"D"],"72":[28.48112,70.68003,28.48089,70.68067,"D"],"71":[28.48087,70.68003,28.48064,70.68067,"D"],"83":[28.48062,70.67629,28.48039,70.67648,"E"],"37":[28.48062,70.67651,28.48015,70.6767,"E"],"84":[28.48037,70.67629,28.48015,70.67648,"E"],"85":[28.48013,70.67629,28.4799,70.67648,"E"],"38":[28.48013,70.67651,28.47965,70.6767,"E"],"86":[28.47988,70.67629,28.47965,70.67648,"E"],"87":[28.47963,70.67629,28.47941,70.67648,"E"],"39":[28.47963,70.67651,28.47916,70.6767,"E"],"88":[28.47939,70.67629,28.47916,70.67648,"E"],"36":[28.48062,70.67672,28.48039,70.67692,"F"],"10":[28.48062,70.67694,28.48039,70.67713,"F"],"11":[28.48062,70.67715,28.48039,70.67735,"F"],"35":[28.48037,70.67672,28.48015,70.67692,"F"],"9":[28.48037,70.67694,28.48015,70.67713,"F"],"12":[28.48037,70.67715,28.48015,70.67735,"F"],"34":[28.48013,70.67672,28.4799,70.67692,"F"],"8":[28.48013,70.67694,28.4799,70.67713,"F"],"1":[28.48013,70.67715,28.4799,70.67735,"F"],"13":[28.48062,70.67737,28.48039,70.67801,"G"],"16":[28.48062,70.67803,28.48039,70.67868,"G"],"17":[28.48062,70.6787,28.48039,70.67934,"G"],"14":[28.48037,70.67737,28.48015,70.67801,"G"],"15":[28.48037,70.67803,28.48015,70.67868,"G"],"18":[28.48037,70.6787,28.48015,70.67934,"G"],"2":[28.48013,70.67737,28.4799,70.67801,"G"],"3":[28.48013,70.67803,28.4799,70.67868,"G"],"19":[28.48013,70.6787,28.4799,70.67934,"G"],"56":[28.48062,70.67936,28.48015,70.68,"H"],"70":[28.48062,70.68003,28.48039,70.68067,"H"],"69":[28.48037,70.68003,28.48015,70.68067,"H"],"55":[28.48013,70.67936,28.47965,70.68,"H"],"68":[28.48013,70.68003,28.4799,70.68067,"H"],"67":[28.47988,70.68003,28.47965,70.68067,"H"],"54":[28.47963,70.67936,28.47916,70.68,"H"],"66":[28.47963,70.68003,28.47941,70.68067,"H"],"65":[28.47939,70.68003,28.47916,70.68067,"H"],"89":[28.47914,70.67629,28.47909,70.67648,"I"],"40":[28.47914,70.67651,28.47903,70.6767,"I"],"90":[28.47907,70.67629,28.47903,70.67648,"I"],"91":[28.47901,70.67629,28.47896,70.67648,"I"],"41":[28.47901,70.67651,28.47889,70.6767,"I"],"92":[28.47894,70.67629,28.47889,70.67648,"I"],"93":[28.47887,70.67629,28.47883,70.67648,"I"],"42":[28.47887,70.67651,28.47876,70.6767,"I"],"94":[28.47881,70.67629,28.47876,70.67648,"I"],"33":[28.47914,70.67672,28.47909,70.67692,"J"],"7":[28.47914,70.67694,28.47909,70.67713,"J"],"6":[28.47914,70.67715,28.47909,70.67735,"J"],"32":[28.47907,70.67672,28.47903,70.67692,"J"],"29":[28.47907,70.67694,28.47903,70.67713,"J"],"28":[28.47907,70.67715,28.47903,70.67735,"J"],"31":[28.47901,70.67672,28.47896,70.67692,"J"],"30":[28.47901,70.67694,28.47896,70.67713,"J"],"27":[28.47901,70.67715,28.47896,70.67735,"J"],"5":[28.47914,70.67737,28.47909,70.67801,"K"],"4":[28.47914,70.67803,28.47909,70.67868,"K"],"20":[28.47914,70.6787,28.47909,70.67934,"K"],"25":[28.47907,70.67737,28.47903,70.67801,"K"],"24":[28.47907,70.67803,28.47903,70.67868,"K"],"21":[28.47907,70.6787,28.47903,70.67934,"K"],"26":[28.47901,70.67737,28.47896,70.67801,"K"],"23":[28.47901,70.67803,28.47896,70.67868,"K"],"22":[28.47901,70.6787,28.47896,70.67934,"K"],"53":[28.47914,70.67936,28.47909,70.68,"L"],"64":[28.47914,70.68003,28.47909,70.68067,"L"],"52":[28.47907,70.67936,28.47896,70.68,"L"],"63":[28.47907,70.68003,28.47903,70.68067,"L"],"62":[28.47901,70.68003,28.47896,70.68067,"L"],"51":[28.47894,70.67936,28.47876,70.68,"L"],"61":[28.47894,70.68003,28.47889,70.68067,"L"],"60":[28.47887,70.68003,28.47883,70.68067,"L"],"59":[28.47881,70.68003,28.47876,70.68067,"L"],"95":[28.47874,70.67629,28.47869,70.67648,"M"],"43":[28.47874,70.67651,28.47863,70.6767,"M"],"96":[28.47868,70.67629,28.47863,70.67648,"M"],"44":[28.47874,70.67672,28.4787,70.67692,"N"],"45":[28.47874,70.67694,28.4787,70.67713,"N"],"46":[28.47874,70.67715,28.4787,70.67735,"N"],"47":[28.47874,70.67737,28.4787,70.67801,"O"],"48":[28.47874,70.67803,28.4787,70.67868,"O"],"49":[28.47874,70.6787,28.4787,70.67934,"O"],"50":[28.47874,70.67936,28.47863,70.68,"P"],"58":[28.47874,70.68003,28.47869,70.68067,"P"],"57":[28.47868,70.68003,28.47863,70.68067,"P"]},"strip":{"1":[28.47861,70.67629,28.47856,70.67658],"2":[28.47861,70.6766,28.47856,70.6769],"3":[28.47861,70.67692,28.47856,70.67721],"4":[28.47861,70.67723,28.47856,70.67753],"5":[28.47861,70.67755,28.47856,70.67784],"6":[28.47861,70.67786,28.47856,70.67816],"7":[28.47861,70.67818,28.47856,70.67847],"8":[28.47861,70.67849,28.47856,70.67878],"9":[28.47861,70.6788,28.47856,70.6791],"10":[28.47861,70.67912,28.47856,70.67941],"11":[28.47861,70.67943,28.47856,70.67973],"12":[28.47861,70.67975,28.47856,70.68004],"13":[28.47861,70.68006,28.47856,70.68036],"14":[28.47861,70.68038,28.47856,70.68067],"28":[28.47854,70.67629,28.4785,70.67658],"27":[28.47854,70.6766,28.4785,70.6769],"26":[28.47854,70.67692,28.4785,70.67721],"25":[28.47854,70.67723,28.4785,70.67753],"24":[28.47854,70.67755,28.4785,70.67784],"23":[28.47854,70.67786,28.4785,70.67816],"22":[28.47854,70.67818,28.4785,70.67847],"21":[28.47854,70.67849,28.4785,70.67878],"20":[28.47854,70.6788,28.4785,70.6791],"19":[28.47854,70.67912,28.4785,70.67941],"18":[28.47854,70.67943,28.4785,70.67973],"17":[28.47854,70.67975,28.4785,70.68004],"16":[28.47854,70.68006,28.4785,70.68036],"15":[28.47854,70.68038,28.4785,70.68067],"29":[28.47848,70.67629,28.47843,70.67658],"30":[28.47848,70.6766,28.47843,70.6769],"31":[28.47848,70.67692,28.47843,70.67721],"32":[28.47848,70.67723,28.47843,70.67753],"33":[28.47848,70.67755,28.47843,70.67784],"34":[28.47848,70.67786,28.47843,70.67816],"35":[28.47848,70.67818,28.47843,70.67847],"36":[28.47848,70.67849,28.47843,70.67878],"37":[28.47848,70.6788,28.47843,70.6791],"38":[28.47848,70.67912,28.47843,70.67941],"39":[28.47848,70.67943,28.47843,70.67973],"40":[28.47848,70.67975,28.47843,70.68004],"41":[28.47848,70.68006,28.47843,70.68036],"42":[28.47848,70.68038,28.47843,70.68067]},"talab":[28.479,70.67718,28.4793,70.67754],"school":[28.47824,70.67713,28.47882,70.67779],"charagah":[28.48162,70.67628,28.48113,70.68267],"basti":[28.48162,70.68068,28.47842,70.68267]};
 var VILLAGES = {
   '94': {label:'Chak 94/1-L', cells:[["388/13",-9,4],["406/10",-6,-3],["406/11",-6,-2],["406/12",-6,-1],["406/14",-5,-3],["406/15",-5,-2],["406/16",-5,-1],["407/3",-8,2],["407/4",-8,3],["407/7",-7,2],["407/8",-7,3],["407/9",-6,0],["407/10",-6,1],["407/11",-6,2],["407/12",-6,3],["407/13",-5,0],["407/14",-5,1],["407/15",-5,2],["407/16",-5,3],["408/1",-8,4],["408/5",-7,4],["408/9",-6,4],["408/13",-5,4],["426/2",-4,-3],["426/3",-4,-2],["426/4",-4,-1],["426/6",-3,-3],["426/7",-3,-2],["426/8",-3,-1],["426/10",-2,-3],["426/11",-2,-2],["426/12",-2,-1],["426/13",-1,-4],["426/14",-1,-3],["426/15",-1,-2],["426/16",-1,-1],["427/1",-4,0],["427/2",-4,1],["427/3",-4,2],["427/4",-4,3],["427/5",-3,0],["427/6",-3,1],["427/9",-2,0],["427/10",-2,1],["427/13",-1,0],["427/14",-1,1],["428/1",-4,4]]},
   '95': {label:'Chak 95/1-L', cells:[["368/7",-15,6],["368/8",-15,7],["368/11",-14,6],["368/12",-14,7],["368/15",-13,6],["368/16",-13,7],["369/2",-16,9],["369/3",-16,10],["369/4",-16,11],["369/5",-15,8],["369/6",-15,9],["369/7",-15,10],["369/8",-15,11],["369/9",-14,8],["369/10",-14,9],["369/11",-14,10],["369/12",-14,11],["369/13",-13,8],["369/14",-13,9],["369/15",-13,10],["369/16",-13,11],["370/1",-16,12],["370/5",-15,12],["370/9",-14,12],["370/13",-13,12],["388/2",-12,5],["388/3",-12,6],["388/4",-12,7],["388/6",-11,5],["388/7",-11,6],["388/8",-11,7],["388/10",-10,5],["388/11",-10,6],["388/12",-10,7],["388/14",-9,5],["388/15",-9,6],["388/16",-9,7],["389/1",-12,8],["389/2",-12,9],["389/3",-12,10],["389/4",-12,11],["389/5",-11,8],["389/6",-11,9],["389/7",-11,10],["389/8",-11,11],["389/9",-10,8],["389/10",-10,9],["389/11",-10,10],["389/12",-10,11],["389/13",-9,8],["389/14",-9,9],["389/15",-9,10],["389/16",-9,11],["390/1",-12,12],["390/5",-11,12],["390/9",-10,12],["390/13",-9,12],["408/2",-8,5],["408/3",-8,6],["408/4",-8,7],["409/1",-8,8]]},
@@ -2127,6 +2141,7 @@ function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
   var l=villageLabelEl(); if(l) l.textContent=villageLabel(v);
+  if(v!=='130' && typeof abadiHide==='function') abadiHide(); /* Abadi is 130-only */
   if(window.renderVillageChip) renderVillageChip(); /* the map screen itself shows the village name */
   var vl=document.getElementById('villageList'); if(vl && !vl.hidden){ var f=document.getElementById('villageFilter'); villageListRender(f?f.value:''); }
   updateVillageUI();
@@ -2511,6 +2526,57 @@ window.mapVillageToggle=function(){
 window.renderVillageChip=function(){
   var c=document.getElementById('villageChip'); if(c) c.textContent=villageLabel(curVillage);
 };
+
+/* Abadi layer (v7.19): plots + landmarks from the sketch. Only for village 130. */
+var abadiLayer=null, abadiLabels=null, abadiOn=false, abadiZoomBound=false;
+function abadiBuild(){
+  if(abadiLayer) return;
+  abadiLayer=L.layerGroup(); abadiLabels=L.layerGroup();
+  var plotStyle={color:'#f59e0b',weight:1.5,fillColor:'#f59e0b',fillOpacity:0.18};
+  var stripStyle={color:'#38bdf8',weight:1.5,fillColor:'#38bdf8',fillOpacity:0.18};
+  function rect(b,style,txt){ var r=L.rectangle([[b[0],b[1]],[b[2],b[3]]],style); if(txt) r.bindPopup(txt); return r; }
+  var n;
+  for(n in ABADI.plots){ var p=ABADI.plots[n]; abadiLayer.addLayer(rect([p[0],p[1],p[2],p[3]],plotStyle,'<b>Plot '+n+'</b> · Cluster '+p[4]+'<br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
+  for(n in ABADI.strip){ var q=ABADI.strip[n]; abadiLayer.addLayer(rect([q[0],q[1],q[2],q[3]],stripStyle,'<b>Strip Plot '+n+'</b><br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
+  abadiLayer.addLayer(rect(ABADI.talab,{color:'#0ea5e9',weight:2,fillColor:'#0ea5e9',fillOpacity:0.35},'<b>Talab (Pond)</b><br><small>468/5, Qila 25 · ~35×33 m</small>'));
+  abadiLayer.addLayer(rect(ABADI.school,{color:'#22c55e',weight:2,fillColor:'#22c55e',fillOpacity:0.25},'<b>Girls Primary School 130/1-L</b><br><small>468/6, Qila 5 · 8 kanal</small>'));
+  abadiLayer.addLayer(rect(ABADI.charagah,{color:'#84cc16',weight:1.5,fillColor:'#84cc16',fillOpacity:0.12,dashArray:'6 4'},'<b>Charagah</b><br><small>Grazing land (north band)</small>'));
+  abadiLayer.addLayer(rect(ABADI.basti,{color:'#a78bfa',weight:1.5,fillColor:'#a78bfa',fillOpacity:0.10,dashArray:'6 4'},'<b>Basti Bahadur</b><br><small>Eastern settlement area</small>'));
+  for(n in ABADI.plots){ var p2=ABADI.plots[n]; abadiLabels.addLayer(L.marker([(p2[0]+p2[2])/2,(p2[1]+p2[3])/2],{icon:L.divIcon({className:'abadi-lbl',html:n,iconSize:[24,16],iconAnchor:[12,8]}),interactive:false})); }
+  for(n in ABADI.strip){ var q2=ABADI.strip[n]; abadiLabels.addLayer(L.marker([(q2[0]+q2[2])/2,(q2[1]+q2[3])/2],{icon:L.divIcon({className:'abadi-lbl abadi-lbl-strip',html:n,iconSize:[24,16],iconAnchor:[12,8]}),interactive:false})); }
+}
+function abadiSyncLabels(){
+  if(!abadiLayer || !map) return;
+  var show=abadiOn && map.getZoom()>=16;
+  if(show && !map.hasLayer(abadiLabels)) map.addLayer(abadiLabels);
+  if(!show && map.hasLayer(abadiLabels)) map.removeLayer(abadiLabels);
+}
+window.toggleAbadi=function(){
+  if(curVillage!=='130'){ if(window.showToast) showToast('Abadi sirf Chak 130/1-L ke liye hai'); var t=document.getElementById('abadiToggle'); if(t) t.checked=false; return; }
+  abadiOn=!abadiOn;
+  var tg=document.getElementById('abadiToggle'); if(tg) tg.checked=abadiOn;
+  if(abadiOn){
+    abadiBuild();
+    if(map){ map.addLayer(abadiLayer); if(!abadiZoomBound){ abadiZoomBound=true; map.on('zoomend',abadiSyncLabels); } abadiSyncLabels(); map.fitBounds([[28.47842,70.67628],[28.48162,70.68267]],{padding:[20,20]}); }
+  } else {
+    if(map){ if(map.hasLayer(abadiLayer)) map.removeLayer(abadiLayer); if(map.hasLayer(abadiLabels)) map.removeLayer(abadiLabels); }
+  }
+};
+window.abadiGoTo=function(){
+  var inp=document.getElementById('abadiPlotNo'); if(!inp) return;
+  var n=String(inp.value).trim(); if(!n) return;
+  var p=ABADI.plots[n] || ABADI.strip[n];
+  if(!p){ if(window.showToast) showToast('Plot '+n+' nahi mila — 1-96 ya strip 1-42 likhein'); return; }
+  if(curVillage!=='130') setVillage('130',false);
+  if(!abadiOn) window.toggleAbadi();
+  var c=[(p[0]+p[2])/2,(p[1]+p[3])/2];
+  if(map){ map.setView(c,18); L.popup().setLatLng(c).setContent('<b>Plot '+n+'</b>'+(p[4]?' · Cluster '+p[4]:' · Strip')+'<br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>').openOn(map); }
+};
+function abadiHide(){
+  abadiOn=false;
+  var t=document.getElementById('abadiToggle'); if(t) t.checked=false;
+  if(map){ if(abadiLayer && map.hasLayer(abadiLayer)) map.removeLayer(abadiLayer); if(abadiLabels && map.hasLayer(abadiLabels)) map.removeLayer(abadiLabels); }
+}
 window.mapVillageHide=function(){ var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; };
 window.mapVillageRender=function(q){
   var list=document.getElementById('mapVillageList'); if(!list) return;
@@ -4433,6 +4499,9 @@ body{background:#071f18}
 /* Current-village chip (v7.18): the map screen itself must say which village
    it is showing — the sidebar is closed most of the time. Tap = change village. */
 #villageChip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:1100;max-width:56vw;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+/* Abadi plot numbers (v7.19): shown only at zoom 16+ */
+.abadi-lbl{background:rgba(8,34,25,.85);border:1px solid rgba(245,158,11,.7);color:#fcd34d;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px}
+.abadi-lbl-strip{border-color:rgba(56,189,248,.7);color:#7dd3fc}
 #zoomCtl{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5)}
 #zoomCtl button{color:#E3C565}
 #zoomCtl button+button{border-top-color:rgba(201,162,39,.3)}
