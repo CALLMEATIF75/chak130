@@ -704,8 +704,8 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .zoom{display:flex;flex-direction:column;border-radius:15px;overflow:hidden;border:1px solid #334155;background:rgba(15,23,42,.92)}
 .zoom button{width:42px;height:38px;background:none;border:0;color:#e2e8f0;font-size:22px;font-weight:700}
 .zoom button+button{border-top:1px solid #334155}
-#find{position:absolute;z-index:1000;left:10px;right:68px;max-width:380px;bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:14px;padding:5px;display:flex;gap:6px}
-#find select{flex:1;min-width:0;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:6px 5px;font-size:12.5px;font-weight:600}
+#find{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);right:auto;width:min(92vw,300px);bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:12px;padding:3px;display:flex;gap:4px}
+#find select{flex:1;min-width:0;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:5px 4px;font-size:12px;font-weight:600}
 #find select:disabled{opacity:.5}
 #panel{position:absolute;z-index:1001;right:66px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:220px;border-radius:16px;padding:12px;display:none}
 #panel h4{margin:0 0 4px;font-size:13px;color:#fbbf24}
@@ -1384,9 +1384,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <button id="menuBtn" class="floatbtn" onclick="toggleDash()" aria-label="Menu — open panel">&#9776;</button>
 <button id="themeBtn" class="floatbtn" onclick="cycleTheme()" aria-label="Switch map style">🛰️</button>
+<button id="fabLocate" class="floatbtn" onclick="fabLocate()" aria-label="My location">📍</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
 <div id="mapFabs">
-  <button class="mapfab" onclick="fabLocate()"><span class="mi">📍</span><span>Location</span></button>
   <button class="mapfab" onclick="showLastMarkCoord()"><span class="mi">🎯</span><span>Coords</span></button>
   <button class="mapfab" id="fabPin" onclick="toggleMarkMode()"><span class="mi">📌</span><span>Pin</span></button>
   <button class="mapfab" id="fabUndo" onclick="undoLastMark()"><span class="mi">↩</span><span>Undo</span></button>
@@ -1465,7 +1465,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.15';
+var APP_VERSION='7.16';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2697,6 +2697,7 @@ window.clearAllPins=function(){
   if(!pins.length) return;
   if(!confirm('Delete all '+pins.length+' pins?')) return;
   pins=[]; savePins(); renderPins();
+  var st=window._pinUndoStack; if(st) window._pinUndoStack=st.filter(function(it){ return it.kind!=='mypin'; });
 };
 function setPinAddMode(on){
   pinAddMode=!!on;
@@ -2718,6 +2719,8 @@ window.togglePinAdd=function(){ setPinAddMode(!pinAddMode); };
 function onPinClick(e){
   var p=pinFromLatLng(e.latlng.lat, e.latlng.lng);
   pins.push(p); savePins(); renderPins();
+  var st=window._pinUndoStack||(window._pinUndoStack=[]);
+  st.push({kind:'mypin',seq:p.seq});
   setPinAddMode(false);
   if(window.showToast) showToast('Pin saved: '+p.name);
 }
@@ -4054,8 +4057,9 @@ window.dropGoto=function(lat,lng,silent,kind){
   var isDrop = kind==='drop';
   var pin='<i class="'+(isDrop?'pin-blue':'pin-red')+'"></i>';
   var lbl=isDrop ? lat.toFixed(5)+', '+lng.toFixed(5) : 'Lat: '+lat.toFixed(5)+', Lng: '+lng.toFixed(5);
-  L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="mk">'+pin+'<span class="mk-lbl '+(isDrop?'drop':'goto')+'">'+lbl+'</span></span>',iconSize:[180,46],iconAnchor:[90,20]})}).addTo(gotoLayer);
-  gotoPts.push({lat:lat,lng:lng,kind:isDrop?'drop':'goto'});
+  var mk=L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="mk">'+pin+'<span class="mk-lbl '+(isDrop?'drop':'goto')+'">'+lbl+'</span></span>',iconSize:[180,46],iconAnchor:[90,20]})}).addTo(gotoLayer);
+  var entry={lat:lat,lng:lng,kind:isDrop?'drop':'goto',marker:mk};
+  gotoPts.push(entry);
   if(!silent){
     following=false; if(window.setFollowBtn) setFollowBtn();
     map.flyTo([lat,lng],Math.max(map.getZoom(),17),{duration:.8});
@@ -4063,32 +4067,57 @@ window.dropGoto=function(lat,lng,silent,kind){
     /* Record the coords for the Coords button, but do NOT pop the chip up:
        the pin's own label already shows them (user, 25 Nov 14:13). */
     window._markLL={lat:lat,lng:lng};
+    /* Undo history (v7.16): the newest pin of EITHER kind (Mark or My Pin)
+       is what Undo removes, so both push here. Silent drops (restore,
+       rebuild) do not push. */
+    var st=window._pinUndoStack||(window._pinUndoStack=[]);
+    st.push({kind:'mark',ref:entry});
   }
 };
 /* clearGotoPins: remove all marked pins (in-memory only). Utility — used by
    the Tools tab's Remove Layers flow and by anything that needs a clean
    marked-pin slate. (Mark mode no longer calls it: v7.14 multi-pin keeps
-   every pin until Undo/Remove Layers.) */
-window.clearGotoPins=function(){ gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers(); };
-/* undoLastMark (user, 25 Nov 14:13): remove the LAST dropped pin — the
-   "back" for pin dropping. Rebuilds the layer from the kept pins (silent,
-   keeping each pin's kind) so nothing else moves. */
+   every pin until Undo/Remove Layers.) Also drops the mark entries from the
+   undo history, so Undo never chases a pin that is already gone. */
+window.clearGotoPins=function(){ gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers(); var st=window._pinUndoStack; if(st) window._pinUndoStack=st.filter(function(it){ return it.kind!=='mark'; }); };
+/* undoLastMark (user, 25 Nov 14:13 + 14:23): remove the LAST pin — whichever
+   kind was added most recently, Mark (blue/red) or My Pin (gold). A shared
+   history stack (window._pinUndoStack) records both kinds in time order;
+   stale entries (a pin already cleared) are skipped. Removing a mark pin
+   takes its own marker off the layer, so nothing else is rebuilt or moved. */
 window.undoLastMark=function(){
-  if(!gotoPts.length){ if(window.showToast) showToast('Koi pin nahi — pehle Pin se mark karein.'); return; }
-  var kept=gotoPts.slice(0,-1);
-  gotoPts=[];
-  if(gotoLayer) gotoLayer.clearLayers();
-  kept.forEach(function(p){ dropGoto(p.lat,p.lng,true,p.kind||'goto'); });
-  var c=document.getElementById('markCoord');
-  if(kept.length){
-    var l=kept[kept.length-1];
-    window._markLL={lat:l.lat,lng:l.lng};
-    if(c && c.style.display!=='none' && window.showMarkCoord) showMarkCoord(l.lat,l.lng);
-  } else {
-    window._markLL=null;
-    if(window.hideMarkCoord) hideMarkCoord();
+  var stack=window._pinUndoStack||(window._pinUndoStack=[]);
+  var removed=false;
+  while(stack.length && !removed){
+    var it=stack.pop();
+    if(it.kind==='mypin'){
+      var i=-1;
+      for(var k=0;k<pins.length;k++){ if(pins[k].seq===it.seq){ i=k; break; } }
+      if(i>=0){ pins.splice(i,1); savePins(); renderPins(); removed=true; }
+    } else {
+      var j=gotoPts.indexOf(it.ref);
+      if(j>=0){
+        var ent=gotoPts[j];
+        gotoPts.splice(j,1);
+        if(ent.marker && gotoLayer && gotoLayer.removeLayer) gotoLayer.removeLayer(ent.marker);
+        removed=true;
+      }
+    }
   }
-  if(window.showToast) showToast('Aakhri pin hata diya');
+  if(removed){
+    var c=document.getElementById('markCoord');
+    if(gotoPts.length){
+      var l=gotoPts[gotoPts.length-1];
+      window._markLL={lat:l.lat,lng:l.lng};
+      if(c && c.style.display!=='none' && window.showMarkCoord) showMarkCoord(l.lat,l.lng);
+    } else {
+      window._markLL=null;
+      if(window.hideMarkCoord) hideMarkCoord();
+    }
+    if(window.showToast) showToast('Aakhri pin hata diya');
+  } else {
+    if(window.showToast) showToast('Koi pin nahi — pehle Pin ya Add Pin se pin lagayein.');
+  }
 };
 window.v6GoToDD=function(){
   var lat=parseFloat($('gtLat').value), lng=parseFloat($('gtLng').value);
@@ -4103,7 +4132,9 @@ window.v6GoToDMS=function(){
 
 /* ---------- Save / Load / Remove layers ---------- */
 window.v6SaveLayers=function(){
-  var data={goto:gotoPts, pm:{pts:[],done:false}};
+  /* gotoPts entries carry a live Leaflet marker (for Undo) — save only the
+     plain lat/lng/kind, so JSON.stringify never sees the marker. */
+  var data={goto:gotoPts.map(function(p){ return {lat:p.lat,lng:p.lng,kind:p.kind||'goto'}; }), pm:{pts:[],done:false}};
   try{
     if(window.__v3 && __v3.pm){
       data.pm.pts=__v3.pm.pts().map(function(p){ return [p.lat,p.lng]; });
@@ -4131,6 +4162,7 @@ function loadLayers(){
 }
 window.v6RemoveLayers=function(){
   gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers();
+  var st=window._pinUndoStack; if(st) window._pinUndoStack=st.filter(function(it){ return it.kind!=='mark'; });
   try{ localStorage.removeItem('c130layers'); }catch(e){}
   if(window.pmClear) pmClear();
   if(window.showToast) showToast('Layers removed');
@@ -4265,6 +4297,9 @@ document.addEventListener('keydown', function(e){
 /* ===== v7.2 FINAL: no header, no rails — three small floating controls only;
    branded card-based panel; record-card + printout redesign ===== */
 .floatbtn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#e2e8f0;font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1100;box-shadow:0 4px 14px rgba(0,0,0,.4);padding:0}
+/* My Location floats on the RIGHT, Google Maps style — above the zoom
+   controls, NOT in the bottom bar (user, 25 Nov 14:26). */
+#fabLocate{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 340px);right:10px;font-size:20px}
 .floatbtn:active{transform:scale(.92)}
 #menuBtn{left:10px}
 #themeBtn{right:10px;font-size:17px}
@@ -4272,9 +4307,9 @@ document.addEventListener('keydown', function(e){
 #zoomCtl button{width:40px;height:38px;background:none;border:0;color:#e2e8f0;font-size:21px;font-weight:700;line-height:1;cursor:pointer;padding:0}
 #zoomCtl button+button{border-top:1px solid rgba(255,255,255,.18)}
 #zoomCtl button:active{background:rgba(255,255,255,.14)}
-#find{right:10px}
-body.cleanview #menuBtn,body.cleanview #themeBtn,body.cleanview #zoomCtl,body.cleanview #mapFabs,body.cleanview .mapbox{display:none!important}
-body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #zoomCtl,body.uihide #mapFabs,body.uihide .mapbox{display:none!important}
+#find{right:auto}
+body.cleanview #menuBtn,body.cleanview #themeBtn,body.cleanview #fabLocate,body.cleanview #zoomCtl,body.cleanview #mapFabs,body.cleanview .mapbox{display:none!important}
+body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #fabLocate,body.uihide #zoomCtl,body.uihide #mapFabs,body.uihide .mapbox{display:none!important}
 /* Bottom action bar (25 Nov 2026, v7.15): the 5 floating pills stacked on the
    left looked unprofessional — now ONE horizontal line at the very bottom,
    icon + tiny label per button, plus Add Pin. */
@@ -4434,7 +4469,7 @@ body{background:#071f18}
 </style>
 <style>
 /* ===== v7.2 comboboxes in the bottom strip ===== */
-#find{gap:6px}
+#find{gap:4px}
 .combo{position:relative;flex:1;min-width:0}
 .combo input{width:100%;background:#07271C;color:#fff;border:1px solid rgba(201,162,39,.3);border-radius:9px;padding:7px 8px;font-size:13px;font-weight:600}
 .combo input:disabled{opacity:.5}
