@@ -704,7 +704,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .zoom{display:flex;flex-direction:column;border-radius:15px;overflow:hidden;border:1px solid #334155;background:rgba(15,23,42,.92)}
 .zoom button{width:42px;height:38px;background:none;border:0;color:#e2e8f0;font-size:22px;font-weight:700}
 .zoom button+button{border-top:1px solid #334155}
-#find{position:absolute;z-index:1000;left:10px;right:68px;max-width:380px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);border-radius:14px;padding:5px;display:flex;gap:6px}
+#find{position:absolute;z-index:1000;left:10px;right:68px;max-width:380px;bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:14px;padding:5px;display:flex;gap:6px}
 #find select{flex:1;min-width:0;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:6px 5px;font-size:12.5px;font-weight:600}
 #find select:disabled{opacity:.5}
 #panel{position:absolute;z-index:1001;right:66px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:220px;border-radius:16px;padding:12px;display:none}
@@ -762,7 +762,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #loader.hide{opacity:0;pointer-events:none}
 #loader .spin{width:44px;height:44px;border-radius:50%;border:4px solid #1e293b;border-top-color:#fbbf24;animation:ldspin 1s linear infinite}
 @keyframes ldspin{to{transform:rotate(360deg)}}
-#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 230px);z-index:4000;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 310px);z-index:4000;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* Compass (North) — hidden until the "Compass (North)" toggle in Layers is on.
    Fixed below the Hide button (top-right) so it never covers it. The ui-hide /
@@ -1068,7 +1068,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <aside id="dash" class="glass" aria-label="Dashboard">
   <div class="dash-head banner">
-    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><div class="village-row"><span class="village-lbl">Village</span><div class="village-pick" id="villagePick"><input id="villageSearch" type="text" autocomplete="off" spellcheck="false" aria-label="Search village" placeholder="Search village…" oninput="villageListRender(this.value);document.getElementById('villageList').hidden=false" onfocus="villageListShow()" onkeydown="if(event.key==='Enter'){villagePickFirst()}else if(event.key==='Escape'){villageListHide();this.blur()}"><div id="villageList" class="village-list" hidden></div></div></div></div></div>
+    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><div class="village-row"><span class="village-lbl">Village</span><div class="village-pick" id="villagePick"><button id="villageSearch" type="button" class="village-btn" onclick="villageListToggle()" aria-label="Select village"><span id="villageSearchLabel">Chak 130/1-L</span></button><div id="villageList" class="village-list" hidden><input id="villageFilter" class="village-filter" type="text" autocomplete="off" spellcheck="false" placeholder="Search village…" oninput="villageListRender(this.value)" onkeydown="if(event.key==='Enter'){villagePickFirst()}else if(event.key==='Escape'){villageListHide();this.blur()}"><div id="villageListRows"></div></div></div></div></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
   <!-- HERO — Search always visible (24 Nov 2026 sidebar refresh; village selector moved into the header) -->
@@ -1365,9 +1365,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
   <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.8</span></div>
 </aside>
-<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
-<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
-<div id="markCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyMarkCoord()" title="Tap to copy"><span id="markCoordTxt"></span><button id="markCoordX" onclick="event.stopPropagation();hideMarkCoord()" aria-label="Hide coordinates">&#10005;</button></div>
+<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
+<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 216px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
+<div id="markCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 260px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyMarkCoord()" title="Tap to copy"><span id="markCoordTxt"></span><button id="markCoordX" onclick="event.stopPropagation();hideMarkCoord()" aria-label="Hide coordinates">&#10005;</button></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
 
@@ -1383,14 +1383,16 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 </div>
 
 <button id="menuBtn" class="floatbtn" onclick="toggleDash()" aria-label="Menu — open panel">&#9776;</button>
-<button id="themeBtn" class="floatbtn" onclick="cycleTheme()" aria-label="Switch map style">&#128736;</button>
+<button id="themeBtn" class="floatbtn" onclick="cycleTheme()" aria-label="Switch map style">🛰️</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
 <div id="mapFabs">
-  <button class="mapfab" onclick="fabLocate()">📍 <span>Location</span></button>
-  <button class="mapfab" onclick="showLastMarkCoord()">🎯 <span>Coords</span></button>
-  <button class="mapfab" id="fabPin" onclick="toggleMarkMode()">📌 <span>Pin</span></button>
-  <button class="mapfab" onclick="homeMeasure()">📏 <span>Measure</span></button>
-  <button class="mapfab" onclick="mapVillageToggle()">🗺️ <span>Villages</span></button>
+  <button class="mapfab" onclick="fabLocate()"><span class="mi">📍</span><span>Location</span></button>
+  <button class="mapfab" onclick="showLastMarkCoord()"><span class="mi">🎯</span><span>Coords</span></button>
+  <button class="mapfab" id="fabPin" onclick="toggleMarkMode()"><span class="mi">📌</span><span>Pin</span></button>
+  <button class="mapfab" id="fabUndo" onclick="undoLastMark()"><span class="mi">↩</span><span>Undo</span></button>
+  <button class="mapfab" onclick="homeMeasure()"><span class="mi">📏</span><span>Measure</span></button>
+  <button class="mapfab" onclick="mapVillageToggle()"><span class="mi">🗺️</span><span>Villages</span></button>
+  <button class="mapfab" id="fabAddPin" onclick="togglePinAdd()"><span class="mi">➕</span><span>Add Pin</span></button>
 </div>
 <div id="mapVillageBox" class="mapbox" style="display:none">
   <div class="mapbox-h"><b id="mapVillageTitle">All Villages</b><button onclick="mapVillageHide()" aria-label="Close">✕</button></div>
@@ -1463,7 +1465,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.14';
+var APP_VERSION='7.15';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2070,13 +2072,18 @@ function fillSelects(){ /* v7.2: combobox lists render on demand — nothing to 
 /* ===== Multi-village: village selector (searchable, 25 Nov 2026) — type to
    filter, tap to select; the old <select> is gone (scrolling a long list on a
    phone was the complaint). Enter picks the first match, Esc closes. ===== */
+/* Village picker (25 Nov 2026, v7.15): a BUTTON, not a text input — tapping
+   it opens the full 27-village list WITHOUT opening the phone keyboard
+   (the old input opened the keyboard on every tap; the dashboard's selector
+   is a plain dropdown too). Search lives in the filter box inside the
+   dropdown; the keyboard appears only when he taps that box deliberately. */
+function villageLabelEl(){ return document.getElementById('villageSearchLabel'); }
 function fillVillageSel(){
-  var inp=document.getElementById('villageSearch'); if(!inp) return;
-  inp.value=villageLabel(curVillage);
+  var l=villageLabelEl(); if(l) l.textContent=villageLabel(curVillage);
   villageListRender('');
 }
 function villageListRender(q){
-  var list=document.getElementById('villageList'); if(!list) return;
+  var list=document.getElementById('villageListRows'); if(!list) return;
   var nq=comboNorm(q||''), rows='';
   VILLAGE_ORDER.forEach(function(v){
     var lbl=villageLabel(v);
@@ -2085,29 +2092,28 @@ function villageListRender(q){
   });
   list.innerHTML=rows||'<div class="village-empty">No village found</div>';
 }
-/* Village picker (25 Nov 2026): opening it shows the FULL list of all 27
-   villages (clear view). Before this, the input was pre-filled with the
-   current village ("Chak 130/1-L"), so the filter showed only that one row
-   and the other villages never appeared until the text was deleted by hand.
-   Typing still filters; Escape/blur restores the current village's name. */
 function villageListShow(){
-  var inp=document.getElementById('villageSearch'); if(!inp) return;
-  inp.value='';
+  var f=document.getElementById('villageFilter'); if(f) f.value='';
   villageListRender('');
   document.getElementById('villageList').hidden=false;
 }
+function villageListToggle(){
+  var list=document.getElementById('villageList'); if(!list) return;
+  if(!list.hidden){ villageListHide(); return; }
+  villageListShow();
+}
 function villageListHide(){
   var list=document.getElementById('villageList'); if(list) list.hidden=true;
-  var inp=document.getElementById('villageSearch'); if(inp) inp.value=villageLabel(curVillage);
+  var l=villageLabelEl(); if(l) l.textContent=villageLabel(curVillage);
 }
 function villagePick(v){
   setVillage(v,true);
   villageListHide();
 }
 function villagePickFirst(){
-  var inp=document.getElementById('villageSearch');
-  if(!inp || !inp.value.trim()){ villageListHide(); return; }
-  var b=document.querySelector('#villageList .village-item');
+  var f=document.getElementById('villageFilter');
+  if(!f || !f.value.trim()){ villageListHide(); return; }
+  var b=document.querySelector('#villageListRows .village-item');
   if(b) villagePick(b.getAttribute('data-v'));
 }
 function updateVillageUI(){
@@ -2120,8 +2126,8 @@ function updateVillageUI(){
 function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
-  var inp=document.getElementById('villageSearch'); if(inp) inp.value=villageLabel(v);
-  var vl=document.getElementById('villageList'); if(vl && !vl.hidden) villageListRender(inp?inp.value:'');
+  var l=villageLabelEl(); if(l) l.textContent=villageLabel(v);
+  var vl=document.getElementById('villageList'); if(vl && !vl.hidden){ var f=document.getElementById('villageFilter'); villageListRender(f?f.value:''); }
   updateVillageUI();
   if(!map) return; /* init() not done yet — map parts below need the map */
   userHit=null; /* GPS nearest highlight belonged to the old village — only the new village may show */
@@ -2696,6 +2702,8 @@ function setPinAddMode(on){
   pinAddMode=!!on;
   var b=document.getElementById('pinAddBtn');
   if(b){ b.textContent = pinAddMode ? 'Tap the map to drop the pin (tap again to cancel)' : '📍 Add a Pin — tap the map'; b.className = pinAddMode ? 'big stop' : 'big'; }
+  var fb=document.getElementById('fabAddPin'); if(fb) fb.classList.toggle('on',pinAddMode);
+  if(pinAddMode && markMode) stopMarkMode();
   if(!map) return;
   if(pinAddMode){
     if(window.toggleMeasure && typeof mOn!=='undefined' && mOn) window.toggleMeasure();
@@ -2952,9 +2960,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     else if(window.showToast) showToast(txt);
   };
   /* Marked-pin coordinates (25 Nov 2026): wherever a pin is dropped (Mark,
-     Go-to, Coordinates), THAT point's lat/lng shows in a chip on the map —
-     tap the chip to copy. The Coordinates quick button re-shows the last
-     marked pin's coordinates instead of opening input boxes. */
+     Go-to, Coordinates), THAT point's lat/lng is recorded for the Coords
+     button — the pin's own label already shows the coords, so the chip does
+     NOT pop up by itself (user, 25 Nov 14:13). Tapping Coords re-shows the
+     last marked pin's coordinates in the chip; tapping the chip copies. */
   window._markLL = null;
   window.showMarkCoord = function(lat,lng){
     window._markLL={lat:lat,lng:lng};
@@ -4046,17 +4055,41 @@ window.dropGoto=function(lat,lng,silent,kind){
   var pin='<i class="'+(isDrop?'pin-blue':'pin-red')+'"></i>';
   var lbl=isDrop ? lat.toFixed(5)+', '+lng.toFixed(5) : 'Lat: '+lat.toFixed(5)+', Lng: '+lng.toFixed(5);
   L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="mk">'+pin+'<span class="mk-lbl '+(isDrop?'drop':'goto')+'">'+lbl+'</span></span>',iconSize:[180,46],iconAnchor:[90,20]})}).addTo(gotoLayer);
-  gotoPts.push({lat:lat,lng:lng});
+  gotoPts.push({lat:lat,lng:lng,kind:isDrop?'drop':'goto'});
   if(!silent){
     following=false; if(window.setFollowBtn) setFollowBtn();
     map.flyTo([lat,lng],Math.max(map.getZoom(),17),{duration:.8});
     if(window.showToast) showToast('Marker dropped: '+lat.toFixed(5)+', '+lng.toFixed(5));
-    if(window.showMarkCoord) showMarkCoord(lat,lng);
+    /* Record the coords for the Coords button, but do NOT pop the chip up:
+       the pin's own label already shows them (user, 25 Nov 14:13). */
+    window._markLL={lat:lat,lng:lng};
   }
 };
-/* clearGotoPins: remove all marked pins (in-memory only). Mark mode calls
-   this before each new drop so one marked pin replaces the previous one. */
+/* clearGotoPins: remove all marked pins (in-memory only). Utility — used by
+   the Tools tab's Remove Layers flow and by anything that needs a clean
+   marked-pin slate. (Mark mode no longer calls it: v7.14 multi-pin keeps
+   every pin until Undo/Remove Layers.) */
 window.clearGotoPins=function(){ gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers(); };
+/* undoLastMark (user, 25 Nov 14:13): remove the LAST dropped pin — the
+   "back" for pin dropping. Rebuilds the layer from the kept pins (silent,
+   keeping each pin's kind) so nothing else moves. */
+window.undoLastMark=function(){
+  if(!gotoPts.length){ if(window.showToast) showToast('Koi pin nahi — pehle Pin se mark karein.'); return; }
+  var kept=gotoPts.slice(0,-1);
+  gotoPts=[];
+  if(gotoLayer) gotoLayer.clearLayers();
+  kept.forEach(function(p){ dropGoto(p.lat,p.lng,true,p.kind||'goto'); });
+  var c=document.getElementById('markCoord');
+  if(kept.length){
+    var l=kept[kept.length-1];
+    window._markLL={lat:l.lat,lng:l.lng};
+    if(c && c.style.display!=='none' && window.showMarkCoord) showMarkCoord(l.lat,l.lng);
+  } else {
+    window._markLL=null;
+    if(window.hideMarkCoord) hideMarkCoord();
+  }
+  if(window.showToast) showToast('Aakhri pin hata diya');
+};
 window.v6GoToDD=function(){
   var lat=parseFloat($('gtLat').value), lng=parseFloat($('gtLng').value);
   if(isNaN(lat)||isNaN(lng)){ if(window.showToast) showToast('Enter a valid latitude and longitude'); return; }
@@ -4087,7 +4120,7 @@ function loadLayers(){
   if(!raw) return;
   try{
     var data=JSON.parse(raw);
-    (data.goto||[]).forEach(function(g){ dropGoto(g.lat,g.lng,true); });
+    (data.goto||[]).forEach(function(g){ dropGoto(g.lat,g.lng,true,g.kind||'goto'); });
     if(data.pm && data.pm.pts && data.pm.pts.length && window.__v3){
       var bar=$('pmBar'), on = bar && bar.style.display==='flex';
       if(!on) window.toggleMeasure();
@@ -4235,15 +4268,19 @@ document.addEventListener('keydown', function(e){
 .floatbtn:active{transform:scale(.92)}
 #menuBtn{left:10px}
 #themeBtn{right:10px;font-size:17px}
-#zoomCtl{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);z-index:1100;display:flex;flex-direction:column;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#zoomCtl{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 240px);z-index:1100;display:flex;flex-direction:column;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
 #zoomCtl button{width:40px;height:38px;background:none;border:0;color:#e2e8f0;font-size:21px;font-weight:700;line-height:1;cursor:pointer;padding:0}
 #zoomCtl button+button{border-top:1px solid rgba(255,255,255,.18)}
 #zoomCtl button:active{background:rgba(255,255,255,.14)}
 #find{right:10px}
 body.cleanview #menuBtn,body.cleanview #themeBtn,body.cleanview #zoomCtl,body.cleanview #mapFabs,body.cleanview .mapbox{display:none!important}
 body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #zoomCtl,body.uihide #mapFabs,body.uihide .mapbox{display:none!important}
-#mapFabs{position:fixed;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:1100;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.mapfab{display:flex;align-items:center;gap:6px;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:22px;padding:9px 12px;font-size:12.5px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer}
+/* Bottom action bar (25 Nov 2026, v7.15): the 5 floating pills stacked on the
+   left looked unprofessional — now ONE horizontal line at the very bottom,
+   icon + tiny label per button, plus Add Pin. */
+#mapFabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:1100;display:flex;gap:2px;background:rgba(8,34,25,.94);border:1px solid rgba(201,162,39,.5);border-radius:16px;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.4);max-width:96vw}
+.mapfab{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:#E3C565;border-radius:12px;padding:6px 2px;font-size:10.5px;font-weight:700;white-space:nowrap;cursor:pointer}
+.mapfab .mi{font-size:20px;line-height:1}
 .mapfab.on{background:#f59e0b;color:#111827;border-color:#f59e0b}
 .mapfab:active{transform:scale(.94)}
 .mapbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 130px);z-index:1200;width:min(92vw,420px);background:rgba(2,6,23,.94);border:1px solid rgba(201,162,39,.5);border-radius:14px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
@@ -4369,9 +4406,10 @@ body{background:#071f18}
 .dash-head #villageSel{flex:1;min-width:0;box-sizing:border-box;padding:5px 7px;font-size:12.5px;border-radius:8px}
 /* Searchable village picker (25 Nov 2026) — type to filter, tap to select */
 .village-pick{position:relative;flex:1;min-width:0}
-.dash-head #villageSearch{width:100%;box-sizing:border-box;padding:5px 26px 5px 7px;font-size:12.5px;font-weight:700;color:#fff;background:#07271C;border:1px solid rgba(201,162,39,.45);border-radius:8px}
+.dash-head #villageSearch{width:100%;box-sizing:border-box;padding:5px 26px 5px 7px;font-size:12.5px;font-weight:700;color:#fff;background:#07271C;border:1px solid rgba(201,162,39,.45);border-radius:8px;text-align:left;cursor:pointer}
 .village-pick::after{content:'⌄';position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#C9A227;font-size:14px;pointer-events:none}
 .village-list{position:absolute;top:calc(100% + 4px);left:0;right:0;max-height:260px;overflow-y:auto;background:#07271C;border:1px solid rgba(201,162,39,.55);border-radius:9px;z-index:80;box-shadow:0 10px 28px rgba(0,0,0,.5)}
+.village-filter{width:100%;box-sizing:border-box;padding:8px 10px;font-size:13px;font-weight:600;color:#fff;background:#0A2E23;border:0;border-bottom:1px solid rgba(201,162,39,.45);border-radius:9px 9px 0 0;outline:none}
 .village-item{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:9px 10px;background:none;border:0;border-bottom:1px solid rgba(201,162,39,.15);color:#fff;font-size:13px;text-align:left;cursor:pointer}
 .village-item:last-child{border-bottom:0}
 .village-item span{font-size:11px;color:#A9C6B4;white-space:nowrap}
