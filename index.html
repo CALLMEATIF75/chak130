@@ -1481,7 +1481,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.24';
+var APP_VERSION='7.25';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2410,10 +2410,37 @@ function downloadVillages(all){
 function cancelVillageDownload(){ dlCancel=true; }
 
 /* ===== GPS (works with no internet) ===== */
+var gpsWatchId=null;
 function startGPS(){
   if(!navigator.geolocation){ setStatus('bad','No GPS','GPS is not supported in this browser'); return }
   if(window.isSecureContext===false) setStatus('bad','GPS blocked','Open the file directly in Chrome (not in preview)');
-  navigator.geolocation.watchPosition(onFix,onErr,{enableHighAccuracy:true,timeout:30000,maximumAge:2000});
+  if(gpsWatchId!==null) return; /* already watching */
+  gpsWatchId=navigator.geolocation.watchPosition(onFix,onErr,{enableHighAccuracy:true,timeout:30000,maximumAge:2000});
+}
+function restartGPS(){
+  /* v7.25: a fresh watch. The old watch goes dormant when location was off at
+     load, so a restart is what makes the app recover after the user turns
+     location on — instead of needing an app restart. */
+  if(gpsWatchId!==null){ try{ navigator.geolocation.clearWatch(gpsWatchId); }catch(e){} gpsWatchId=null; }
+  startGPS();
+}
+/* v7.25: when the app comes back to the foreground and we still have no fix,
+   the user may have turned location on in the phone settings — restart the
+   watch so it picks the fix up without an app restart. */
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && !userLL) restartGPS(); });
+function requestLocation(){
+  /* v7.25: a FRESH one-shot request from a user tap. This is what makes the
+     browser show the location prompt / the phone's "turn location on" pop-up.
+     The old code only ever asked once at load, so tapping My Location with
+     location off just showed the same "Waiting" message forever. */
+  if(!navigator.geolocation){ if(window.showToast) showToast('GPS is not supported in this browser'); return; }
+  try{ navigator.geolocation.getCurrentPosition(onFix,onLocErr,{enableHighAccuracy:true,timeout:30000,maximumAge:0}); }catch(e){}
+  restartGPS();
+}
+function onLocErr(e){
+  if(e.code===1){ setStatus('bad','GPS Off','Allow location permission'); if(window.showToast) showToast('Location permission dein — browser ke address bar mein lock icon se Location Allow karein'); }
+  else if(e.code===2){ setStatus('bad','GPS Off','Turn GPS on / go to an open place'); if(window.showToast) showToast('Location on karein — phir My Location dabayein'); }
+  else setStatus('bad','GPS Off','Searching for GPS signal...');
 }
 function setStatus(cls,badge,msg){
   document.getElementById('dot').className='dot '+(cls==='ok'?'ok':cls==='bad'?'bad':'');
@@ -2510,7 +2537,7 @@ function detect(lat,lng,acc){
 /* ===== Home view — Quick Tools (front page) ===== */
 function homeLocate(){
   var hl=document.getElementById('homeLoc');
-  if(!userLL){ if(hl) hl.textContent='Waiting for GPS signal — turn location on and wait in an open place.'; return; }
+  if(!userLL){ requestLocation(); if(hl) hl.textContent='Waiting for GPS signal — turn location on and wait in an open place.'; return; }
   var h=locateAnywhere(userLL.lat,userLL.lng);
   if(h && h.village!==curVillage) setVillage(h.village,false);
   followMe();
@@ -2567,7 +2594,7 @@ function homeMeasure(){
 /* ===== Map floating tools (25 Nov 2026): the same Quick Tools, on the map
    screen itself — no sidebar needed. Villages list opens here too. */
 function fabLocate(){
-  if(!userLL){ if(window.showToast) showToast('Waiting for GPS signal — turn location on and wait in an open place.'); return; }
+  if(!userLL){ requestLocation(); return; }
   homeLocate();
   var h=locateAnywhere(userLL.lat,userLL.lng);
   var txt = h ? ('Murabba '+keyDisplay(h.name)+' · Qila '+h.q+(h.village!=='130' ? ' · '+villageLabel(h.village) : '')) : 'Outside all villages';
@@ -2915,7 +2942,7 @@ function onPinClick(e){
 /* ===== Buttons ===== */
 function setFollowBtn(){ var b=document.getElementById('bFollow'); if(b) b.className='btn'+(following?' on':''); }
 function followMe(){
-  if(!userLL){ alert('GPS location not received yet. Turn location on and wait in an open place.'); return }
+  if(!userLL){ requestLocation(); return }
   following=true; setFollowBtn(); map.flyTo(userLL,Math.max(map.getZoom(),17.5),{duration:.8});
 }
 function toggleQila(){
