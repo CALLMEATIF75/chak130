@@ -1084,11 +1084,11 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <h5>Quick Tools</h5>
     <div class="qtools">
       <button class="qtool" onclick="homeLocate()"><span class="qi">📍</span>My Location</button>
-      <button class="qtool" onclick="toggleHomeCoord()"><span class="qi">🎯</span>Coordinates</button>
+      <button class="qtool" onclick="showLastMarkCoord()"><span class="qi">🎯</span>Coordinates</button>
       <button class="qtool" id="homeMeasureBtn" onclick="homeMeasure()"><span class="qi">📏</span>Measure</button>
       <button class="qtool" onclick="homeMark()"><span class="qi">📌</span>Mark</button>
     </div>
-    <div class="searchrow" id="homeCoordRow" style="display:none">
+    <div class="searchrow" id="homeCoordRow">
       <input id="hgLat" type="text" inputmode="decimal" placeholder="Latitude">
       <input id="hgLng" type="text" inputmode="decimal" placeholder="Longitude">
       <button onclick="homeGoto()">Go</button>
@@ -1216,6 +1216,15 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <div class="bar"><i id="satBar"></i></div>
         <button class="reset go" id="satBtn" onclick="downloadSat()">⬇ Download HD Satellite (Offline)</button>
         <button class="reset" onclick="clearSat()">Delete Saved Satellite</button>
+        <h5 style="margin:14px 0 4px">Download villages for offline</h5>
+        <p class="hint">Tick villages, or download them all at once. Already-saved tiles are skipped, so you can stop and resume any time. Big downloads need Wi-Fi — all 27 villages are about <span id="vdlTotal">…</span>.</p>
+        <div class="vdlbar"><button class="reset" onclick="vdlSelectAll(true)">Select all</button><button class="reset" onclick="vdlSelectAll(false)">Clear</button></div>
+        <div id="vdlList" class="vdllist"></div>
+        <div class="bar"><i id="vdlBar"></i></div>
+        <p class="hint" id="vdlInfo">Select villages to download.</p>
+        <button class="reset go" id="vdlBtn" onclick="downloadVillages(false)">⬇ Download selected villages</button>
+        <button class="reset go" onclick="downloadVillages(true)">⬇ Download ALL villages</button>
+        <button class="reset" id="vdlCancelBtn" style="display:none" onclick="cancelVillageDownload()">Cancel download</button>
         <button class="reset go" id="installBtn" onclick="installApp()">&#128241; Install App (Offline)</button>
         <p class="hint" id="installHint">Installs ZameenMap on your home screen — then it opens directly as an app, no browser needed.</p>
       </details>
@@ -1347,6 +1356,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
+<div id="markCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyMarkCoord()" title="Tap to copy"><span id="markCoordTxt"></span><button id="markCoordX" onclick="event.stopPropagation();hideMarkCoord()" aria-label="Hide coordinates">&#10005;</button></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
 
@@ -1362,8 +1372,26 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 </div>
 
 <button id="menuBtn" class="floatbtn" onclick="toggleDash()" aria-label="Menu — open panel">&#9776;</button>
-<button id="hideBtn" class="floatbtn" onclick="toggleUiHide()" aria-label="Hide interface">&#128065;</button>
+<button id="themeBtn" class="floatbtn" onclick="cycleTheme()" aria-label="Switch map style">&#128736;</button>
 <div id="zoomCtl"><button onclick="map.zoomIn()" aria-label="Zoom in">+</button><button onclick="map.zoomOut()" aria-label="Zoom out">&minus;</button></div>
+<div id="mapFabs">
+  <button class="mapfab" onclick="fabLocate()">📍 <span>Location</span></button>
+  <button class="mapfab" onclick="mapCoordToggle()">🎯 <span>Coords</span></button>
+  <button class="mapfab" onclick="homeMark()">📌 <span>Pin</span></button>
+  <button class="mapfab" onclick="homeMeasure()">📏 <span>Measure</span></button>
+  <button class="mapfab" onclick="mapVillageToggle()">🗺️ <span>Villages</span></button>
+</div>
+<div id="mapCoordBox" class="mapbox" style="display:none">
+  <div class="mapbox-h"><b>Go to Coordinates</b><button onclick="mapCoordHide()" aria-label="Close">✕</button></div>
+  <div class="searchrow"><input id="mgLat" type="text" inputmode="decimal" placeholder="Latitude"><input id="mgLng" type="text" inputmode="decimal" placeholder="Longitude"></div>
+  <p class="hint" style="margin:6px 0">Paste "28.47, 70.68" into Latitude — it splits automatically.</p>
+  <button class="big" onclick="mapGoto()">Go</button>
+</div>
+<div id="mapVillageBox" class="mapbox" style="display:none">
+  <div class="mapbox-h"><b id="mapVillageTitle">All Villages</b><button onclick="mapVillageHide()" aria-label="Close">✕</button></div>
+  <input id="mapVillageSearch" type="text" autocomplete="off" placeholder="Search village…" oninput="mapVillageRender(this.value)">
+  <div id="mapVillageList" class="mapvlist"></div>
+</div>
 <div id="north" aria-label="North is up"><span class="cmp"><i class="n">N</i><i class="e">E</i><i class="s">S</i><i class="w">W</i><span class="a">&#9650;</span></span></div>
 
 <div id="pmBar" class="glass">
@@ -1430,7 +1458,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.11';
+var APP_VERSION='7.12';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1771,7 +1799,7 @@ function init(){
   fillSelects();
   fillVillageSel();
   openDB().then(function(){ if(satOn) satLayer.addTo(map); setSatBtn(); satStatus(); });
-  refresh(); startGPS(); renderHome(); pinLayer=L.layerGroup().addTo(map); loadPins();
+  refresh(); startGPS(); renderHome(); pinLayer=L.layerGroup().addTo(map); loadPins(); renderVdlList();
 }
 
 function buildGrid(){
@@ -2073,6 +2101,7 @@ function setVillage(v, fit){
   userHit=null; /* GPS nearest highlight belonged to the old village — only the new village may show */
   following=false; if(window.setFollowBtn) setFollowBtn(); /* user chose to look elsewhere — stop GPS follow from yanking the view back to their location */
   if(window.hideTapCoord) hideTapCoord(); /* the chip showed the old village's tap — hide it */
+  if(window.hideMarkCoord) hideMarkCoord(); /* the chip showed the old village's marked pin — hide it */
   clearTarget();
   buildGrid();
   var ext=gridExtent();
@@ -2148,13 +2177,22 @@ function updateNav(){
 
 /* ===== Satellite download for offline use ===== */
 function lonLatToTile(lng,lat,z){ var n=Math.pow(2,z), r=lat*Math.PI/180; return {x:Math.floor((lng+180)/360*n), y:Math.floor((1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*n)}; }
-function allTiles(){
-  var ext=gridExtent(), pl=200/M_PER_DEG_LAT, pg=200/M_PER_DEG_LNG, list=[];
+function villageExtent(v){
+  var n=-90,s=90,w=180,e=-180;
+  var keys = v==='130' ? NAMES : VILLAGES[v].cells.map(function(a){ return 'V'+v+':'+a[0]; });
+  keys.forEach(function(k){ var m=murByKey(k); if(!m) return; var b=mBounds(m); n=Math.max(n,b.n); s=Math.min(s,b.s); w=Math.min(w,b.w); e=Math.max(e,b.e); });
+  return {n:n,s:s,w:w,e:e};
+}
+function allTilesFor(v){
+  var ext=villageExtent(v), pl=200/M_PER_DEG_LAT, pg=200/M_PER_DEG_LNG, list=[];
   for(var z=SAT_MIN;z<=SAT_MAX;z++){
     var a=lonLatToTile(ext.w-pg,ext.n+pl,z), b=lonLatToTile(ext.e+pg,ext.s-pl,z);
     for(var x=a.x;x<=b.x;x++) for(var y=a.y;y<=b.y;y++) list.push([z,x,y]);
   }
   return list;
+}
+function allTiles(){
+  return allTilesFor(curVillage);
 }
 function satStatus(){
   /* Per-village count: dbCount() is the GLOBAL tile total (all villages), so
@@ -2197,6 +2235,71 @@ function downloadSat(){
   });
 }
 function clearSat(){ if(!confirm('Delete the saved satellite tiles?')) return; dbClear().then(function(){ document.getElementById('satBar').style.width='0'; document.getElementById('satBtn').textContent='⬇ Download HD Satellite (Offline)'; satStatus(); }); }
+
+/* ===== Multi-village offline download (25 Nov 2026): before this, only the
+   OPEN village could be downloaded. Now: tick any villages, or download all
+   27 at once. Saved tiles are skipped, so a cancelled run resumes for free. */
+var dlCancel=false;
+function renderVdlList(){
+  var list=document.getElementById('vdlList'); if(!list) return;
+  var html='', tot=0;
+  VILLAGE_ORDER.forEach(function(v){
+    var n=allTilesFor(v).length; tot+=n;
+    html+='<label class="vdlrow"><input type="checkbox" class="vdlchk" value="'+v+'" onchange="vdlSelInfo()"> <span>'+villageLabel(v)+'</span><span class="vdlmeta">'+n+' tiles · ~'+Math.round(n*0.012)+' MB</span></label>';
+  });
+  list.innerHTML=html;
+  var t=document.getElementById('vdlTotal'); if(t) t.textContent='~'+Math.round(tot*0.012)+' MB ('+tot.toLocaleString('en-US')+' tiles)';
+  vdlSelInfo();
+}
+function vdlSelInfo(){
+  var sel=[], n=0;
+  var boxes=document.querySelectorAll('#vdlList input.vdlchk:checked');
+  for(var i=0;i<boxes.length;i++){ sel.push(boxes[i].value); n+=allTilesFor(boxes[i].value).length; }
+  var info=document.getElementById('vdlInfo');
+  if(info) info.textContent = sel.length ? ('Selected: '+sel.length+' village'+(sel.length>1?'s':'')+' · '+n.toLocaleString('en-US')+' tiles · ~'+Math.round(n*0.012)+' MB') : 'Select villages to download.';
+  return sel;
+}
+function vdlSelectAll(on){
+  var boxes=document.querySelectorAll('#vdlList input.vdlchk');
+  for(var i=0;i<boxes.length;i++) boxes[i].checked=on;
+  vdlSelInfo();
+}
+function downloadVillages(all){
+  if(dlBusy) return Promise.resolve();
+  if(!idb){ alert('Offline storage is not available in this browser.'); return Promise.resolve(); }
+  if(navigator.onLine===false){ alert('Turn on the internet first, then download.'); return Promise.resolve(); }
+  if(all) vdlSelectAll(true);
+  var sel=vdlSelInfo();
+  if(!sel.length){ alert('Select at least one village first (or use Download ALL villages).'); return Promise.resolve(); }
+  dlBusy=true; dlCancel=false;
+  var jobs=[];
+  sel.forEach(function(v){ var ts=allTilesFor(v); ts.forEach(function(t){ jobs.push({v:v,z:t[0],x:t[1],y:t[2]}); }); });
+  var done=0, fail=0, i=0, curV=sel[0];
+  var btn=document.getElementById('vdlBtn'), bar=document.getElementById('vdlBar'), info=document.getElementById('vdlInfo'), cancelBtn=document.getElementById('vdlCancelBtn');
+  if(btn) btn.textContent='Downloading...';
+  if(cancelBtn) cancelBtn.style.display='block';
+  function upd(){ if(bar) bar.style.width=Math.round(done/jobs.length*100)+'%'; if(info) info.textContent=done+' / '+jobs.length+' tiles · '+villageLabel(curV)+(fail?' (fail: '+fail+')':''); }
+  function next(){
+    if(dlCancel || i>=jobs.length) return Promise.resolve();
+    var job=jobs[i++]; curV=job.v;
+    var k=job.z+'/'+job.x+'/'+job.y;
+    return dbHas(k).then(function(has){
+      if(has){ done++; upd(); return; }
+      return fetchTile(job.z,job.x,job.y).then(function(b){ return dbPut(k,b).then(function(){ done++; upd(); }); }, function(){ fail++; done++; upd(); });
+    }).then(next);
+  }
+  var workers=[]; for(var w=0;w<6;w++) workers.push(next());
+  return Promise.all(workers).then(function(){
+    dlBusy=false;
+    if(btn) btn.textContent='⬇ Download selected villages';
+    if(cancelBtn) cancelBtn.style.display='none';
+    if(info) info.textContent = dlCancel ? ('Cancelled — '+done+' of '+jobs.length+' tiles saved. Saved tiles are kept; run again to resume.') : ('✓ Done — '+done+' of '+jobs.length+' tiles saved'+(fail?' ('+fail+' failed — run again to retry them)':'')+'.');
+    if(bar && !dlCancel) bar.style.width='100%';
+    satStatus();
+    if(map.hasLayer(satLayer)){ map.removeLayer(satLayer); satLayer.addTo(map); }
+  });
+}
+function cancelVillageDownload(){ dlCancel=true; }
 
 /* ===== GPS (works with no internet) ===== */
 function startGPS(){
@@ -2305,12 +2408,6 @@ function homeLocate(){
   followMe();
   detect(userLL.lat,userLL.lng,lastAcc);
 }
-function toggleHomeCoord(){
-  var r=document.getElementById('homeCoordRow');
-  if(!r) return;
-  r.style.display = r.style.display==='none' ? 'flex' : 'none';
-  if(r.style.display!=='none'){ var a=document.getElementById('hgLat'); if(a) a.focus(); }
-}
 function parseHomeCoords(){
   var la=(document.getElementById('hgLat')||{}).value||'', ln=(document.getElementById('hgLng')||{}).value||'';
   /* Allow pasting "28.47, 70.68" into the latitude field. */
@@ -2342,6 +2439,72 @@ function homeMark(){
 function homeMeasure(){
   if(window.toggleMeasure) window.toggleMeasure();
 }
+/* ===== Map floating tools (25 Nov 2026): the same Quick Tools, on the map
+   screen itself — no sidebar needed. Villages list opens here too. */
+function fabLocate(){
+  if(!userLL){ if(window.showToast) showToast('Waiting for GPS signal — turn location on and wait in an open place.'); return; }
+  homeLocate();
+  var h=locateAnywhere(userLL.lat,userLL.lng);
+  var txt = h ? ('Murabba '+keyDisplay(h.name)+' · Qila '+h.q+(h.village!=='130' ? ' · '+villageLabel(h.village) : '')) : 'Outside all villages';
+  /* gpsAccNote is HTML (leading &nbsp; separator for innerHTML use) — strip it for the plain-text toast. */
+  var acc=gpsAccNote(lastAcc).replace(/&nbsp;/g,' ').trim().replace(/^·\s*/,'');
+  if(window.showToast) showToast(txt+(acc ? ' · '+acc : ''));
+}
+function mapBoxCloseAll(){ var a=document.getElementById('mapCoordBox'); if(a) a.style.display='none'; var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; }
+window.mapCoordToggle=function(){
+  var b=document.getElementById('mapCoordBox'); if(!b) return;
+  var open=b.style.display!=='none';
+  mapBoxCloseAll();
+  if(!open){ b.style.display='block'; var a=document.getElementById('mgLat'); if(a) a.focus(); }
+};
+window.mapCoordHide=function(){ var b=document.getElementById('mapCoordBox'); if(b) b.style.display='none'; };
+function parseMapCoords(){
+  var la=(document.getElementById('mgLat')||{}).value||'', ln=(document.getElementById('mgLng')||{}).value||'';
+  if(!ln && la.indexOf(',')>=0){ var p=la.split(','); la=p[0]; ln=p[1]||''; }
+  var lat=parseFloat(String(la).trim()), lng=parseFloat(String(ln).trim());
+  if(isNaN(lat)||isNaN(lng)||lat<-90||lat>90||lng<-180||lng>180) return null;
+  return {lat:lat,lng:lng};
+}
+window.mapGoto=function(){
+  var c=parseMapCoords();
+  if(!c){ if(window.showToast) showToast('Enter a valid latitude (-90..90) and longitude (-180..180)'); return; }
+  dropGoto(c.lat,c.lng,false);
+  var h=locateAnywhere(c.lat,c.lng);
+  if(h && h.village!==curVillage) setVillage(h.village,false);
+  detect(c.lat,c.lng);
+  var hl=document.getElementById('homeLoc');
+  if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
+  mapCoordHide();
+};
+window.mapVillageToggle=function(){
+  var b=document.getElementById('mapVillageBox'); if(!b) return;
+  var open=b.style.display!=='none';
+  mapBoxCloseAll();
+  if(!open){ mapVillageRender(''); b.style.display='block'; var a=document.getElementById('mapVillageSearch'); if(a){ a.value=''; a.focus(); } }
+};
+window.mapVillageHide=function(){ var b=document.getElementById('mapVillageBox'); if(b) b.style.display='none'; };
+window.mapVillageRender=function(q){
+  var list=document.getElementById('mapVillageList'); if(!list) return;
+  var t=document.getElementById('mapVillageTitle'); if(t) t.textContent='All Villages ('+VILLAGE_ORDER.length+')';
+  var nq=comboNorm(q||'');
+  var html='';
+  VILLAGE_ORDER.forEach(function(v){
+    var label=villageLabel(v);
+    if(nq && comboNorm(label).indexOf(nq)<0 && comboNorm(v).indexOf(nq)<0) return;
+    html+='<div class="vitem'+(v===curVillage?' sel':'')+'" onclick="setVillage(\''+v+'\',true);mapVillageHide()"><span>'+label+'</span><span>'+villageMurabbaCount(v)+' murabbas</span></div>';
+  });
+  list.innerHTML = html || '<p class="hint">No village found</p>';
+};
+/* Map style toggle (25 Nov 2026): the top-right eye (Hide interface) is gone
+   — this button cycles Satellite → Streets → Plain instead. */
+window.cycleTheme=function(){
+  var order=['sat','streets','plain'];
+  var cur='sat';
+  try{ if(window.__v6 && window.__v6.theme) cur=window.__v6.theme(); }catch(e){}
+  var nx=order[(order.indexOf(cur)+1)%order.length];
+  if(window.v6SetTheme) window.v6SetTheme(nx);
+  if(window.showToast) showToast('Map style: '+(nx==='sat'?'Satellite':nx==='streets'?'Streets':'Plain'));
+};
 function renderHome(){
   var sv=document.getElementById('homeStatVillages'); if(!sv) return;
   var av=document.getElementById('appVer'); if(av) av.textContent='v'+APP_VERSION;
@@ -2769,6 +2932,32 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     function done(){ if(window.showToast) showToast('Coordinates copied: ' + txt); }
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ if(window.showToast) showToast(txt); }); }
     else if(window.showToast) showToast(txt);
+  };
+  /* Marked-pin coordinates (25 Nov 2026): wherever a pin is dropped (Mark,
+     Go-to, Coordinates), THAT point's lat/lng shows in a chip on the map —
+     tap the chip to copy. The Coordinates quick button re-shows the last
+     marked pin's coordinates instead of opening input boxes. */
+  window._markLL = null;
+  window.showMarkCoord = function(lat,lng){
+    window._markLL={lat:lat,lng:lng};
+    var c=document.getElementById('markCoord'), s=document.getElementById('markCoordTxt');
+    if(!c || !s) return;
+    s.textContent='Lat '+lat.toFixed(5)+' · Lng '+lng.toFixed(5);
+    c.style.display='block';
+  };
+  window.hideMarkCoord = function(){
+    var c=document.getElementById('markCoord'); if(c) c.style.display='none';
+  };
+  window.copyMarkCoord = function(){
+    var p=window._markLL; if(!p) return;
+    var txt = p.lat.toFixed(5) + ', ' + p.lng.toFixed(5);
+    function done(){ if(window.showToast) showToast('Coordinates copied: ' + txt); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ if(window.showToast) showToast(txt); }); }
+    else if(window.showToast) showToast(txt);
+  };
+  window.showLastMarkCoord = function(){
+    if(window._markLL) showMarkCoord(window._markLL.lat,window._markLL.lng);
+    else if(window.showToast) showToast('Pehle Mark dabayein — pin ki coordinates yahan dikhein gi');
   };
   /* TAP-TOOLS-START — Tap pin + Coordinates toggle + Compass toggle (24 Nov 2026).
      Three separate toggles in the Layers tab ("Tap Tools"); each works on its own.
@@ -3790,6 +3979,7 @@ window.v6SetTheme=function(t){
   if(window.qAllBuilt){ qAllLayer.clearLayers(); qAllBuilt=false; }
   if(window.drawTarget) drawTarget(false);
   if(window.refresh) refresh();
+  var tb=document.getElementById('themeBtn'); if(tb) tb.textContent = t==='sat' ? '🛰️' : t==='streets' ? '🛣️' : '🗺️';
   applyThemeButtons();
 };
 
@@ -3825,7 +4015,10 @@ window.v6DmsToDeg=function(d,m,s){
   var sign = d<0 ? -1 : 1;
   return sign*(Math.abs(d)+Math.abs(m)/60+Math.abs(s)/3600);
 };
-function dropGoto(lat,lng,silent){
+/* dropGoto is GLOBAL on purpose (window.dropGoto): homeMark/homeGoto/mapGoto
+   in the main script call it bare. It used to be a plain function inside this
+   file's IIFE, so those calls threw "dropGoto is not defined" (25 Nov 2026). */
+window.dropGoto=function(lat,lng,silent){
   if(!gotoLayer) gotoLayer=L.layerGroup().addTo(map);
   L.marker([lat,lng],{icon:L.divIcon({className:'lbl',html:'<span class="lbl-goto">&#128205; '+lat.toFixed(5)+', '+lng.toFixed(5)+'</span>',iconSize:[170,18],iconAnchor:[85,20]})}).addTo(gotoLayer);
   gotoPts.push({lat:lat,lng:lng});
@@ -3833,8 +4026,9 @@ function dropGoto(lat,lng,silent){
     following=false; if(window.setFollowBtn) setFollowBtn();
     map.flyTo([lat,lng],Math.max(map.getZoom(),17),{duration:.8});
     if(window.showToast) showToast('Marker dropped: '+lat.toFixed(5)+', '+lng.toFixed(5));
+    if(window.showMarkCoord) showMarkCoord(lat,lng);
   }
-}
+};
 window.v6GoToDD=function(){
   var lat=parseFloat($('gtLat').value), lng=parseFloat($('gtLng').value);
   if(isNaN(lat)||isNaN(lng)){ if(window.showToast) showToast('Enter a valid latitude and longitude'); return; }
@@ -4012,14 +4206,34 @@ document.addEventListener('keydown', function(e){
 .floatbtn{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#e2e8f0;font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1100;box-shadow:0 4px 14px rgba(0,0,0,.4);padding:0}
 .floatbtn:active{transform:scale(.92)}
 #menuBtn{left:10px}
-#hideBtn{right:10px;font-size:17px}
+#themeBtn{right:10px;font-size:17px}
 #zoomCtl{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);z-index:1100;display:flex;flex-direction:column;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
 #zoomCtl button{width:40px;height:38px;background:none;border:0;color:#e2e8f0;font-size:21px;font-weight:700;line-height:1;cursor:pointer;padding:0}
 #zoomCtl button+button{border-top:1px solid rgba(255,255,255,.18)}
 #zoomCtl button:active{background:rgba(255,255,255,.14)}
 #find{right:10px}
-body.cleanview #menuBtn,body.cleanview #hideBtn,body.cleanview #zoomCtl{display:none!important}
-body.uihide #menuBtn,body.uihide #hideBtn,body.uihide #zoomCtl{display:none!important}
+body.cleanview #menuBtn,body.cleanview #themeBtn,body.cleanview #zoomCtl,body.cleanview #mapFabs,body.cleanview .mapbox{display:none!important}
+body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #zoomCtl,body.uihide #mapFabs,body.uihide .mapbox{display:none!important}
+#mapFabs{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 168px);z-index:1100;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.mapfab{display:flex;align-items:center;gap:6px;background:rgba(8,34,25,.88);border:1px solid rgba(201,162,39,.5);color:#E3C565;border-radius:22px;padding:9px 12px;font-size:12.5px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer}
+.mapfab:active{transform:scale(.94)}
+.mapbox{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 130px);z-index:1200;width:min(92vw,420px);background:rgba(2,6,23,.94);border:1px solid rgba(201,162,39,.5);border-radius:14px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.mapbox-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mapbox-h b{color:#fbbf24;font-size:14px}
+.mapbox-h button{background:none;border:0;color:#94a3b8;font-size:16px;cursor:pointer;padding:4px 8px}
+#mapVillageSearch{width:100%;box-sizing:border-box;padding:8px 10px;font-size:13px;color:#fff;background:#07271C;border:1px solid rgba(201,162,39,.45);border-radius:8px;margin-bottom:8px}
+.mapvlist{max-height:46vh;overflow-y:auto}
+.mapvlist .vitem{display:flex;justify-content:space-between;padding:9px 10px;border-bottom:1px solid #1e293b;cursor:pointer}
+.mapvlist .vitem span:first-child{font-size:13.5px;color:#e2e8f0}
+.mapvlist .vitem span:last-child{font-size:12px;color:#94a3b8}
+.mapvlist .vitem.sel span:first-child{color:#fbbf24;font-weight:800}
+.vdllist{max-height:220px;overflow-y:auto;border:1px solid #1e293b;border-radius:10px;padding:4px 8px;margin:8px 0}
+.vdlrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 2px;border-bottom:1px solid #1e293b;font-size:13px;color:#e2e8f0;cursor:pointer}
+.vdlrow:last-child{border-bottom:0}
+.vdlrow input{accent-color:#f59e0b;width:17px;height:17px}
+.vdlmeta{font-size:11.5px;color:#94a3b8;white-space:nowrap}
+.vdlbar{display:flex;gap:8px}
+.vdlbar .reset{flex:1}
 .leaflet-control-attribution{margin-right:56px!important;margin-bottom:60px!important}
 /* panel: banner + cards */
 #dash{overflow:hidden}
