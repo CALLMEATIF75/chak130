@@ -1473,7 +1473,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.22';
+var APP_VERSION='7.23';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2653,11 +2653,12 @@ function shajraSVG(){
   function karam(a,b){ var dLat=(a[0]-b[0])*110827, dLng=(a[1]-b[1])*97879; return Math.round(Math.sqrt(dLat*dLat+dLng*dLng)/KARAM_M); }
   var labFs=Math.max(30, Math.min(46, 140*sc));
   var out=[];
+  out.push('<?xml version="1.0" encoding="UTF-8"?>');
   out.push('<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">');
   out.push('<rect width="'+W+'" height="'+H+'" fill="#ffffff"/>');
   var date=new Date().toLocaleDateString('en-GB');
   out.push('<text x="'+pad+'" y="86" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="bold" fill="#111111">Aks Shajra — '+villageLabel(curVillage)+'</text>');
-  out.push('<text x="'+pad+'" y="140" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#444444">Tehsil Khanpur, District Rahim Yar Khan &nbsp;·&nbsp; '+date+'</text>');
+  out.push('<text x="'+pad+'" y="140" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#444444">Tehsil Khanpur, District Rahim Yar Khan &#160;·&#160; '+date+'</text>');
   out.push('<text x="'+(W-pad)+'" y="140" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#444444">Side lengths in karam · 1 karam = 5.5 ft</text>');
   cells.forEach(function(c){
     var pts=c.corners.map(function(p){ var q=px(p); return q[0].toFixed(1)+','+q[1].toFixed(1); }).join(' ');
