@@ -810,6 +810,24 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .home-view .card{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:12px;padding:12px;margin:0 0 10px}
 .home-view .hstat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
 .home-view .hstat:last-child{border-bottom:0}
+.home-view .qtools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+.home-view .qtool{min-height:64px;border:1px solid #334155;border-radius:12px;background:#1e293b;color:#e2e8f0;font-size:13px;font-weight:700}
+.home-view .qtool .qi{display:block;font-size:22px;line-height:1.2}
+.home-view .qtool.on{background:#14532d;border-color:#22c55e;color:#fff}
+.home-view .homeloc{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13px;color:#e2e8f0;line-height:1.6}
+.home-view .homeloc b{color:#fbbf24}
+.home-view .vitem{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.06);padding:9px 2px;font-size:13px;color:#e2e8f0;text-align:left}
+.home-view .vitem:last-child{border-bottom:0}
+.home-view .vitem b{color:#fbbf24;font-size:13px;font-weight:600}
+.home-view .vitem.sel span:first-child{color:#fbbf24;font-weight:800}
+#shajraPreview svg{width:100%;height:auto;display:block}
+.pinmark{background:transparent;border:0}
+.pin-lbl{display:inline-block;background:rgba(2,6,23,.88);color:#fbbf24;font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;margin-top:2px}
+.pinrow{display:flex;align-items:center;gap:8px;background:rgba(2,6,23,.55);border:1px solid #1e293b;border-radius:11px;padding:8px 10px;margin:0 0 8px}
+.pinrow .pn{flex:1;min-width:0}
+.pinrow .pn b{display:block;font-size:13px;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pinrow .pn small{font-size:11.5px;color:#94a3b8}
+.pinrow button{min-width:34px;min-height:34px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:13px;font-weight:700}
 .home-view .hstat b{color:#fbbf24;font-size:14px}
 .home-view .hstat span{color:#cbd5e1}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
@@ -1039,7 +1057,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <aside id="dash" class="glass" aria-label="Dashboard">
   <div class="dash-head banner">
-    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><div class="village-row"><span class="village-lbl">Village</span><select id="villageSel" aria-label="Village" onchange="setVillage(this.value,true)"></select></div></div></div>
+    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><div class="village-row"><span class="village-lbl">Village</span><div class="village-pick" id="villagePick"><input id="villageSearch" type="text" autocomplete="off" spellcheck="false" aria-label="Search village" placeholder="Search village…" oninput="villageListRender(this.value);document.getElementById('villageList').hidden=false" onfocus="villageListShow()" onkeydown="if(event.key==='Enter'){villagePickFirst()}else if(event.key==='Escape'){villageListHide();this.blur()}"><div id="villageList" class="village-list" hidden></div></div></div></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
   <!-- HERO — Search always visible (24 Nov 2026 sidebar refresh; village selector moved into the header) -->
@@ -1063,19 +1081,31 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
   <!-- Home view — koi panel khula na ho to khali jagah ki bajaye ye dikhe (footer neeche hi rehta hai) -->
   <div class="home-view" id="homeView">
-    <h5>Chak 130/1-L</h5>
-    <div class="card">
-      <div class="hstat"><span>Villages on map</span><b>13</b></div>
-      <div class="hstat"><span>Murabbas (130)</span><b>56</b></div>
-      <div class="hstat"><span>Qilas (130)</span><b>1,400</b></div>
-      <div class="hstat"><span>Land records</span><b>7</b></div>
+    <h5>Quick Tools</h5>
+    <div class="qtools">
+      <button class="qtool" onclick="homeLocate()"><span class="qi">📍</span>My Location</button>
+      <button class="qtool" onclick="toggleHomeCoord()"><span class="qi">🎯</span>Coordinates</button>
+      <button class="qtool" id="homeMeasureBtn" onclick="homeMeasure()"><span class="qi">📏</span>Measure</button>
+      <button class="qtool" onclick="homeMark()"><span class="qi">📌</span>Mark</button>
     </div>
+    <div class="searchrow" id="homeCoordRow" style="display:none">
+      <input id="hgLat" type="text" inputmode="decimal" placeholder="Latitude">
+      <input id="hgLng" type="text" inputmode="decimal" placeholder="Longitude">
+      <button onclick="homeGoto()">Go</button>
+    </div>
+    <div class="homeloc" id="homeLoc">Tap <b>My Location</b> to see which murabba and qila you are standing in.</div>
+    <h5>All Villages</h5>
+    <div class="card">
+      <div class="hstat"><span>Villages on map</span><b id="homeStatVillages">…</b></div>
+      <div class="hstat"><span>Total murabbas</span><b id="homeStatMurabbas">…</b></div>
+      <div class="hstat"><span>Total qilas</span><b id="homeStatQilas">…</b></div>
+      <div class="hstat"><span>Land records</span><b id="homeStatRecords">…</b></div>
+    </div>
+    <div class="card" id="homeVillageList"></div>
     <h5>How to use</h5>
     <div class="card">
-      <p>Tap a murabba on the map to see its 25 qilas.</p>
-      <p>Tap a qila to see its 8 kanals inside it.</p>
-      <p>Tap a kanal to see its 20 marlas inside it.</p>
-      <p>Tap a tab above for Map Layers, Tools, Land Records or Overview.</p>
+      <p>Tap a village above to open it, or tap a murabba on the map to see its 25 qilas. Tap a qila for its 8 kanals, a kanal for its 20 marlas.</p>
+      <p>Use <b>My Location</b> in the field, <b>Coordinates</b> to jump to a lat/lng like Naqsha Zameen, <b>Measure</b> to measure land, and <b>Mark</b> to drop a pin at the map centre. Use <b>My Pins</b> in Tools to save any point on the map.</p>
     </div>
   </div>
 
@@ -1098,6 +1128,16 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <h5>&#127968; About</h5>
     <p>Offline map of <span id="ovVillage">Chak 130/1-L</span> — <b id="ovMur">...</b> mustatil, <b id="ovQila">...</b> qilas. Each qila = <b>1 acre (160 Marla)</b>, 40 &times; 36 karam.</p>
     <div class="card"><b style="color:#facc15">Offline:</b> <span style="font-size:12.5px;color:#cbd5e1">Works without internet once the satellite is saved (Layers tab).</span></div>
+    <h5>&#128506; Aks Shajra — Download</h5>
+    <div class="card">
+      <p style="margin:0 0 8px">Download the field map (Aks Shajra) of the current village — <b id="shajraVillage">Chak 130/1-L</b>. Built from the map itself, vector quality, never blurry. Works fully offline.</p>
+      <div class="btnrow">
+        <button onclick="downloadShajra('svg')">SVG (Vector)</button>
+        <button onclick="downloadShajra('png')">PNG (300 DPI)</button>
+      </div>
+      <button class="big" onclick="previewShajra()">Show Preview</button>
+      <div id="shajraPreview" style="margin-top:8px"></div>
+    </div>
     <div class="card ndcard">
       <div class="ndh">&#128100; Contact the Numberdar</div>
       <div class="ndname">Muhammad Atif</div>
@@ -1211,6 +1251,12 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <p class="hint">The latitude and longitude of every point (for example the four corners of a plot) — copy and use them anywhere.</p>
     </div>
 
+    <h5>My Pins</h5>
+    <p class="hint">Save points on the map — your fields, tubewell, trees, any place. Pins are saved on this phone and work offline.</p>
+    <button class="big" id="pinAddBtn" onclick="togglePinAdd()">📍 Add a Pin — tap the map</button>
+    <div id="pinList"></div>
+    <div class="btnrow"><button onclick="clearAllPins()">Clear All Pins</button></div>
+
     <h5>Land Calculator</h5>
     <p class="hint">Just type the measurement in feet — the rest is calculated automatically. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
     <div class="searchrow">
@@ -1297,7 +1343,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver">v7.8</span></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.8</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 118px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
@@ -1381,6 +1427,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
    447/11's NW corner is (X=2, Y=0). A murabba is 5x5 qilas of 40 x 36 karam
    = 1 acre each; qila numbering is the snake 1..5 L->R, 6..10 R->L, ... */
 var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
+/* App version — bump on EVERY deploy, together with CACHE in sw.js (the
+   changed sw.js is what makes the browser notice the update; the page then
+   reloads itself — the user never reinstalls). Footer shows this version. */
+var APP_VERSION='7.11';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -1514,6 +1564,20 @@ var VILLAGES = {
   '97': {label:'Chak 97/1-L', cells:[["409/4",-8,11],["409/7",-7,10],["409/8",-7,11],["409/11",-6,10],["409/12",-6,11],["409/14",-5,9],["409/15",-5,10],["409/16",-5,11],["410/1",-8,12],["410/2",-8,13],["410/3",-8,14],["410/4",-8,15],["410/5",-7,12],["410/6",-7,13],["410/7",-7,14],["410/8",-7,15],["410/9",-6,12],["410/10",-6,13],["410/11",-6,14],["410/12",-6,15],["410/13",-5,12],["410/14",-5,13],["410/15",-5,14],["410/16",-5,15],["411/1",-8,16],["411/2",-8,17],["411/3",-8,18],["411/5",-7,16],["411/6",-7,17],["411/9",-6,16],["411/10",-6,17],["411/13",-5,16],["429/2",-4,9],["429/3",-4,10],["429/4",-4,11],["429/6",-3,9],["429/7",-3,10],["429/8",-3,11],["429/10",-2,9],["429/11",-2,10],["429/12",-2,11],["429/14",-1,9],["429/15",-1,10],["429/16",-1,11],["430/1",-4,12],["430/2",-4,13],["430/3",-4,14],["430/4",-4,15],["430/5",-3,12],["430/6",-3,13],["430/7",-3,14],["430/8",-3,15],["430/9",-2,12],["430/10",-2,13],["430/11",-2,14],["431/1",-4,16]]},
   '98': {label:'Chak 98/1-L', cells:[["370/14",-13,13],["370/15",-13,14],["370/16",-13,15],["371/13",-13,16],["371/14",-13,17],["371/15",-13,18],["371/16",-13,19],["372/13",-13,20],["389/16",-9,11],["390/2",-12,13],["390/3",-12,14],["390/4",-12,15],["390/5",-11,12],["390/6",-11,13],["390/7",-11,14],["390/8",-11,15],["390/9",-10,12],["390/10",-10,13],["390/11",-10,14],["390/12",-10,15],["390/13",-9,12],["390/14",-9,13],["390/15",-9,14],["390/16",-9,15],["391/1",-12,16],["391/2",-12,17],["391/3",-12,18],["391/4",-12,19],["391/5",-11,16],["391/6",-11,17],["391/7",-11,18],["391/8",-11,19],["391/9",-10,16],["391/10",-10,17],["391/11",-10,18],["391/12",-10,19],["391/13",-9,16],["391/14",-9,17],["391/15",-9,18],["391/16",-9,19],["392/1",-12,20],["392/5",-11,20]]},
   '99': {label:'Chak 99/1-L', cells:[["309/16",-25,11],["310/6",-27,13],["310/9",-26,12],["310/10",-26,13],["310/13",-25,12],["310/14",-25,13],["329/3",-24,10],["329/4",-24,11],["329/6",-23,9],["329/7",-23,10],["329/8",-23,11],["329/10",-22,9],["329/11",-22,10],["329/12",-22,11],["329/13",-21,8],["329/14",-21,9],["329/15",-21,10],["329/16",-21,11],["330/1",-24,12],["330/2",-24,13],["330/5",-23,12],["330/6",-23,13],["330/9",-22,12],["330/10",-22,13],["330/13",-21,12],["330/14",-21,13],["350/2",-20,13],["350/3",-20,14],["350/4",-20,15],["350/6",-19,13],["350/7",-19,14],["350/8",-19,15],["350/10",-18,13],["350/11",-18,14],["350/12",-18,15],["350/14",-17,13],["350/15",-17,14],["350/16",-17,15],["351/1",-20,16],["351/2",-20,17],["351/3",-20,18],["351/5",-19,16],["351/6",-19,17],["351/9",-18,16],["351/10",-18,17],["351/13",-17,16],["370/2",-16,13],["370/3",-16,14],["370/4",-16,15],["370/6",-15,13],["370/7",-15,14],["370/8",-15,15],["370/10",-14,13],["370/11",-14,14],["370/14",-13,13],["370/15",-13,14],["371/1",-16,16],["390/2",-12,13],["390/6",-11,13]]},
+  '100': {label:'Chak 100/1-L', cells:[["310/7",-27,14],["310/8",-27,15],["310/11",-26,14],["310/12",-26,15],["310/15",-25,14],["310/16",-25,15],["311/5",-27,16],["311/6",-27,17],["311/7",-27,18],["311/8",-27,19],["311/9",-26,16],["311/10",-26,17],["311/11",-26,18],["311/12",-26,19],["311/13",-25,16],["311/14",-25,17],["311/15",-25,18],["311/16",-25,19],["312/5",-27,20],["312/6",-27,21],["312/9",-26,20],["312/10",-26,21],["312/13",-25,20],["330/3",-24,14],["330/4",-24,15],["330/7",-23,14],["330/8",-23,15],["330/11",-22,14],["330/12",-22,15],["330/15",-21,14],["330/16",-21,15],["331/1",-24,16],["331/2",-24,17],["331/3",-24,18],["331/4",-24,19],["331/5",-23,16],["331/6",-23,17],["331/7",-23,18],["331/8",-23,19],["331/9",-22,16],["331/10",-22,17],["331/11",-22,18],["331/12",-22,19],["331/13",-21,16],["331/14",-21,17],["331/15",-21,18],["332/1",-24,20]]},
+  '101': {label:'Chak 101/1-L', cells:[["273/12",-34,27],["273/16",-33,27],["274/9",-34,28],["274/13",-33,28],["291/12",-30,19],["291/14",-29,17],["291/15",-29,18],["291/16",-29,19],["292/9",-30,20],["292/10",-30,21],["292/11",-30,22],["292/12",-30,23],["292/13",-29,20],["292/14",-29,21],["292/15",-29,22],["292/16",-29,23],["293/4",-32,27],["293/5",-31,24],["293/6",-31,25],["293/7",-31,26],["293/8",-31,27],["293/9",-30,24],["293/10",-30,25],["293/11",-30,26],["293/12",-30,27],["293/13",-29,24],["293/14",-29,25],["293/15",-29,26],["293/16",-29,27],["294/1",-32,28],["294/5",-31,28],["294/9",-30,28],["294/13",-29,28],["310/3",-28,14],["310/4",-28,15],["311/1",-28,16],["311/2",-28,17],["311/3",-28,18],["311/4",-28,19],["312/1",-28,20],["312/2",-28,21]]},
+  '102': {label:'Chak 102/1-L', cells:[["312/3",-28,22],["312/4",-28,23],["312/7",-27,22],["312/8",-27,23],["312/9",-26,20],["312/10",-26,21],["312/11",-26,22],["312/12",-26,23],["312/13",-25,20],["312/14",-25,21],["312/15",-25,22],["312/16",-25,23],["313/1",-28,24],["313/2",-28,25],["313/3",-28,26],["313/5",-27,24],["313/6",-27,25],["313/7",-27,26],["313/9",-26,24],["313/10",-26,25],["313/11",-26,26],["313/13",-25,24],["313/14",-25,25],["313/15",-25,26],["331/4",-24,19],["331/7",-23,18],["331/8",-23,19],["331/11",-22,18],["331/12",-22,19],["331/15",-21,18],["331/16",-21,19],["332/1",-24,20],["332/2",-24,21],["332/3",-24,22],["332/4",-24,23],["332/5",-23,20],["332/6",-23,21],["332/7",-23,22],["332/8",-23,23],["332/9",-22,20],["332/10",-22,21],["332/11",-22,22],["332/12",-22,23],["332/13",-21,20],["332/14",-21,21],["332/15",-21,22],["333/1",-24,24],["333/2",-24,25],["333/3",-24,26],["333/5",-23,24],["333/6",-23,25],["333/7",-23,26]]},
+  '104': {label:'Chak 104/1-L', cells:[["332/16",-21,23],["333/9",-22,24],["333/10",-22,25],["333/11",-22,26],["333/13",-21,24],["333/14",-21,25],["333/15",-21,26],["352/1",-20,20],["352/2",-20,21],["352/3",-20,22],["352/4",-20,23],["352/5",-19,20],["352/6",-19,21],["352/7",-19,22],["352/8",-19,23],["352/9",-18,20],["352/10",-18,21],["352/11",-18,22],["352/12",-18,23],["352/13",-17,20],["352/14",-17,21],["352/15",-17,22],["352/16",-17,23],["353/1",-20,24],["353/2",-20,25],["353/3",-20,26],["353/5",-19,24],["353/6",-19,25],["353/9",-18,24],["353/10",-18,25],["353/13",-17,24],["372/1",-16,20],["372/2",-16,21],["372/3",-16,22],["372/4",-16,23],["372/5",-15,20],["372/6",-15,21],["372/7",-15,22],["372/8",-15,23],["372/9",-14,20],["372/10",-14,21],["372/11",-14,22],["372/13",-13,20],["372/14",-13,21],["392/1",-12,20]]},
+  '110': {label:'Chak 110/1-L', cells:[["217/2",-48,41],["217/3",-48,42],["217/4",-48,43],["217/8",-47,43],["217/12",-46,43],["217/16",-45,43],["218/1",-48,44],["218/5",-47,44],["218/6",-47,45],["218/9",-46,44],["218/10",-46,45],["218/11",-46,46],["218/13",-45,44],["218/14",-45,45],["218/15",-45,46],["218/16",-45,47],["237/4",-44,43],["237/8",-43,43],["238/1",-44,44],["238/2",-44,45],["238/3",-44,46],["238/4",-44,47],["238/5",-43,44],["238/6",-43,45],["238/7",-43,46],["238/8",-43,47],["238/9",-42,44],["238/10",-42,45],["238/11",-42,46],["238/13",-41,44],["238/14",-41,45],["239/1",-44,48]]},
+  '111': {label:'Chak 111/1-L', cells:[["176/4",-56,39],["176/8",-55,39],["176/12",-54,39],["176/16",-53,39],["177/1",-56,40],["177/4",-56,43],["177/5",-55,40],["177/6",-55,41],["177/7",-55,42],["177/8",-55,43],["177/9",-54,40],["177/10",-54,41],["177/11",-54,42],["177/12",-54,43],["177/13",-53,40],["177/14",-53,41],["177/15",-53,42],["177/16",-53,43],["196/3",-52,38],["196/4",-52,39],["196/7",-51,38],["196/8",-51,39],["196/11",-50,38],["196/12",-50,39],["196/15",-49,38],["196/16",-49,39],["197/1",-52,40],["197/2",-52,41],["197/3",-52,42],["197/4",-52,43],["197/5",-51,40],["197/6",-51,41],["197/7",-51,42],["197/8",-51,43],["197/9",-50,40],["197/10",-50,41],["197/11",-50,42],["197/12",-50,43],["197/13",-49,40],["197/14",-49,41],["197/15",-49,42],["197/16",-49,43]]},
+  '112': {label:'Chak 112/1-L', cells:[["178/6",-55,45],["178/7",-55,46],["178/8",-55,47],["178/9",-54,44],["178/10",-54,45],["178/11",-54,46],["178/12",-54,47],["178/13",-53,44],["178/14",-53,45],["178/15",-53,46],["178/16",-53,47],["179/1",-56,48],["179/5",-55,48],["179/6",-55,49],["179/9",-54,48],["179/10",-54,49],["179/13",-53,48],["198/1",-52,44],["198/2",-52,45],["198/3",-52,46],["198/5",-51,44],["198/6",-51,45],["198/7",-51,46],["198/9",-50,44],["198/10",-50,45],["198/11",-50,46],["198/13",-49,44],["198/14",-49,45],["198/15",-49,46],["218/1",-48,44],["218/2",-48,45],["218/3",-48,46],["218/5",-47,44],["218/6",-47,45],["218/7",-47,46],["218/8",-47,47],["218/9",-46,44],["218/10",-46,45],["218/11",-46,46],["218/12",-46,47],["218/16",-45,47],["219/13",-45,48],["219/14",-45,49]]},
+  '113': {label:'Chak 113/1-L', cells:[["198/4",-52,47],["198/8",-51,47],["198/12",-50,47],["198/16",-49,47],["199/1",-52,48],["199/2",-52,49],["199/5",-51,48],["199/6",-51,49],["199/7",-51,50],["199/9",-50,48],["199/10",-50,49],["199/11",-50,50],["199/13",-49,48],["199/14",-49,49],["199/15",-49,50],["199/16",-49,51],["218/4",-48,47],["218/8",-47,47],["219/1",-48,48],["219/2",-48,49],["219/3",-48,50],["219/4",-48,51],["219/5",-47,48],["219/6",-47,49],["219/7",-47,50],["219/8",-47,51],["219/9",-46,48],["219/10",-46,49],["219/11",-46,50],["219/12",-46,51],["219/13",-45,48],["219/14",-45,49],["219/15",-45,50]]},
+  '114': {label:'Chak 114/1-L', cells:[["201/13",-45,56],["220/16",-45,55],["221/1",-44,56],["221/5",-43,56],["221/9",-42,56],["221/13",-41,56],["238/4",-44,47],["238/7",-43,46],["238/8",-43,47],["238/10",-42,45],["238/11",-42,46],["238/12",-42,47],["239/1",-44,48],["239/2",-44,49],["239/3",-44,50],["239/4",-44,51],["239/5",-43,48],["239/6",-43,49],["239/7",-43,50],["239/8",-43,51],["239/9",-42,48],["239/10",-42,49],["239/11",-42,50],["239/12",-42,51],["239/13",-41,48],["239/14",-41,49],["239/15",-41,50],["239/16",-41,51],["240/1",-44,52],["240/2",-44,53],["240/3",-44,54],["240/4",-44,55],["240/5",-43,52],["240/6",-43,53],["240/7",-43,54],["240/8",-43,55],["240/9",-42,52],["240/10",-42,53],["240/11",-42,54],["240/12",-42,55],["240/13",-41,52],["240/14",-41,53],["240/15",-41,54],["240/16",-41,55],["259/3",-40,50],["259/4",-40,51],["259/7",-39,50],["259/8",-39,51],["260/1",-40,52],["260/2",-40,53],["260/3",-40,54],["260/4",-40,55],["260/5",-39,52],["260/6",-39,53]]},
+  '115': {label:'Chak 115/1-L', cells:[["238/13",-41,44],["238/14",-41,45],["238/15",-41,46],["238/16",-41,47],["239/13",-41,48],["257/4",-40,43],["257/7",-39,42],["257/8",-39,43],["257/10",-38,41],["257/11",-38,42],["257/12",-38,43],["257/13",-37,40],["257/14",-37,41],["257/15",-37,42],["257/16",-37,43],["258/1",-40,44],["258/2",-40,45],["258/3",-40,46],["258/4",-40,47],["258/5",-39,44],["258/6",-39,45],["258/7",-39,46],["258/8",-39,47],["258/9",-38,44],["258/10",-38,45],["258/11",-38,46],["258/12",-38,47],["258/13",-37,44],["258/14",-37,45],["258/15",-37,46],["258/16",-37,47],["259/1",-40,48],["259/2",-40,49],["259/5",-39,48],["259/6",-39,49],["259/9",-38,48],["259/10",-38,49],["259/13",-37,48],["259/14",-37,49],["276/4",-36,39],["277/1",-36,40],["277/2",-36,41],["277/3",-36,42],["277/4",-36,43],["278/1",-36,44],["278/2",-36,45],["278/3",-36,46],["278/4",-36,47],["279/1",-36,48]]},
+  '120': {label:'Chak 120/1-L', cells:[["354/16",-17,31],["355/11",-18,34],["355/12",-18,35],["355/13",-17,32],["355/14",-17,33],["355/15",-17,34],["355/16",-17,35],["356/9",-18,36],["356/10",-18,37],["356/11",-18,38],["356/12",-18,39],["356/13",-17,36],["356/14",-17,37],["356/15",-17,38],["356/16",-17,39],["374/4",-16,31],["374/8",-15,31],["374/12",-14,31],["374/16",-13,31],["375/1",-16,32],["375/2",-16,33],["375/3",-16,34],["375/4",-16,35],["375/5",-15,32],["375/6",-15,33],["375/7",-15,34],["375/8",-15,35],["375/9",-14,32],["375/10",-14,33],["375/11",-14,34],["375/12",-14,35],["375/13",-13,32],["375/14",-13,33],["375/15",-13,34],["375/16",-13,35],["376/1",-16,36],["376/2",-16,37],["376/3",-16,38],["376/4",-16,39],["376/5",-15,36],["376/6",-15,37],["376/7",-15,38],["376/8",-15,39],["376/9",-14,36],["376/10",-14,37],["376/11",-14,38],["376/12",-14,39],["376/13",-13,36],["376/14",-13,37],["376/15",-13,38],["376/16",-13,39],["394/3",-12,30],["394/4",-12,31],["395/1",-12,32],["395/2",-12,33],["395/3",-12,34],["395/4",-12,35],["396/1",-12,36],["396/2",-12,37]]},
+  '121': {label:'Chak 121/1-L', cells:[["352/16",-17,23],["353/6",-19,25],["353/7",-19,26],["353/8",-19,27],["353/9",-18,24],["353/10",-18,25],["353/11",-18,26],["353/12",-18,27],["353/13",-17,24],["353/14",-17,25],["353/15",-17,26],["353/16",-17,27],["354/5",-19,28],["354/6",-19,29],["354/7",-19,30],["354/8",-19,31],["354/9",-18,28],["354/10",-18,29],["354/11",-18,30],["354/12",-18,31],["354/13",-17,28],["354/14",-17,29],["354/15",-17,30],["354/16",-17,31],["355/5",-19,32],["355/6",-19,33],["355/9",-18,32],["355/10",-18,33],["372/4",-16,23],["372/7",-15,22],["372/8",-15,23],["373/1",-16,24],["373/2",-16,25],["373/3",-16,26],["373/4",-16,27],["373/5",-15,24],["373/6",-15,25],["373/7",-15,26],["373/8",-15,27],["374/1",-16,28],["374/2",-16,29],["374/3",-16,30],["374/4",-16,31],["374/5",-15,28],["374/6",-15,29],["374/7",-15,30],["374/8",-15,31]]},
+  '122': {label:'Chak 122/1-L', cells:[["372/10",-14,21],["372/11",-14,22],["372/12",-14,23],["372/13",-13,20],["372/14",-13,21],["372/15",-13,22],["372/16",-13,23],["373/9",-14,24],["373/10",-14,25],["373/11",-14,26],["373/12",-14,27],["373/13",-13,24],["373/14",-13,25],["373/15",-13,26],["373/16",-13,27],["374/9",-14,28],["374/10",-14,29],["374/11",-14,30],["374/13",-13,28],["374/14",-13,29],["374/15",-13,30],["391/8",-11,19],["392/1",-12,20],["392/2",-12,21],["392/3",-12,22],["392/4",-12,23],["392/5",-11,20],["392/6",-11,21],["392/7",-11,22],["392/8",-11,23],["393/1",-12,24],["393/2",-12,25],["393/3",-12,26],["393/4",-12,27],["393/5",-11,24],["393/6",-11,25],["393/7",-11,26],["393/8",-11,27],["394/1",-12,28],["394/2",-12,29],["394/5",-11,28]]},
+  '123': {label:'Chak 123/1-L', cells:[["394/6",-11,29],["394/7",-11,30],["394/8",-11,31],["394/10",-10,29],["394/11",-10,30],["394/12",-10,31],["394/14",-9,29],["394/15",-9,30],["394/16",-9,31],["395/5",-11,32],["395/6",-11,33],["395/7",-11,34],["395/8",-11,35],["395/9",-10,32],["395/10",-10,33],["395/11",-10,34],["395/12",-10,35],["395/13",-9,32],["395/14",-9,33],["395/15",-9,34],["395/16",-9,35],["396/5",-11,36],["396/6",-11,37],["396/9",-10,36],["396/13",-9,36],["413/3",-8,26],["413/4",-8,27],["413/7",-7,26],["413/8",-7,27],["414/1",-8,28],["414/2",-8,29],["414/3",-8,30],["414/4",-8,31],["414/5",-7,28],["414/6",-7,29],["414/7",-7,30],["414/8",-7,31],["415/1",-8,32],["415/5",-7,32]]},
   '124': {label:'Chak 124/1-L', cells:[["391/12",-10,19],["391/15",-9,18],["391/16",-9,19],["392/9",-10,20],["392/10",-10,21],["392/11",-10,22],["392/12",-10,23],["392/13",-9,20],["392/14",-9,21],["392/15",-9,22],["392/16",-9,23],["393/9",-10,24],["393/10",-10,25],["393/11",-10,26],["393/12",-10,27],["393/13",-9,24],["393/14",-9,25],["393/15",-9,26],["393/16",-9,27],["394/9",-10,28],["394/13",-9,28],["411/3",-8,18],["411/4",-8,19],["411/6",-7,17],["411/7",-7,18],["411/8",-7,19],["412/1",-8,20],["412/2",-8,21],["412/3",-8,22],["412/4",-8,23],["412/5",-7,20],["412/6",-7,21],["412/7",-7,22],["412/8",-7,23],["413/1",-8,24],["413/2",-8,25],["413/3",-8,26],["413/4",-8,27],["413/5",-7,24],["413/6",-7,25],["413/7",-7,26]]},
   '125': {label:'Chak 125/1-L', cells:[["411/9",-6,16],["411/10",-6,17],["411/11",-6,18],["411/12",-6,19],["411/13",-5,16],["411/14",-5,17],["411/15",-5,18],["411/16",-5,19],["412/9",-6,20],["412/10",-6,21],["412/11",-6,22],["412/12",-6,23],["412/13",-5,20],["412/14",-5,21],["412/15",-5,22],["412/16",-5,23],["413/9",-6,24],["413/10",-6,25],["413/13",-5,24],["413/14",-5,25],["430/4",-4,15],["430/8",-3,15],["431/1",-4,16],["431/2",-4,17],["431/3",-4,18],["431/4",-4,19],["431/5",-3,16],["431/6",-3,17],["431/7",-3,18],["431/8",-3,19],["432/1",-4,20],["432/2",-4,21],["432/3",-4,22],["432/4",-4,23],["432/5",-3,20],["432/6",-3,21],["432/7",-3,22],["432/8",-3,23],["433/1",-4,24],["433/2",-4,25],["433/5",-3,24],["433/6",-3,25]]},
   '126': {label:'Chak 126/1-L', cells:[["413/11",-6,26],["413/12",-6,27],["413/15",-5,26],["413/16",-5,27],["414/9",-6,28],["414/10",-6,29],["414/11",-6,30],["414/12",-6,31],["414/13",-5,28],["414/14",-5,29],["414/15",-5,30],["414/16",-5,31],["415/9",-6,32],["433/3",-4,26],["433/4",-4,27],["433/7",-3,26],["433/8",-3,27],["433/11",-2,26],["434/1",-4,28],["434/2",-4,29],["434/3",-4,30],["434/4",-4,31]]},
@@ -1522,7 +1586,7 @@ var VILLAGES = {
   '129': {label:'Chak 129/1-L', cells:[["448/4",0,7],["448/8",1,7],["448/12",2,7],["448/16",3,7],["449/1",0,8],["449/5",1,8],["449/9",2,8],["449/13",3,8],["468/4",4,7],["468/8",5,7],["468/12",6,7],["468/16",7,7],["469/1",4,8],["469/5",5,8],["469/9",6,8],["469/13",7,8],["488/4",8,7],["488/8",9,7],["488/12",10,7],["488/16",11,7],["489/1",8,8],["489/5",9,8],["489/6",9,9],["489/7",9,10],["489/8",9,11],["489/9",10,8],["489/10",10,9],["489/11",10,10],["489/12",10,11],["489/13",11,8],["489/14",11,9],["489/15",11,10],["489/16",11,11],["490/5",9,12],["490/9",10,12],["490/13",11,12],["490/14",11,13],["509/1",12,8],["509/2",12,9],["509/3",12,10]]},
   '130': {label:'Chak 130/1-L', cells:[]}
 };
-var VILLAGE_ORDER = ['94','95','96','97','98','99','124','125','126','127','128','129','130'];
+var VILLAGE_ORDER = ['94','95','96','97','98','99','100','101','102','104','110','111','112','113','114','115','120','121','122','123','124','125','126','127','128','129','130'];
 var VMUR = {}; /* key 'V<vill>:<M/K>' -> {village, num:'M/K', murabba, killa, gc, gr, key} */
 VILLAGE_ORDER.forEach(function(v){
   if(v==='130') return;
@@ -1543,20 +1607,32 @@ function villageMurabbaCount(v){ return v==='130' ? NAMES.length : VILLAGES[v].c
 /* Display label for a murabba key: 130 keeps its '447/11' key; villages show the number. */
 function mLabel(m){ return (m && m.village && m.village!=='130') ? String(m.num) : (m ? m.name : ''); }
 function keyDisplay(k){ var vm=VMUR[k]; return vm ? (vm.num+' \u00b7 '+vm.village) : k; }
+/* 110-115 cluster shift (pin-validated 25 Nov 2026): those six villages sit
+   ~28 m north / ~47 m east of the pure affine position (extrapolation error
+   ~18 km west of 130). Three dashboard Go To Location pins confirmed it:
+   218/1 NW true ≈ (28.37082, 70.49440), 239/1 NW true ≈ (28.36007, 70.50823),
+   residual ≤6 m — at the GPS/kink noise floor, so no further pin check.
+   Applied ONLY to these six villages, in both directions. */
+var CLUSTER_SHIFT = {lat:0.000255, lng:0.00048}; /* degrees */
+var CLUSTER_VILLAGES = ['110','111','112','113','114','115'];
+function villageShift(v){ return CLUSTER_VILLAGES.indexOf(v)>=0 ? CLUSTER_SHIFT : null; }
 /* Non-130 corners via the GEO affine directly (NO geoToLL/bilinLL/CORNER_LL —
    those clamp to the 130 grid [0,12]x[0,6] and the other villages lie outside).
    The user's Grid Adjust shift is applied so villages stay aligned with 130.
    Order matches geoRectLL: [NW, NE, SE, SW]. */
 function vLL(x,y){ var p=affineLL(x,y); return [p[0]+shift.lat/M_PER_DEG_LAT, p[1]+shift.lng/M_PER_DEG_LNG]; }
-function vMCorners(m){ return [vLL(m.gc, m.gr-2), vLL(m.gc+1, m.gr-2), vLL(m.gc+1, m.gr-1), vLL(m.gc, m.gr-1)]; }
+function vMCorners(m){ var c=[vLL(m.gc, m.gr-2), vLL(m.gc+1, m.gr-2), vLL(m.gc+1, m.gr-1), vLL(m.gc, m.gr-1)]; var s=villageShift(m.village); if(s){ for(var i=0;i<4;i++){ c[i]=[c[i][0]+s.lat, c[i][1]+s.lng]; } } return c; }
 function vQCorners(m,num){
   var rc=qRC(num), x0=m.gc+rc.col/5, y0=(m.gr-2)+rc.row/5;
-  return [vLL(x0, y0), vLL(x0+0.2, y0), vLL(x0+0.2, y0+0.2), vLL(x0, y0+0.2)];
+  var c=[vLL(x0, y0), vLL(x0+0.2, y0), vLL(x0+0.2, y0+0.2), vLL(x0, y0+0.2)];
+  var s=villageShift(m.village); if(s){ for(var i=0;i<4;i++){ c[i]=[c[i][0]+s.lat, c[i][1]+s.lng]; } }
+  return c;
 }
 /* Pure affine inverse (no measured-grid Newton refinement) — for villages,
    where llToGeo's clamped bilinLL extrapolation would drift up to ~0.2 cell. */
-function affineGeo(lat,lng){
-  var la = lat - shift.lat/M_PER_DEG_LAT, ln = lng - shift.lng/M_PER_DEG_LNG;
+function affineGeo(lat,lng,v){
+  var sh=villageShift(v);
+  var la = lat - shift.lat/M_PER_DEG_LAT - (sh?sh.lat:0), ln = lng - shift.lng/M_PER_DEG_LNG - (sh?sh.lng:0);
   var a = la - GEO.lat0, b = ln - GEO.lng0;
   return { x: 2 + (a*GEO.dLngS - b*GEO.dLatS)/GEO_DET,
            y: (GEO.dLatE*b - GEO.dLngE*a)/GEO_DET };
@@ -1666,7 +1742,7 @@ var SatLayer=L.GridLayer.extend({
 
 /* ===== Map ===== */
 var map, canvas, mLayer, qAllLayer, qSelLayer, labelLayer, hiLayer, satLayer, userMarker=null, userCircle=null, navLine=null;
-var userLL=null, userHit=null, following=true, qilaAll=false, satOn=true, target=null, firstFix=true, qAllBuilt=false;
+var userLL=null, userHit=null, following=true, qilaAll=false, satOn=true, target=null, firstFix=true, qAllBuilt=false, lastAcc=null;
 try{ if(localStorage.getItem('c130sat')==='0') satOn=false; }catch(e){}
 
 function gridExtent(){
@@ -1695,7 +1771,7 @@ function init(){
   fillSelects();
   fillVillageSel();
   openDB().then(function(){ if(satOn) satLayer.addTo(map); setSatBtn(); satStatus(); });
-  refresh(); startGPS();
+  refresh(); startGPS(); renderHome(); pinLayer=L.layerGroup().addTo(map); loadPins();
 }
 
 function buildGrid(){
@@ -1753,7 +1829,7 @@ function marlaFromGeo(m,q,k,g){
   return Math.floor(fy*4+1e-9)*5 + Math.floor(fx*5+1e-9) + 1;
 }
 function geoOfTap(lat,lng){
-  return (curVillage==='130') ? llToGeo(lat,lng) : affineGeo(lat,lng);
+  return (curVillage==='130') ? llToGeo(lat,lng) : affineGeo(lat,lng,curVillage);
 }
 function drawKanalBoxes(){
   kanalLayer.clearLayers();
@@ -1939,15 +2015,46 @@ function comboPickQ(n){
 }
 document.addEventListener('pointerdown', function(e){
   if(!e.target.closest || !e.target.closest('#find')){ comboClose('M'); comboClose('Q'); }
+  if(!e.target.closest || !e.target.closest('#villagePick')){ villageListHide(); }
 });
 
 /* ===== Search / target ===== */
 function fillSelects(){ /* v7.2: combobox lists render on demand — nothing to pre-fill */ }
 
-/* ===== Multi-village: village selector ===== */
+/* ===== Multi-village: village selector (searchable, 25 Nov 2026) — type to
+   filter, tap to select; the old <select> is gone (scrolling a long list on a
+   phone was the complaint). Enter picks the first match, Esc closes. ===== */
 function fillVillageSel(){
-  var sel=document.getElementById('villageSel'); if(!sel) return;
-  sel.innerHTML=VILLAGE_ORDER.map(function(v){ return '<option value="'+v+'"'+(v===curVillage?' selected':'')+'>'+villageLabel(v)+'</option>'; }).join('');
+  var inp=document.getElementById('villageSearch'); if(!inp) return;
+  inp.value=villageLabel(curVillage);
+  villageListRender('');
+}
+function villageListRender(q){
+  var list=document.getElementById('villageList'); if(!list) return;
+  var nq=comboNorm(q||''), rows='';
+  VILLAGE_ORDER.forEach(function(v){
+    var lbl=villageLabel(v);
+    if(nq && comboNorm(v+' '+lbl).indexOf(nq)<0) return;
+    rows+='<button type="button" class="village-item'+(v===curVillage?' sel':'')+'" data-v="'+v+'" onpointerdown="villagePick(\''+v+'\')"><b>'+lbl+'</b><span>'+villageMurabbaCount(v)+' murabbas</span></button>';
+  });
+  list.innerHTML=rows||'<div class="village-empty">No village found</div>';
+}
+function villageListShow(){
+  var inp=document.getElementById('villageSearch'); if(!inp) return;
+  villageListRender(inp.value);
+  document.getElementById('villageList').hidden=false;
+}
+function villageListHide(){
+  var list=document.getElementById('villageList'); if(list) list.hidden=true;
+  var inp=document.getElementById('villageSearch'); if(inp) inp.value=villageLabel(curVillage);
+}
+function villagePick(v){
+  setVillage(v,true);
+  villageListHide();
+}
+function villagePickFirst(){
+  var b=document.querySelector('#villageList .village-item');
+  if(b) villagePick(b.getAttribute('data-v'));
 }
 function updateVillageUI(){
   var label=villageLabel(curVillage);
@@ -1959,7 +2066,8 @@ function updateVillageUI(){
 function setVillage(v, fit){
   if(v!=='130' && !VILLAGES[v]) return;
   curVillage=v;
-  var sel=document.getElementById('villageSel'); if(sel) sel.value=v;
+  var inp=document.getElementById('villageSearch'); if(inp) inp.value=villageLabel(v);
+  var vl=document.getElementById('villageList'); if(vl && !vl.hidden) villageListRender(inp?inp.value:'');
   updateVillageUI();
   if(!map) return; /* init() not done yet — map parts below need the map */
   userHit=null; /* GPS nearest highlight belonged to the old village — only the new village may show */
@@ -1971,6 +2079,7 @@ function setVillage(v, fit){
   try{ map.setMaxBounds([[ext.s-0.02,ext.w-0.02],[ext.n+0.02,ext.e+0.02]]); }catch(e){}
   if(fit!==false) map.fitBounds([[ext.s,ext.w],[ext.n,ext.e]],{padding:[30,30]});
   if(typeof satStatus==='function') satStatus();
+  renderHome();
 }
 function onPickM(v){
   if(!v){ clearTarget(); return; }
@@ -2116,23 +2225,24 @@ function onFix(p){
   else if(acc<=20) setStatus('warn',acc+' m · Medium GPS');
   else setStatus('bad',acc+' m · Weak GPS');
   document.getElementById('coord').textContent=lat.toFixed(5)+', '+lng.toFixed(5);
-  detect(lat,lng);
+  lastAcc=acc; detect(lat,lng,acc);
   updateNav();
   var ext=gridExtent(), inside=lat<ext.n+0.004&&lat>ext.s-0.004&&lng>ext.w-0.004&&lng<ext.e+0.004;
   if(firstFix){ firstFix=false; if(inside){ following=true; map.setView(userLL,Math.max(map.getZoom(),17)); } setFollowBtn(); }
   else if(following) map.panTo(userLL,{animate:true,duration:.6});
 }
-function locate(lat,lng){
+function locateInVillage(lat,lng,v){
   /* Multi-village: outside the 130 grid — use the exact affine inverse
      (llToGeo's clamped bilinLL would drift for far villages) and find the
-     (gc,gr) cell of the ACTIVE village and the qila inside it (5x5 snake). */
-  if(curVillage!=='130'){
-    var g=affineGeo(lat,lng), v=VILLAGES[curVillage];
-    for(var i=0;i<v.cells.length;i++){
-      var a=v.cells[i];
+     (gc,gr) cell of the given village and the qila inside it (5x5 snake). */
+  if(v!=='130'){
+    var g=affineGeo(lat,lng,v), vv=VILLAGES[v];
+    if(!vv) return null;
+    for(var i=0;i<vv.cells.length;i++){
+      var a=vv.cells[i];
       if(g.x>=a[1] && g.x<a[1]+1 && g.y>=(a[2]-2) && g.y<(a[2]-1)){
         var cu=Math.min(4,Math.max(0,Math.floor((g.x-a[1])*5))), cv=Math.min(4,Math.max(0,Math.floor((g.y-(a[2]-2))*5)));
-        return {name:'V'+curVillage+':'+a[0], q:qNum(cv,cu)};
+        return {village:v, name:'V'+v+':'+a[0], q:qNum(cv,cu)};
       }
     }
     return null;
@@ -2141,11 +2251,39 @@ function locate(lat,lng){
   var nm=BYCELL[gx+','+(gy+2)];
   if(!nm) return null;
   var u=Math.min(4,Math.max(0,Math.floor((g2.x-gx)*5))), v2=Math.min(4,Math.max(0,Math.floor((g2.y-gy)*5)));
-  return {name:nm,q:qNum(v2,u)};
+  return {village:'130', name:nm, q:qNum(v2,u)};
 }
-function detect(lat,lng){
+function locate(lat,lng){
+  return locateInVillage(lat,lng,curVillage);
+}
+function locateAnywhere(lat,lng){
+  /* Current village first (a shared cell belongs to both neighbours), then the rest in map order. */
+  var h=locateInVillage(lat,lng,curVillage);
+  if(h) return h;
+  for(var i=0;i<VILLAGE_ORDER.length;i++){
+    var v=VILLAGE_ORDER[i];
+    if(v===curVillage) continue;
+    h=locateInVillage(lat,lng,v);
+    if(h) return h;
+  }
+  return null;
+}
+function homeLocText(h){
+  if(!h) return '';
+  return 'Murabba <b>'+keyDisplay(h.name)+'</b> &nbsp;·&nbsp; Qila <b>'+h.q+'</b>'+(h.village && h.village!=='130' ? ' &nbsp;·&nbsp; '+villageLabel(h.village) : '');
+}
+function gpsAccNote(acc){
+  if(acc==null || isNaN(acc)) return '';
+  var a=Math.round(acc);
+  if(a<=5) return ' &nbsp;·&nbsp; GPS ±'+a+' m (Strong)';
+  if(a<=20) return ' &nbsp;·&nbsp; GPS ±'+a+' m';
+  return ' &nbsp;·&nbsp; GPS ±'+a+' m — kamzor hai, qila ghalat bhi ho sakta hai. Khuli jagah par 1-2 minute rukain.';
+}
+function detect(lat,lng,acc){
   var h=locate(lat,lng), pos=document.getElementById('pos');
-  userHit=h;
+  /* Weak GPS fix (>20 m) kabhi qila highlight na kare — qila 67x60 m ka hai,
+     kamzor fix ghalat qila dikha de ga. Text mein best guess + warning rehta hai. */
+  userHit = (acc!=null && acc>20) ? null : h;
   if(h){
     pos.innerHTML='Mustatil <b>'+keyDisplay(h.name)+'</b> &nbsp;|&nbsp; Qila <i>'+h.q+'</i>';
   } else {
@@ -2153,9 +2291,247 @@ function detect(lat,lng){
     villageKeys().forEach(function(k){var b=mBounds(murByKey(k)),c=L.latLng((b.n+b.s)/2,(b.w+b.e)/2),d=dist(here,c);if(d<bd){bd=d;best=k}});
     pos.innerHTML='<span style="color:#94a3b8;font-weight:600">Outside '+villageLabel(curVillage)+' &middot; nearest: '+keyDisplay(best)+' ('+(bd>=1000?(bd/1000).toFixed(1)+' km':Math.round(bd)+' m')+')</span>';
   }
+  var hl=document.getElementById('homeLoc');
+  if(hl) hl.innerHTML = (h ? 'You are in: '+homeLocText(h) : pos.innerHTML) + gpsAccNote(acc);
   repaintHi();
 }
 
+/* ===== Home view — Quick Tools (front page) ===== */
+function homeLocate(){
+  var hl=document.getElementById('homeLoc');
+  if(!userLL){ if(hl) hl.textContent='Waiting for GPS signal — turn location on and wait in an open place.'; return; }
+  var h=locateAnywhere(userLL.lat,userLL.lng);
+  if(h && h.village!==curVillage) setVillage(h.village,false);
+  followMe();
+  detect(userLL.lat,userLL.lng,lastAcc);
+}
+function toggleHomeCoord(){
+  var r=document.getElementById('homeCoordRow');
+  if(!r) return;
+  r.style.display = r.style.display==='none' ? 'flex' : 'none';
+  if(r.style.display!=='none'){ var a=document.getElementById('hgLat'); if(a) a.focus(); }
+}
+function parseHomeCoords(){
+  var la=(document.getElementById('hgLat')||{}).value||'', ln=(document.getElementById('hgLng')||{}).value||'';
+  /* Allow pasting "28.47, 70.68" into the latitude field. */
+  if(!ln && la.indexOf(',')>=0){ var p=la.split(','); la=p[0]; ln=p[1]||''; }
+  var lat=parseFloat(String(la).trim()), lng=parseFloat(String(ln).trim());
+  if(isNaN(lat)||isNaN(lng)||lat<-90||lat>90||lng<-180||lng>180) return null;
+  return {lat:lat,lng:lng};
+}
+function homeGoto(){
+  var c=parseHomeCoords();
+  if(!c){ if(window.showToast) showToast('Enter a valid latitude (-90..90) and longitude (-180..180)'); return; }
+  dropGoto(c.lat,c.lng,false);
+  var h=locateAnywhere(c.lat,c.lng);
+  if(h && h.village!==curVillage) setVillage(h.village,false);
+  detect(c.lat,c.lng);
+  var hl=document.getElementById('homeLoc');
+  if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
+}
+function homeMark(){
+  if(!map) return;
+  var c=map.getCenter();
+  dropGoto(c.lat,c.lng,false);
+  var h=locateAnywhere(c.lat,c.lng);
+  if(h && h.village!==curVillage) setVillage(h.village,false);
+  detect(c.lat,c.lng);
+  var hl=document.getElementById('homeLoc');
+  if(hl && h) hl.innerHTML='Marked point: '+homeLocText(h);
+}
+function homeMeasure(){
+  if(window.toggleMeasure) window.toggleMeasure();
+}
+function renderHome(){
+  var sv=document.getElementById('homeStatVillages'); if(!sv) return;
+  var av=document.getElementById('appVer'); if(av) av.textContent='v'+APP_VERSION;
+  var sj=document.getElementById('shajraVillage'); if(sj) sj.textContent=villageLabel(curVillage);
+  var total=0;
+  VILLAGE_ORDER.forEach(function(v){ total+=villageMurabbaCount(v); });
+  sv.textContent=VILLAGE_ORDER.length;
+  document.getElementById('homeStatMurabbas').textContent=total.toLocaleString('en-US');
+  document.getElementById('homeStatQilas').textContent=(total*25).toLocaleString('en-US');
+  document.getElementById('homeStatRecords').textContent=(typeof OWNERS!=='undefined'?OWNERS.length:0);
+  var list=document.getElementById('homeVillageList'); if(!list) return;
+  var html='';
+  VILLAGE_ORDER.forEach(function(v){
+    html+='<button class="vitem'+(v===curVillage?' sel':'')+'" onclick="setVillage(\''+v+'\',true)"><span>'+villageLabel(v)+'</span><b>'+villageMurabbaCount(v)+' murabbas</b></button>';
+  });
+  list.innerHTML=html;
+}
+/* ===== Aks Shajra download — vector SVG + 300 DPI PNG, built from the map's
+   own grid (130: measured corners; other villages: the anchored affine).
+   Vector = never blurry; works fully offline (no file to fetch). */
+var KARAM_M = 1.6764; /* 1 karam = 5.5 ft */
+function shajraCells(){
+  return villageKeys().map(function(k){ var m=murByKey(k); return {key:mLabel(m), corners:mCorners(m)}; });
+}
+function shajraSVG(){
+  var cells=shajraCells();
+  if(!cells.length) return '';
+  var n=-90,s=90,w=180,e=-180;
+  cells.forEach(function(c){ c.corners.forEach(function(p){ if(p[0]>n)n=p[0]; if(p[0]<s)s=p[0]; if(p[1]<w)w=p[1]; if(p[1]>e)e=p[1]; }); });
+  var lat0=(n+s)/2, lng0=(w+e)/2;
+  function X(lng){ return (lng-lng0)*97879; }
+  function Y(lat){ return (lat0-lat)*110827; }
+  var W=3300, H=2300, pad=150, headH=200;
+  var spanX=X(e)-X(w), spanY=Y(s)-Y(n);
+  var sc=Math.min((W-2*pad)/spanX, (H-headH-2*pad)/spanY);
+  var ox=pad - X(w)*sc + ((W-2*pad)-spanX*sc)/2;
+  var oy=headH+pad - Y(n)*sc + ((H-headH-2*pad)-spanY*sc)/2;
+  function px(p){ return [ox+X(p[1])*sc, oy+Y(p[0])*sc]; }
+  function karam(a,b){ var dLat=(a[0]-b[0])*110827, dLng=(a[1]-b[1])*97879; return Math.round(Math.sqrt(dLat*dLat+dLng*dLng)/KARAM_M); }
+  var labFs=Math.max(30, Math.min(46, 140*sc));
+  var out=[];
+  out.push('<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">');
+  out.push('<rect width="'+W+'" height="'+H+'" fill="#ffffff"/>');
+  var date=new Date().toLocaleDateString('en-GB');
+  out.push('<text x="'+pad+'" y="86" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="bold" fill="#111111">Aks Shajra — '+villageLabel(curVillage)+'</text>');
+  out.push('<text x="'+pad+'" y="140" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#444444">Tehsil Khanpur, District Rahim Yar Khan &nbsp;·&nbsp; '+date+'</text>');
+  out.push('<text x="'+(W-pad)+'" y="140" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#444444">Side lengths in karam · 1 karam = 5.5 ft</text>');
+  cells.forEach(function(c){
+    var pts=c.corners.map(function(p){ var q=px(p); return q[0].toFixed(1)+','+q[1].toFixed(1); }).join(' ');
+    out.push('<polygon points="'+pts+'" fill="#fefce8" stroke="#334155" stroke-width="2.5"/>');
+  });
+  cells.forEach(function(c){
+    var cx=0, cy=0;
+    c.corners.forEach(function(p){ var q=px(p); cx+=q[0]; cy+=q[1]; });
+    cx/=4; cy/=4;
+    out.push('<text x="'+cx.toFixed(1)+'" y="'+(cy+labFs*0.35).toFixed(1)+'" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="'+labFs+'" font-weight="bold" fill="#111111">'+c.key+'</text>');
+  });
+  /* outer-boundary side lengths in karam (top row + left column) */
+  cells.forEach(function(c){
+    var cs=c.corners;
+    var topOk = cs[0][0] >= n-0.0001 && cs[1][0] >= n-0.0001;
+    var leftOk = cs[0][1] <= w+0.0001 && cs[3][1] <= w+0.0001;
+    if(topOk){
+      var a=px(cs[0]), b=px(cs[1]);
+      out.push('<text x="'+((a[0]+b[0])/2).toFixed(1)+'" y="'+(a[1]-12).toFixed(1)+'" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#b91c1c">'+karam(cs[0],cs[1])+'</text>');
+    }
+    if(leftOk){
+      var c2=px(cs[0]), d=px(cs[3]);
+      out.push('<text x="'+(c2[0]-12).toFixed(1)+'" y="'+((c2[1]+d[1])/2+10).toFixed(1)+'" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#b91c1c">'+karam(cs[0],cs[3])+'</text>');
+    }
+  });
+  /* scale bar: 200 m */
+  var bx=pad, by=H-110, bl=200*sc;
+  out.push('<rect x="'+bx+'" y="'+by+'" width="'+(bl/2)+'" height="14" fill="#111111"/><rect x="'+(bx+bl/2)+'" y="'+by+'" width="'+(bl/2)+'" height="14" fill="#ffffff" stroke="#111111" stroke-width="2"/>');
+  out.push('<text x="'+bx+'" y="'+(by-10)+'" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#111111">0</text>');
+  out.push('<text x="'+(bx+bl/2)+'" y="'+(by-10)+'" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#111111">100 m</text>');
+  out.push('<text x="'+(bx+bl)+'" y="'+(by-10)+'" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#111111">200 m</text>');
+  out.push('<text x="'+(W-pad)+'" y="'+(H-70)+'" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#666666">ZameenMap · Muhammad Atif, Numberdar Chak 130/1-L · Each qila = 1 acre (40 × 36 karam)</text>');
+  out.push('</svg>');
+  return out.join('');
+}
+function shajraFileName(fmt){ return 'Aks-Shajra-'+villageLabel(curVillage).replace(/[^A-Za-z0-9]+/g,'-')+'.'+fmt; }
+function saveBlob(blob, name){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+window.downloadShajra=function(fmt){
+  var svg=shajraSVG();
+  if(!svg){ if(window.showToast) showToast('No murabbas in this village yet'); return; }
+  if(fmt==='svg'){ saveBlob(new Blob([svg],{type:'image/svg+xml'}), shajraFileName('svg')); return; }
+  var img=new Image();
+  img.onload=function(){
+    var c=document.createElement('canvas'); c.width=3508; c.height=2480;
+    var ctx=c.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0,c.width,c.height);
+    if(c.toBlob) c.toBlob(function(b){ if(b) saveBlob(b, shajraFileName('png')); }, 'image/png');
+  };
+  img.onerror=function(){ if(window.showToast) showToast('PNG could not be rendered — try SVG'); };
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+};
+window.previewShajra=function(){
+  var el=document.getElementById('shajraPreview'); if(!el) return;
+  var svg=shajraSVG();
+  el.innerHTML = svg || 'No murabbas in this village yet';
+};
+/* ===== My Pins — saved points (localStorage, fully offline) ===== */
+var pins=[], pinLayer=null, pinAddMode=false, pinSeq=0;
+function pinStoreKey(){ return 'zameenmap_pins_v1'; }
+function escPin(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pinAutoName(lat,lng,n){
+  var h=locateAnywhere(lat,lng);
+  if(!h) return 'Pin '+n;
+  var disp = h.village==='130' ? h.name : h.name.replace(/^V\d+:/,'');
+  return 'Pin '+n+' · '+disp+' Qila '+h.q+(h.village!=='130' ? ' · '+villageLabel(h.village) : '');
+}
+function pinFromLatLng(lat,lng){
+  pinSeq++;
+  return {seq:pinSeq, lat:+lat.toFixed(5), lng:+lng.toFixed(5), name:pinAutoName(lat,lng,pinSeq)};
+}
+function loadPins(){
+  try{ pins=JSON.parse(localStorage.getItem(pinStoreKey())||'[]')||[]; }catch(e){ pins=[]; }
+  pinSeq=pins.reduce(function(m,p){ return Math.max(m, p.seq||0); }, 0);
+  renderPins();
+}
+function savePins(){ try{ localStorage.setItem(pinStoreKey(), JSON.stringify(pins)); }catch(e){} }
+function pinIconHTML(name){
+  return '<div style="text-align:center"><svg width="30" height="42" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 1C7.3 1 1 7.3 1 15c0 10.5 14 26 14 26s14-15.5 14-26C29 7.3 22.7 1 15 1z" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/><circle cx="15" cy="15" r="5.5" fill="#ffffff"/></svg><br><span class="pin-lbl">'+escPin(name)+'</span></div>';
+}
+function renderPins(){
+  var list=document.getElementById('pinList');
+  if(pinLayer) pinLayer.clearLayers();
+  if(!pins.length){ if(list) list.innerHTML='<p class="hint">No pins yet — tap "Add a Pin", then tap the map.</p>'; return; }
+  var html='';
+  pins.forEach(function(p){
+    if(pinLayer && window.L){
+      var mk=L.marker([p.lat,p.lng],{icon:L.divIcon({className:'pinmark', html:pinIconHTML(p.name), iconSize:[120,64], iconAnchor:[60,42]})});
+      mk.on('click', function(e){ if(e && e.originalEvent && e.originalEvent.stopPropagation) e.originalEvent.stopPropagation(); flyToPin(p.seq); });
+      mk.addTo(pinLayer);
+    }
+    html+='<div class="pinrow"><div class="pn"><b>'+escPin(p.name)+'</b><small>'+p.lat.toFixed(5)+', '+p.lng.toFixed(5)+'</small></div>'
+      +'<button onclick="flyToPin('+p.seq+')" title="Go to pin">Go</button>'
+      +'<button onclick="renamePin('+p.seq+')" title="Rename">✎</button>'
+      +'<button onclick="deletePin('+p.seq+')" title="Delete">✕</button></div>';
+  });
+  if(list) list.innerHTML=html;
+}
+window.flyToPin=function(seq){
+  var p=pins.find(function(x){ return x.seq===seq; });
+  if(!p || !map) return;
+  map.flyTo([p.lat,p.lng], Math.max(map.getZoom(),17.5), {duration:.8});
+  if(window.showToast) showToast(p.name+' — '+p.lat.toFixed(5)+', '+p.lng.toFixed(5));
+};
+window.renamePin=function(seq){
+  var p=pins.find(function(x){ return x.seq===seq; });
+  if(!p) return;
+  var nm=prompt('Pin ka naam likhein', p.name);
+  if(nm && nm.trim()){ p.name=nm.trim(); savePins(); renderPins(); }
+};
+window.deletePin=function(seq){
+  pins=pins.filter(function(x){ return x.seq!==seq; });
+  savePins(); renderPins();
+};
+window.clearAllPins=function(){
+  if(!pins.length) return;
+  if(!confirm('Delete all '+pins.length+' pins?')) return;
+  pins=[]; savePins(); renderPins();
+};
+function setPinAddMode(on){
+  pinAddMode=!!on;
+  var b=document.getElementById('pinAddBtn');
+  if(b){ b.textContent = pinAddMode ? 'Tap the map to drop the pin (tap again to cancel)' : '📍 Add a Pin — tap the map'; b.className = pinAddMode ? 'big stop' : 'big'; }
+  if(!map) return;
+  if(pinAddMode){
+    if(window.toggleMeasure && typeof mOn!=='undefined' && mOn) window.toggleMeasure();
+    map.off('click', onMapClick);
+    map.on('click', onPinClick);
+  } else {
+    map.off('click', onPinClick);
+    map.on('click', onMapClick);
+  }
+}
+window.togglePinAdd=function(){ setPinAddMode(!pinAddMode); };
+function onPinClick(e){
+  var p=pinFromLatLng(e.latlng.lat, e.latlng.lng);
+  pins.push(p); savePins(); renderPins();
+  setPinAddMode(false);
+  if(window.showToast) showToast('Pin saved: '+p.name);
+}
 /* ===== Buttons ===== */
 function setFollowBtn(){ var b=document.getElementById('bFollow'); if(b) b.className='btn'+(following?' on':''); }
 function followMe(){
@@ -2208,7 +2584,26 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
      worker caches the app shell (http/https only — degrades silently elsewhere) --- */
   try{
     if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
-      navigator.serviceWorker.register('sw.js').catch(function(){});
+      /* Auto-update (no reinstall): when a NEW service worker takes control
+         (a real update, not the first install), reload exactly once so the
+         fresh version shows immediately. The sessionStorage guard makes a
+         reload loop impossible. Update checks run on load, when the net
+         comes back, when the app comes to the foreground, and every 30 min. */
+      var hadController = !!navigator.serviceWorker.controller;
+      if(hadController){
+        navigator.serviceWorker.addEventListener('controllerchange', function(){
+          try{ if(sessionStorage.getItem('zameenmap_sw_reloaded')) return; sessionStorage.setItem('zameenmap_sw_reloaded','1'); }catch(e){}
+          if(window.showToast) window.showToast('New update installed — reloading…');
+          setTimeout(function(){ location.reload(); }, 900);
+        });
+      }
+      navigator.serviceWorker.register('sw.js').then(function(reg){
+        if(!reg || !reg.update) return;
+        reg.update();
+        window.addEventListener('online', function(){ reg.update(); });
+        document.addEventListener('visibilitychange', function(){ if(!document.hidden) reg.update(); });
+        setInterval(function(){ reg.update(); }, 30*60*1000);
+      }).catch(function(){});
     }
   }catch(e){}
 
@@ -3037,6 +3432,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     mOn=false;
     var btn=$('pmBtn'); btn.textContent='Start Measurement'; btn.className='big';
     var _mb=$('bMeasure'); if(_mb) _mb.className='btn';
+    var _hm2=$('homeMeasureBtn'); if(_hm2) _hm2.className='qtool';
     $('map').classList.remove('measuring');
     $('pmChip').style.display='none';
     $('pmBar').style.display='none';
@@ -3050,6 +3446,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     mOn=true;
     btn.textContent='Stop Measurement'; btn.className='big stop';
     var _mb2=$('bMeasure'); if(_mb2) _mb2.className='btn on';
+    var _hm=$('homeMeasureBtn'); if(_hm) _hm.className='qtool on';
     $('map').classList.add('measuring');
     mEnsure();
     map.off('click', onMapClick);
@@ -3727,6 +4124,17 @@ body{background:#071f18}
 .village-row{display:flex;align-items:center;gap:6px}
 .village-lbl{font-size:11px;color:#A9C6B4;font-weight:700;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
 .dash-head #villageSel{flex:1;min-width:0;box-sizing:border-box;padding:5px 7px;font-size:12.5px;border-radius:8px}
+/* Searchable village picker (25 Nov 2026) — type to filter, tap to select */
+.village-pick{position:relative;flex:1;min-width:0}
+.dash-head #villageSearch{width:100%;box-sizing:border-box;padding:5px 26px 5px 7px;font-size:12.5px;font-weight:700;color:#fff;background:#07271C;border:1px solid rgba(201,162,39,.45);border-radius:8px}
+.village-pick::after{content:'⌄';position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#C9A227;font-size:14px;pointer-events:none}
+.village-list{position:absolute;top:calc(100% + 4px);left:0;right:0;max-height:260px;overflow-y:auto;background:#07271C;border:1px solid rgba(201,162,39,.55);border-radius:9px;z-index:80;box-shadow:0 10px 28px rgba(0,0,0,.5)}
+.village-item{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:9px 10px;background:none;border:0;border-bottom:1px solid rgba(201,162,39,.15);color:#fff;font-size:13px;text-align:left;cursor:pointer}
+.village-item:last-child{border-bottom:0}
+.village-item span{font-size:11px;color:#A9C6B4;white-space:nowrap}
+.village-item.sel{background:rgba(201,162,39,.18)}
+.village-item.sel b{color:#E3C565}
+.village-empty{padding:10px;font-size:12.5px;color:#A9C6B4;text-align:center}
 .dash-head.banner{padding:12px 14px 10px}
 /* Compact one-line footer */
 .dash-foot{display:flex;align-items:baseline;justify-content:center;gap:5px;flex-wrap:wrap;padding:7px 12px calc(env(safe-area-inset-bottom,0px) + 7px);font-size:11px}
