@@ -1454,7 +1454,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.27</span></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.28</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 216px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
@@ -1556,7 +1556,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.27';
+var APP_VERSION='7.28';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -4623,24 +4623,30 @@ window.__v7 = window.__v6;
     return inhFmtMarla(marla) + ' (' + fmt2(F.num(marla)*272.25) + ' sq ft)';
   }
   function inhFmtMarla(marla){
+    /* User (26 Nov 15:17): every share must read as Acre/Kanal/Marla —
+       raw marla like "293 1/3 Marla" is unreadable. Always break down;
+       fractional marla stays a fraction (e.g. "1 Acre 6 Kanal 13 1/3 Marla").
+       This OVERRIDES the spec §10/§11 marla-only convention for fractional
+       amounts (builder's ambiguity choice (2)) — the user asked for it. */
     var whole = Math.floor(F.num(marla));
     var fracPart = F.sub(marla, F(whole,1));
-    if(F.isZero(fracPart)){
-      var kanal = Math.floor(whole/20), rem = whole%20;
-      if(kanal>0 && rem>0) return kanal+' Kanal '+rem+' Marla';
-      if(kanal>0) return kanal+' Kanal';
-      return whole+' Marla';
+    var kanal = Math.floor(whole/20), remMarla = whole%20;
+    var acre = Math.floor(kanal/8), remKanal = kanal%8;
+    var parts=[];
+    if(acre>0) parts.push(acre+' Acre');
+    if(remKanal>0) parts.push(remKanal+' Kanal');
+    if(remMarla>0 || !F.isZero(fracPart)){
+      var mStr='';
+      if(remMarla>0) mStr+=remMarla+' ';
+      if(!F.isZero(fracPart)) mStr+=F.str(fracPart)+' ';
+      parts.push(mStr+'Marla');
     }
-    return (whole>0 ? whole+' ' : '') + F.str(fracPart) + ' Marla';
+    if(!parts.length) return '0 Marla';
+    return parts.join(' ');
   }
-  /* Marla only, never Kanal — used for the Total Distributed / Undistributed
-     rows (spec §10: "40 Marla (10,890.00 sq ft)"). */
-  function inhFmtMarlaOnly(marla){
-    var whole = Math.floor(F.num(marla));
-    var fracPart = F.sub(marla, F(whole,1));
-    if(F.isZero(fracPart)) return whole+' Marla';
-    return (whole>0 ? whole+' ' : '') + F.str(fracPart) + ' Marla';
-  }
+  /* Total Distributed / Undistributed rows — same Acre/Kanal/Marla
+     breakdown as per-heir amounts (user, 26 Nov 15:17). */
+  function inhFmtMarlaOnly(marla){ return inhFmtMarla(marla); }
 
   /* ---------- core computation (pure — no DOM) ----------
      estateSqft: Fraction (sq ft, > 0).
