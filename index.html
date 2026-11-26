@@ -680,7 +680,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none}
 #map{position:absolute;inset:0;background:#0b1220;background-image:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);background-size:40px 40px}
-.glass{background:rgba(15,23,42,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);box-shadow:0 6px 24px rgba(0,0,0,.45)}
+.glass{background:rgba(7,39,28,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(227,197,101,.30);box-shadow:0 6px 24px rgba(0,0,0,.45)}
 #top{position:absolute;z-index:1000;top:calc(env(safe-area-inset-top,0px) + 8px);left:8px;right:8px;max-width:440px;margin:0 auto;border-radius:15px;padding:6px 9px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;color:#fbbf24;letter-spacing:.2px}
@@ -762,7 +762,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #loader.hide{opacity:0;pointer-events:none}
 #loader .spin{width:44px;height:44px;border-radius:50%;border:4px solid #1e293b;border-top-color:#fbbf24;animation:ldspin 1s linear infinite}
 @keyframes ldspin{to{transform:rotate(360deg)}}
-#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 310px);z-index:4000;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 310px);z-index:4000;background:rgba(12,52,36,.95);border:1px solid rgba(227,197,101,.6);color:#F0D47A;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* Compass (North) — hidden until the "Compass (North)" toggle in Layers is on.
    Fixed below the Hide button (top-right) so it never covers it. The ui-hide /
@@ -828,7 +828,9 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .pinrow .pn b{display:block;font-size:13px;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pinrow .pn small{font-size:11.5px;color:#94a3b8}
 .pinrow button{min-width:34px;min-height:34px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:13px;font-weight:700}
-.home-view .hstat b{color:#fbbf24;font-size:14px}
+.home-view .card.hstats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-view .hstat{flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:2px;background:linear-gradient(135deg,rgba(12,52,36,.9),rgba(6,26,19,.9));border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:10px 12px}
+.home-view .hstat b{color:#F0D47A;font-size:20px}
 .home-view .hstat span{color:#cbd5e1}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
 .tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
@@ -927,6 +929,17 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
   #printSheet .ps-foot{display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px}
   #printSheet .ps-note{margin-top:22px;font-size:11.5px;color:#555;border-top:1px solid #bbb;padding-top:8px}
 }
+
+/* ===== Inheritance (Wirasa) Calculator ===== */
+.inhchip{min-width:64px;min-height:40px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:13px;font-weight:700}
+.inhchip.on2{background:#14532d;border-color:#C9A227;color:#fff}
+.inhstep{display:flex;align-items:center;gap:8px}
+.inhstep button{width:40px;height:40px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:18px;font-weight:800}
+.inhstep b{min-width:22px;text-align:center;color:#facc15;font-size:15px}
+.inhstep button:disabled,.inhchip:disabled{opacity:.35}
+#inhTable th{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.12);font-size:12px;color:#e2e8f0;text-align:center}
+#inhTable td:nth-child(2){text-align:center}
+#inhTable td small{display:block;color:#94a3b8;font-size:11px;font-weight:400}
 
 </style>
 <style>
@@ -1106,7 +1119,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     </div>
     <div class="homeloc" id="homeLoc">Tap <b>My Location</b> to see which murabba and qila you are standing in.</div>
     <h5>All Villages</h5>
-    <div class="card">
+    <div class="card hstats">
       <div class="hstat"><span>Villages on map</span><b id="homeStatVillages">…</b></div>
       <div class="hstat"><span>Total murabbas</span><b id="homeStatMurabbas">…</b></div>
       <div class="hstat"><span>Total qilas</span><b id="homeStatQilas">…</b></div>
@@ -1293,6 +1306,13 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="pinList"></div>
     <div class="btnrow"><button onclick="clearAllPins()">Clear All Pins</button></div>
 
+    <h5>Calculators</h5>
+    <p class="hint">Two calculators — Land Calculator measures a plot; Inheritance (Wirasa) divides land between heirs under Sunni (Hanafi) rules.</p>
+    <div class="btnrow" id="calcTabRow">
+      <button id="calcTabLand" class="on2" onclick="setCalcTab('land')">Land Calculator</button>
+      <button id="calcTabInh" onclick="setCalcTab('inh')">Inheritance (Wirasa)</button>
+    </div>
+    <div id="calcLandPanel">
     <h5>Land Calculator</h5>
     <p class="hint">Just type the measurement in feet — the rest is calculated automatically. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
     <div class="searchrow">
@@ -1328,6 +1348,61 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <tr><td>1 Qila / Acre (160 Marla)</td><td>43,560 sq ft</td></tr>
       </table></div>
     </details>
+    </div>
+    <div id="calcInhPanel" style="display:none">
+      <p class="hint">Sunni (Hanafi) inheritance — Faraid. Shares follow the Quranic fixed shares and the residuary rules applied in Pakistan. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
+
+      <div class="searchrow">
+        <input id="inhKanal" type="number" min="0" step="any" inputmode="decimal" placeholder="Kanal" oninput="inhUpdateTotal()">
+        <input id="inhMarla" type="number" min="0" step="any" inputmode="decimal" placeholder="Marla" oninput="inhUpdateTotal()">
+        <input id="inhSqft" type="number" min="0" step="any" inputmode="decimal" placeholder="Sq Ft" oninput="inhUpdateTotal()">
+      </div>
+      <div class="resline mid"><span>Total Estate</span><b id="inhTotal">—</b></div>
+      <div class="btnrow"><button id="inhUseLandBtn" onclick="inhUseLand()">Use Land Calculator result</button></div>
+
+      <p class="hint" style="margin-top:6px">Spouse of the deceased (choose one):</p>
+      <div class="btnrow" id="inhSpouseRow">
+        <button id="inhSpNone" class="on2" onclick="inhSetSpouse('none')">None</button>
+        <button id="inhSpHusband" onclick="inhSetSpouse('husband')">Husband</button>
+        <button id="inhSpWife" onclick="inhSetSpouse('wife')">Wife</button>
+      </div>
+
+      <div class="lrow"><div class="ln"><b>Father</b><small>1/6, or residuary if no children</small></div>
+        <button class="inhchip" id="inhFather" onclick="inhToggle('father')">Off</button></div>
+      <div class="lrow"><div class="ln"><b>Mother</b><small>1/3, or 1/6 if children / 2+ siblings</small></div>
+        <button class="inhchip" id="inhMother" onclick="inhToggle('mother')">Off</button></div>
+      <div class="lrow"><div class="ln"><b>Sons</b><small>Residuary — double a daughter's share</small></div>
+        <span class="inhstep"><button onclick="inhStep('sons',-1)">−</button><b id="inhSonsN">0</b><button onclick="inhStep('sons',1)">+</button></span></div>
+      <div class="lrow"><div class="ln"><b>Daughters</b><small>1/2, or 2/3 if 2+ and no son</small></div>
+        <span class="inhstep"><button onclick="inhStep('daughters',-1)">−</button><b id="inhDaughtersN">0</b><button onclick="inhStep('daughters',1)">+</button></span></div>
+      <div class="lrow"><div class="ln"><b>Full Brothers</b><small>Residuary — 2:1 with sisters</small></div>
+        <span class="inhstep"><button onclick="inhStep('fbrothers',-1)">−</button><b id="inhFBrothersN">0</b><button onclick="inhStep('fbrothers',1)">+</button></span></div>
+      <div class="lrow"><div class="ln"><b>Full Sisters</b><small>1/2, or 2/3 if 2+; residuary with brother/daughters</small></div>
+        <span class="inhstep"><button onclick="inhStep('fsisters',-1)">−</button><b id="inhFSistersN">0</b><button onclick="inhStep('fsisters',1)">+</button></span></div>
+      <div class="lrow"><div class="ln"><b>Paternal Grandfather</b><small>Stands in the father's place</small></div>
+        <button class="inhchip" id="inhGrandfather" onclick="inhToggle('grandfather')">Off</button></div>
+      <div class="lrow"><div class="ln"><b>Paternal Grandmother</b><small>1/6 if mother and father are absent</small></div>
+        <button class="inhchip" id="inhGrandmother" onclick="inhToggle('grandmother')">Off</button></div>
+      <div class="lrow"><div class="ln"><b>Maternal Brothers / Sisters</b><small>1/6, or 1/3 shared equally</small><small id="inhMaternalHint" style="display:none;color:#f87171">Children exclude maternal siblings</small></div>
+        <span class="inhstep"><button id="inhMaternalMinus" onclick="inhStep('maternal',-1)">−</button><b id="inhMaternalN">0</b><button id="inhMaternalPlus" onclick="inhStep('maternal',1)">+</button></span></div>
+
+      <div class="btnrow"><button class="big" onclick="inhCalculate()">Calculate Shares</button></div>
+      <div class="btnrow"><button onclick="inhClear()">Clear</button></div>
+      <p class="hint" id="inhError" style="color:#f87171;display:none"></p>
+
+      <div class="res" id="inhRes" style="display:none">
+        <div class="presets"><table id="inhTable">
+          <tr><th style="text-align:left">Heir</th><th>Share</th><th style="text-align:right">Total</th></tr>
+        </table></div>
+        <div class="resline big"><span>Total Distributed</span><b id="inhDistTotal">—</b></div>
+        <div class="resline" id="inhRemRow" style="display:none"><span>Undistributed</span><b id="inhRem">—</b></div>
+        <div class="unit-hint" id="inhNotes"></div>
+      </div>
+
+      <p class="hint">For complex cases, confirm with a mufti or the patwari before acting on these figures.</p>
+      <p class="hint">Covers spouse, parents, sons, daughters, full brothers/sisters, paternal grandparents and maternal siblings. Does not cover grandchildren, distant relatives, missing or unborn heirs, or Shia (Ja'fari) rules.</p>
+      <p class="hint">Hisab: 1 Marla = 272.25 sq ft &middot; 1 Kanal = 20 Marla = 5,445 sq ft &middot; 1 Acre = 8 Kanal = 160 Marla = 43,560 sq ft.</p>
+    </div>
 
     <details class="sect">
       <summary>Go To Location</summary>
@@ -1379,7 +1454,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.8</span></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.26</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 216px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
@@ -1481,7 +1556,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.25';
+var APP_VERSION='7.26';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2235,7 +2310,7 @@ function repaintHi(){
   if(target){
     var m=murByKey(target.m);
     L.polygon(mCorners(m),{color:'#f59e0b',weight:3.5,fillColor:'#f59e0b',fillOpacity:.10,interactive:false}).addTo(hiLayer);
-    if(target.q) L.polygon(qCorners(m,target.q),{color:'#22c55e',weight:3,fillColor:'#22c55e',fillOpacity:.3,interactive:false}).addTo(hiLayer);
+    if(target.q) L.polygon(qCorners(m,target.q),{color:'#facc15',weight:3.5,fillColor:'#facc15',fillOpacity:.28,interactive:false}).addTo(hiLayer);
   }
 }
 function drawTarget(fly){
@@ -2611,21 +2686,24 @@ window.mapVillageToggle=function(){
 };
 /* Current-village chip (v7.18): shows the active village on the map screen. */
 window.renderVillageChip=function(){
-  var c=document.getElementById('villageChip'); if(c) c.textContent=villageLabel(curVillage);
+  var c=document.getElementById('villageChip'); if(!c) return;
+  var old=c.textContent; c.textContent=villageLabel(curVillage);
+  if(old!==c.textContent){ c.classList.remove('shine'); void c.offsetWidth; c.classList.add('shine'); setTimeout(function(){ c.classList.remove('shine'); },1200); }
 };
 
 /* Abadi layer (v7.19): plots + landmarks from the sketch. Only for village 130. */
-var abadiLayer=null, abadiLabels=null, abadiOn=false, abadiZoomBound=false;
+var abadiLayer=null, abadiLabels=null, abadiOn=false, abadiZoomBound=false, abadiSel=null;
+var abadiSelStyle={color:'#ffffff',weight:2,fillColor:'#facc15',fillOpacity:0.45};
 function abadiOwnerText(n){ var o=(ABADI.owners||{})[n]; if(!o) return ''; var t=''; if(o.name) t+='<br>'+o.name; if(o.area) t+=' · '+o.area; if(o.note) t+='<br><small>'+o.note+'</small>'; return t; }
 function abadiBuild(){
   if(abadiLayer) return;
   abadiLayer=L.layerGroup(); abadiLabels=L.layerGroup();
   var plotStyle={color:'#d97706',weight:2,fillColor:'#f59e0b',fillOpacity:0.22,renderer:canvas};
   var stripStyle={color:'#0284c7',weight:2,fillColor:'#38bdf8',fillOpacity:0.22,renderer:canvas};
-  function rect(b,style,txt){ var r=L.rectangle([[b[0],b[1]],[b[2],b[3]]],style); if(txt) r.bindPopup(txt); return r; }
+  function rect(b,style,txt,sel){ var r=L.rectangle([[b[0],b[1]],[b[2],b[3]]],style); if(txt) r.bindPopup(txt); if(sel){ r._origStyle=style; r.on('click',function(){ if(abadiSel && abadiSel!==r) abadiSel.setStyle(abadiSel._origStyle); abadiSel=r; r.setStyle(abadiSelStyle); }); } return r; }
   var n;
-  for(n in ABADI.plots){ var p=ABADI.plots[n]; abadiLayer.addLayer(rect([p[0],p[1],p[2],p[3]],plotStyle,'<b>Plot '+n+'</b> · Cluster '+p[4]+abadiOwnerText(n)+'<br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
-  for(n in ABADI.strip){ var q=ABADI.strip[n]; abadiLayer.addLayer(rect([q[0],q[1],q[2],q[3]],stripStyle,'<b>Strip Plot '+n+'</b><br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>')); }
+  for(n in ABADI.plots){ var p=ABADI.plots[n]; abadiLayer.addLayer(rect([p[0],p[1],p[2],p[3]],plotStyle,'<b>Plot '+n+'</b> · Cluster '+p[4]+abadiOwnerText(n)+'<br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>',true)); }
+  for(n in ABADI.strip){ var q=ABADI.strip[n]; abadiLayer.addLayer(rect([q[0],q[1],q[2],q[3]],stripStyle,'<b>Strip Plot '+n+'</b><br><small>Abadi, Chak 130/1-L (sketch — approximate)</small>',true)); }
   abadiLayer.addLayer(rect(ABADI.talab,{color:'#0369a1',weight:2,fillColor:'#0ea5e9',fillOpacity:0.42,renderer:canvas},'<b>Talab (Pond)</b><br><small>468/5, Qila 25 · ~35×33 m</small>'));
   abadiLayer.addLayer(rect(ABADI.school,{color:'#15803d',weight:2,fillColor:'#22c55e',fillOpacity:0.30,renderer:canvas},'<b>Girls Primary School 130/1-L</b><br><small>468/6, Qila 5 · 8 kanal</small>'));
   abadiLayer.addLayer(rect(ABADI.charagah,{color:'#65a30d',weight:1.5,fillColor:'#84cc16',fillOpacity:0.15,dashArray:'6 4',renderer:canvas},'<b>Charagah</b><br><small>Grazing land (north band)</small>'));
@@ -4491,6 +4569,454 @@ window.__v7 = window.__v6;
   };
   window.__calcLand = { version:'v7.8', convert:function(sqft){ return {sqft:sqft, marla:sqft/272.25, kanal:sqft/5445, acre:sqft/43560}; } };
 })();
+/* ===== Inheritance (Wirasa) Calculator — Sunni (Hanafi) Faraid.
+   Pure inline JS, no network, works offline (carried by the cached index.html).
+   Exact fractions throughout; only the final sq-ft display uses floats.
+   Spec: inheritance-calculator-spec.md — §9 algorithm, §11 test cases.
+   State lives in the DOM (inputs + chip/stepper state), same as the Land Calculator.
+   Exposed for testing: window.__inhCalc = { compute, F, decToFrac, fmtLand }. */
+(function(){
+  /* ---------- exact fractions ---------- */
+  function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=a%b; a=b; b=t; } return a||1; }
+  function lcm(a,b){ return a/gcd(a,b)*b; }
+  function F(n,d){
+    if(d===undefined) d=1;
+    if(d<0){ n=-n; d=-d; }
+    var g=gcd(n,d); n/=g; d/=g;
+    return {n:n, d:d};
+  }
+  F.add=function(a,b){ return F(a.n*b.d+b.n*a.d, a.d*b.d); };
+  F.sub=function(a,b){ return F(a.n*b.d-b.n*a.d, a.d*b.d); };
+  F.mul=function(a,b){ return F(a.n*b.n, a.d*b.d); };
+  F.div=function(a,b){ return F(a.n*b.d, a.d*b.n); };
+  F.cmp=function(a,b){ var l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0); };
+  F.isZero=function(a){ return a.n===0; };
+  F.str=function(a){ return a.d===1 ? String(a.n) : a.n+'/'+a.d; };
+  F.num=function(a){ return a.n/a.d; };
+  /* Decimal string/number -> exact fraction ("136.125" -> 1089/8). Negatives and
+     non-numeric input are treated as 0, same as the Land Calculator's num(). */
+  function decToFrac(v){
+    if(v===undefined||v===null) return F(0,1);
+    var s=String(v).trim();
+    if(!s || !/^-?\d+(\.\d+)?$/.test(s)) return F(0,1);
+    if(s.charAt(0)==='-') return F(0,1);
+    var parts=s.split('.');
+    if(parts.length===1) return F(parseInt(parts[0],10)||0,1);
+    var dec=parts[1].replace(/0+$/,'');
+    if(!dec) return F(parseInt(parts[0],10)||0,1);
+    var den=Math.pow(10,dec.length);
+    return F((parseInt(parts[0],10)||0)*den+parseInt(dec,10), den);
+  }
+  function fmt2(n){ return Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function fmtM(n){ return Number(n).toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:0}); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+  var MARLA_SQFT = F(1089,4); /* 1 Marla = 272.25 sq ft = 1089/4 */
+
+  /* ---------- land formatting ---------- */
+  /* "1 Kanal 10 Marla (8,167.50 sq ft)" / "23 1/3 Marla (6,352.50 sq ft)".
+     Rule (spec §11 test tables govern): a WHOLE marla value uses the Kanal
+     breakdown; a FRACTIONAL marla value is shown as marla only, no Kanal part. */
+  function inhFmtLand(shareFrac, totalSqftFrac){
+    var totalMarla = F.div(totalSqftFrac, MARLA_SQFT);
+    var marla = F.mul(shareFrac, totalMarla);
+    return inhFmtMarla(marla) + ' (' + fmt2(F.num(marla)*272.25) + ' sq ft)';
+  }
+  function inhFmtMarla(marla){
+    var whole = Math.floor(F.num(marla));
+    var fracPart = F.sub(marla, F(whole,1));
+    if(F.isZero(fracPart)){
+      var kanal = Math.floor(whole/20), rem = whole%20;
+      if(kanal>0 && rem>0) return kanal+' Kanal '+rem+' Marla';
+      if(kanal>0) return kanal+' Kanal';
+      return whole+' Marla';
+    }
+    return (whole>0 ? whole+' ' : '') + F.str(fracPart) + ' Marla';
+  }
+  /* Marla only, never Kanal — used for the Total Distributed / Undistributed
+     rows (spec §10: "40 Marla (10,890.00 sq ft)"). */
+  function inhFmtMarlaOnly(marla){
+    var whole = Math.floor(F.num(marla));
+    var fracPart = F.sub(marla, F(whole,1));
+    if(F.isZero(fracPart)) return whole+' Marla';
+    return (whole>0 ? whole+' ' : '') + F.str(fracPart) + ' Marla';
+  }
+
+  /* ---------- core computation (pure — no DOM) ----------
+     estateSqft: Fraction (sq ft, > 0).
+     h: {spouse:'none'|'husband'|'wife', father:0|1, mother:0|1, sons:n,
+         daughters:n, fBrothers:n, fSisters:n, grandfather:0|1, grandmother:0|1,
+         maternal:n}
+     Returns {error, rows, distributed, undistributed, excluded, notes, awl, radd, totalMarla}.
+     rows: [{key, name, plural, count, total:Fraction, perHead:Fraction, rule}] */
+  function inhCompute(estateSqft, h){
+    var res = { error:null, rows:[], distributed:F(0,1), undistributed:F(0,1),
+      excluded:[], notes:[], awl:null, radd:false, totalMarla:F(0,1) };
+    if(!estateSqft || F.cmp(estateSqft, F(0,1)) <= 0){ res.error='estate'; return res; }
+    var anyHeir = h.spouse!=='none' || h.father || h.mother || h.sons>0 || h.daughters>0 ||
+      h.fBrothers>0 || h.fSisters>0 || h.grandfather || h.grandmother || h.maternal>0;
+    if(!anyHeir){ res.error='noheir'; return res; }
+    var hasSon = h.sons>0;
+    var hasChildren = hasSon || h.daughters>0;
+    if(hasChildren && h.maternal>0){ res.error='maternal'; return res; }
+    res.totalMarla = F.div(estateSqft, MARLA_SQFT);
+
+    /* --- exclusions (§5) --- */
+    var hasFather=!!h.father, hasMother=!!h.mother;
+    var gf = !!h.grandfather && !hasFather;
+    var gm = !!h.grandmother && !hasMother && !hasFather;
+    if(h.grandfather && hasFather) res.excluded.push({name:'Paternal Grandfather', reason:'the father is alive'});
+    if(h.grandmother && hasMother) res.excluded.push({name:'Paternal Grandmother', reason:'the mother is alive'});
+    else if(h.grandmother && hasFather) res.excluded.push({name:'Paternal Grandmother', reason:'the father is alive'});
+    var fb=h.fBrothers, fs=h.fSisters, mat=h.maternal;
+    if(hasSon){ if(fb>0) res.excluded.push({name:'Full Brother', reason:'a son exists'}); if(fs>0) res.excluded.push({name:'Full Sister', reason:'a son exists'}); fb=0; fs=0; }
+    else if(hasFather){ if(fb>0) res.excluded.push({name:'Full Brother', reason:'the father is alive'}); if(fs>0) res.excluded.push({name:'Full Sister', reason:'the father is alive'}); fb=0; fs=0; }
+    else if(gf){ if(fb>0) res.excluded.push({name:'Full Brother', reason:'the paternal grandfather is alive'}); if(fs>0) res.excluded.push({name:'Full Sister', reason:'the paternal grandfather is alive'}); fb=0; fs=0; }
+    if(hasChildren){ if(mat>0) res.excluded.push({name:'Maternal Brothers/Sisters', reason:'children exist'}); mat=0; }
+    else if(hasFather){ if(mat>0) res.excluded.push({name:'Maternal Brothers/Sisters', reason:'the father is alive'}); mat=0; }
+    else if(gf){ if(mat>0) res.excluded.push({name:'Maternal Brothers/Sisters', reason:'the paternal grandfather is alive'}); mat=0; }
+    /* sibCount uses the INPUT counts: under Hanafi rules siblings who are
+       themselves excluded still reduce the mother to 1/6 (spec §6, §9 step 5). */
+    var sibCount = h.fBrothers + h.fSisters + h.maternal;
+
+    /* --- fixed shares (§6) --- */
+    var fixed={};
+    var umariyyatain=false;
+    if(h.spouse==='husband') fixed.spouse = hasChildren ? F(1,4) : F(1,2);
+    else if(h.spouse==='wife') fixed.spouse = hasChildren ? F(1,8) : F(1,4);
+    if(hasFather && hasChildren) fixed.father = F(1,6);
+    if(gf && hasChildren) fixed.grandfather = F(1,6);
+    if(hasMother){
+      if(h.spouse!=='none' && hasFather && !hasChildren && sibCount<2){
+        umariyyatain=true;
+        fixed.mother = F.mul(F(1,3), F.sub(F(1,1), fixed.spouse));
+      } else if(!hasChildren && sibCount<2) fixed.mother = F(1,3);
+      else fixed.mother = F(1,6);
+    }
+    if(!hasSon && h.daughters>0) fixed.daughters = h.daughters===1 ? F(1,2) : F(2,3);
+    var sistersMode=null; /* 'brothers' | 'daughters' | 'fixed' */
+    if(fs>0){
+      if(fb>0) sistersMode='brothers';
+      else if(h.daughters>0) sistersMode='daughters'; /* §7.3 */
+      else { sistersMode='fixed'; fixed.fsisters = fs===1 ? F(1,2) : F(2,3); }
+    }
+    if(mat>0) fixed.maternal = mat===1 ? F(1,6) : F(1,3);
+    if(gm) fixed.grandmother = F(1,6);
+
+    var sum=F(0,1), keys=[];
+    for(var k in fixed){ sum=F.add(sum, fixed[k]); keys.push(k); }
+    var final={}; /* key -> Fraction (TOTAL for the type) */
+    var extra={}; /* key -> Fraction (radd extra, type total) */
+    var R=null;
+    if(F.cmp(sum, F(1,1)) > 0){
+      /* 'awl (§8b): base = LCM of the fixed-share denominators; new base = sum
+         of the numerators over that base. Every fixed share is scaled; there is
+         no residue and no radd, so residuaries get nothing. */
+      var base=1; keys.forEach(function(k){ base=lcm(base, fixed[k].d); });
+      var S=0; keys.forEach(function(k){ S += fixed[k].n * (base/fixed[k].d); });
+      var scale=F(base,S);
+      keys.forEach(function(k){ final[k]=F.mul(fixed[k], scale); });
+      res.awl={base:base, newBase:S};
+      res.notes.push("Fixed shares exceeded the estate, so every share was reduced proportionally — 'awl, base "+base+" → "+S+".");
+    } else if(F.cmp(sum, F(1,1)) === 0){
+      keys.forEach(function(k){ final[k]=fixed[k]; });
+    } else {
+      R=F.sub(F(1,1), sum);
+      keys.forEach(function(k){ final[k]=fixed[k]; });
+      if(hasSon){
+        var parts=2*h.sons + h.daughters;
+        final.sons = F.mul(R, F(2*h.sons, parts));
+        if(h.daughters>0) final.daughters = F.mul(R, F(h.daughters, parts));
+      } else if(hasFather){
+        final.father = F.add(final.father||F(0,1), R);
+      } else if(h.daughters>0 && fs>0 && fb===0){
+        final.fsisters = R; /* §7.3 — sisters take the remainder, shared equally */
+      } else if(fb>0){
+        var parts2=2*fb + fs;
+        final.fbrothers = F.mul(R, F(2*fb, parts2));
+        if(fs>0) final.fsisters = F.mul(R, F(fs, parts2));
+      } else if(gf){
+        final.grandfather = F.add(final.grandfather||F(0,1), R);
+      } else {
+        /* radd (§8c): residue returns to the fixed-share heirs in proportion
+           to their fixed shares — except the spouse, who never receives radd. */
+        var elig=[], eligSum=F(0,1);
+        keys.forEach(function(k){ if(k!=='spouse'){ elig.push(k); eligSum=F.add(eligSum, fixed[k]); } });
+        if(elig.length>0){
+          res.radd=true;
+          elig.forEach(function(k){
+            extra[k]=F.mul(R, F.div(fixed[k], eligSum));
+            final[k]=F.add(final[k], extra[k]);
+          });
+          res.notes.push("The residue returned to the fixed-share heirs (radd) — the spouse does not receive radd.");
+        } else {
+          res.undistributed=R; /* only the spouse survives — left undistributed (§8c) */
+        }
+      }
+    }
+
+    /* --- rule lines (one per heir type) --- */
+    function ruleFor(key){
+      var fx=fixed[key], fn=final[key]||F(0,1);
+      if(res.awl && fx){
+        if(F.cmp(fn, fx)!==0) return F.str(fx)+' reduced to '+F.str(fn)+" by 'awl.";
+        return F.str(fx)+" — fixed share (reduced by 'awl).";
+      }
+      if(key==='spouse'){
+        var s = h.spouse==='husband' ? (hasChildren ? '1/4 — children exist.' : '1/2 — no children.')
+                                     : (hasChildren ? '1/8 — children exist.' : '1/4 — no children.');
+        if(res.radd) s += ' (spouse does not receive radd)';
+        return s;
+      }
+      if(key==='father' || key==='grandfather'){
+        if(hasSon) return '1/6 — a son exists, so no residue for the '+(key==='father'?'father':'grandfather')+'.';
+        if(h.daughters>0) return '1/6 + residue — daughters only, no son.';
+        return 'Residuary — no children.';
+      }
+      if(key==='mother'){
+        if(res.radd && extra.mother) return F.str(fixed.mother)+' fixed + '+F.str(extra.mother)+' by radd.';
+        if(umariyyatain) return '1/3 of the remainder — Umariyyatain (spouse + father, no children).';
+        if(!hasChildren && sibCount<2) return '1/3 — no children and fewer than 2 siblings.';
+        return hasChildren ? '1/6 — children exist.' : '1/6 — two siblings exist.';
+      }
+      if(key==='sons'){
+        var others = hasMother||hasFather||gf||gm||h.daughters>0||fb>0||fs>0||mat>0;
+        if(!others && h.spouse==='none') return 'Sole residuary — takes the whole estate.';
+        if(F.isZero(fn)) return "Residuary — nothing remains after 'awl.";
+        if(h.daughters>0) return 'Residuary — 2:1 with the daughter'+(h.daughters>1?'s':'')+' on the '+F.str(R||F(0,1))+' remainder.';
+        return 'Residuary — takes the remainder.';
+      }
+      if(key==='daughters'){
+        if(hasSon) return "Residuary with the son — half a son's share.";
+        if(res.radd && extra.daughters) return F.str(fixed.daughters)+' fixed + '+F.str(extra.daughters)+' by radd — no residuary heir exists.';
+        return h.daughters===1 ? '1/2 — one daughter, no son.' : '2/3 — two or more daughters, no son.';
+      }
+      if(key==='fbrothers'){
+        if(F.isZero(fn)) return "Residuary — nothing remains after 'awl.";
+        if(fs>0) return 'Residuary — 2:1 with the sister'+(fs>1?'s':'')+' on the '+F.str(R||F(0,1))+' remainder.';
+        return 'Residuary — takes the remainder.';
+      }
+      if(key==='fsisters'){
+        if(sistersMode==='brothers') return "Residuary with the brother — half a brother's share.";
+        if(sistersMode==='daughters'){
+          if(F.isZero(fn)) return "Residuary with the daughters — nothing remains after 'awl.";
+          return 'Residuary with the daughters — takes the remainder, shared equally.';
+        }
+        if(res.radd && extra.fsisters) return F.str(fixed.fsisters)+' fixed + '+F.str(extra.fsisters)+' by radd.';
+        return fs===1 ? '1/2 — no son, no daughter, no father, no grandfather, no full brother.'
+                       : '2/3 — two or more sisters, no son, no daughter, no father, no grandfather, no full brother.';
+      }
+      if(key==='grandmother'){
+        if(res.radd && extra.grandmother) return F.str(fixed.grandmother)+' fixed + '+F.str(extra.grandmother)+' by radd.';
+        return '1/6 — mother and father are absent.';
+      }
+      if(key==='maternal'){
+        if(res.radd && extra.maternal) return F.str(fixed.maternal)+' fixed + '+F.str(extra.maternal)+' by radd.';
+        return mat===1 ? '1/6 — one maternal sibling.' : '1/3 shared equally — two or more maternal siblings.';
+      }
+      return '';
+    }
+
+    /* --- rows (fixed order: spouse, mother, father, sons, daughters,
+           full brothers, full sisters, grandfather, grandmother, maternal) --- */
+    var order=[
+      ['spouse', h.spouse==='none'?0:1, h.spouse==='husband'?'Husband':'Wife', h.spouse==='husband'?'Husband':'Wife'],
+      ['mother', hasMother?1:0, 'Mother', 'Mother'],
+      ['father', hasFather?1:0, 'Father', 'Father'],
+      ['sons', h.sons, 'Son', 'Sons'],
+      ['daughters', h.daughters, 'Daughter', 'Daughters'],
+      ['fbrothers', fb, 'Full Brother', 'Full Brothers'],
+      ['fsisters', fs, 'Full Sister', 'Full Sisters'],
+      ['grandfather', gf?1:0, 'Paternal Grandfather', 'Paternal Grandfather'],
+      ['grandmother', gm?1:0, 'Paternal Grandmother', 'Paternal Grandmother'],
+      ['maternal', mat, 'Maternal Brothers/Sisters', 'Maternal Brothers/Sisters']
+    ];
+    order.forEach(function(o){
+      var key=o[0], count=o[1];
+      if(!count) return;
+      var tot=final[key]||F(0,1);
+      res.rows.push({key:key, name:o[2], plural:o[3], count:count, total:tot,
+        perHead:F.div(tot, F(count,1)), rule:ruleFor(key)});
+    });
+    res.distributed = res.rows.reduce(function(s,row){ return F.add(s,row.total); }, F(0,1));
+    /* warnings (§4c) */
+    if(gf && (h.fBrothers>0 || h.fSisters>0))
+      res.notes.push('Note: under Hanafi rules the grandfather excludes full brothers and sisters, so they receive nothing here. If your family follows another opinion, confirm with a mufti.');
+    if(res.rows.length===1 && res.rows[0].key==='spouse' && !F.isZero(res.undistributed))
+      res.notes.push('Only the spouse inherits a fixed share; the rest of the estate is undistributed here. Confirm with a mufti before acting on this.');
+    return res;
+  }
+
+  /* ---------- DOM layer ---------- */
+  function $(id){ return document.getElementById(id); }
+  function chipOn(id){ var el=$(id); return !!(el && el.classList.contains('on2') && !el.disabled); }
+  function cnt(id){ var el=$(id); var v=el?parseInt(el.textContent,10):0; return isFinite(v)?Math.max(0,Math.min(10,v)):0; }
+  function inhReadHeirs(){
+    var sp='none';
+    if(chipOn('inhSpHusband')) sp='husband'; else if(chipOn('inhSpWife')) sp='wife';
+    return { spouse:sp, father:chipOn('inhFather')?1:0, mother:chipOn('inhMother')?1:0,
+      sons:cnt('inhSonsN'), daughters:cnt('inhDaughtersN'), fBrothers:cnt('inhFBrothersN'),
+      fSisters:cnt('inhFSistersN'), grandfather:chipOn('inhGrandfather')?1:0,
+      grandmother:chipOn('inhGrandmother')?1:0, maternal:cnt('inhMaternalN') };
+  }
+  function inhReadEstate(){
+    var k=decToFrac($('inhKanal')?$('inhKanal').value:''), m=decToFrac($('inhMarla')?$('inhMarla').value:''),
+        s=decToFrac($('inhSqft')?$('inhSqft').value:'');
+    return F.add(F.add(F.mul(k,F(5445,1)), F.mul(m,MARLA_SQFT)), s);
+  }
+  function inhHideResults(){ var r=$('inhRes'); if(r) r.style.display='none'; }
+  function inhSetChip(key, on, disabled){
+    var el=$('inh'+cap(key)); if(!el) return;
+    if(disabled){ el.disabled=true; el.classList.remove('on2'); el.textContent='—'; return; }
+    el.disabled=false;
+    el.classList.toggle('on2', !!on);
+    el.textContent = on ? 'On' : 'Off';
+  }
+  /* §4a: father disables grandfather + grandmother; mother disables grandmother.
+     The maternal stepper is disabled while children exist. */
+  function inhSyncExclusions(){
+    var st=inhReadHeirs();
+    inhSetChip('grandfather', st.grandfather, !!st.father);
+    inhSetChip('grandmother', st.grandmother, !!(st.father||st.mother));
+    var matOff = st.sons>0 || st.daughters>0;
+    var minus=$('inhMaternalMinus'), plus=$('inhMaternalPlus');
+    if(minus) minus.disabled=matOff; if(plus) plus.disabled=matOff;
+    var hint=$('inhMaternalHint'); if(hint) hint.style.display = matOff ? '' : 'none';
+  }
+  function inhRefreshUseBtn(){
+    var btn=$('inhUseLandBtn'); if(!btn) return;
+    var box=$('calcRes'), out=$('calcSqftOut');
+    var val=0;
+    if(box && box.style.display!=='none' && out){
+      val=parseFloat(String(out.textContent).replace(/,/g,''));
+    }
+    if(!(val>0)){
+      btn.disabled=true;
+      btn.textContent='No Land Calculator result yet';
+      btn.title='Calculate a plot in the Land Calculator first';
+    } else {
+      btn.disabled=false;
+      btn.textContent='Use Land Calculator result';
+      btn.title='';
+    }
+  }
+  window.setCalcTab = function(which){
+    var land=$('calcLandPanel'), inh=$('calcInhPanel');
+    var bL=$('calcTabLand'), bI=$('calcTabInh');
+    if(land) land.style.display = which==='land' ? '' : 'none';
+    if(inh) inh.style.display = which==='inh' ? '' : 'none';
+    if(bL) bL.classList.toggle('on2', which==='land');
+    if(bI) bI.classList.toggle('on2', which==='inh');
+    if(which==='inh'){ inhRefreshUseBtn(); inhUpdateTotal(); }
+  };
+  window.inhUpdateTotal = function(){
+    var tot=inhReadEstate();
+    var el=$('inhTotal'); if(!el) return;
+    if(F.isZero(tot)){ el.textContent='—'; return; }
+    var sqftNum=F.num(tot);
+    var c=(window.__calcLand && window.__calcLand.convert)
+      ? window.__calcLand.convert(sqftNum)
+      : {sqft:sqftNum, marla:sqftNum/272.25, kanal:sqftNum/5445, acre:sqftNum/43560};
+    var acres=Math.floor(c.acre), rem=c.sqft-acres*43560, kanal=Math.floor(rem/5445);
+    rem=rem-kanal*5445; var marla=rem/272.25;
+    var parts=[];
+    if(acres>0) parts.push(acres+(acres===1?' Acre':' Acres'));
+    if(kanal>0) parts.push(kanal+' Kanal');
+    parts.push(fmtM(marla)+' Marla');
+    el.textContent=parts.join('  ')+' ('+fmt2(c.sqft)+' sq ft)';
+    inhHideResults();
+  };
+  window.inhSetSpouse = function(v){
+    ['inhSpNone','inhSpHusband','inhSpWife'].forEach(function(id){
+      var el=$(id); if(el) el.classList.remove('on2');
+    });
+    var el=$(v==='husband'?'inhSpHusband':v==='wife'?'inhSpWife':'inhSpNone');
+    if(el) el.classList.add('on2');
+    inhHideResults();
+  };
+  window.inhToggle = function(key){
+    var el=$('inh'+cap(key)); if(!el || el.disabled) return;
+    var on=!el.classList.contains('on2');
+    el.classList.toggle('on2', on);
+    el.textContent=on?'On':'Off';
+    inhSyncExclusions();
+    inhHideResults();
+  };
+  window.inhStep = function(key, delta){
+    var map={sons:'inhSonsN', daughters:'inhDaughtersN', fbrothers:'inhFBrothersN', fsisters:'inhFSistersN', maternal:'inhMaternalN'};
+    var el=$(map[key]); if(!el) return;
+    var v=cnt(map[key])+delta;
+    v=Math.max(0, Math.min(10, v));
+    el.textContent=String(v);
+    inhSyncExclusions();
+    inhHideResults();
+  };
+  window.inhUseLand = function(){
+    var out=$('calcSqftOut'); if(!out) return;
+    var val=parseFloat(String(out.textContent).replace(/,/g,''));
+    if(!(val>0)) return;
+    var k=$('inhKanal'), m=$('inhMarla'), s=$('inhSqft');
+    if(k) k.value=''; if(m) m.value='';
+    if(s) s.value=String(val);
+    inhUpdateTotal();
+    inhRefreshUseBtn();
+  };
+  window.inhClear = function(){
+    ['inhKanal','inhMarla','inhSqft'].forEach(function(id){ var el=$(id); if(el) el.value=''; });
+    window.inhSetSpouse('none');
+    ['father','mother','grandfather','grandmother'].forEach(function(k){
+      var el=$('inh'+cap(k)); if(el){ el.disabled=false; el.classList.remove('on2'); el.textContent='Off'; }
+    });
+    ['inhSonsN','inhDaughtersN','inhFBrothersN','inhFSistersN','inhMaternalN'].forEach(function(id){
+      var el=$(id); if(el) el.textContent='0';
+    });
+    var minus=$('inhMaternalMinus'), plus=$('inhMaternalPlus');
+    if(minus) minus.disabled=false; if(plus) plus.disabled=false;
+    var hint=$('inhMaternalHint'); if(hint) hint.style.display='none';
+    var err=$('inhError'); if(err) err.style.display='none';
+    inhHideResults();
+    inhUpdateTotal();
+  };
+  window.inhCalculate = function(){
+    var errEl=$('inhError'), resEl=$('inhRes');
+    function showErr(msg){ if(errEl){ errEl.textContent=msg; errEl.style.display=''; } if(resEl) resEl.style.display='none'; }
+    var estate=inhReadEstate();
+    var h=inhReadHeirs();
+    var r=inhCompute(estate, h);
+    if(r.error==='estate'){ showErr('Enter the total land first.'); return; }
+    if(r.error==='noheir'){ showErr('Add at least one heir.'); return; }
+    if(r.error==='maternal'){ showErr('Children exclude maternal brothers/sisters — set maternal siblings to 0.'); return; }
+    if(errEl) errEl.style.display='none';
+    var html='<tr><th style="text-align:left">Heir</th><th>Share</th><th style="text-align:right">Total</th></tr>';
+    r.rows.forEach(function(row){
+      var name=row.count>1 ? row.plural+' ×'+row.count : row.name;
+      var totalLand=inhFmtLand(row.total, estate);
+      var eachHtml=row.count>1 ? '<small>Each: '+inhFmtLand(row.perHead, estate)+'</small>' : '';
+      html+='<tr><td style="text-align:left">'+esc(name)+'<small>'+esc(row.rule)+'</small></td>'+
+        '<td style="text-align:center">'+F.str(row.perHead)+'</td>'+
+        '<td style="text-align:right">'+totalLand+eachHtml+'</td></tr>';
+    });
+    var tbl=$('inhTable'); if(tbl) tbl.innerHTML=html;
+    var distMarla=F.mul(r.distributed, r.totalMarla);
+    var dt=$('inhDistTotal');
+    if(dt) dt.textContent=inhFmtMarlaOnly(distMarla)+' ('+fmt2(F.num(distMarla)*272.25)+' sq ft)';
+    var remRow=$('inhRemRow'), remEl=$('inhRem');
+    if(!F.isZero(r.undistributed)){
+      var remMarla=F.mul(r.undistributed, r.totalMarla);
+      if(remEl) remEl.textContent=inhFmtMarlaOnly(remMarla)+' ('+fmt2(F.num(remMarla)*272.25)+' sq ft)';
+      if(remRow) remRow.style.display='';
+    } else if(remRow) remRow.style.display='none';
+    var notesHtml='';
+    if(r.excluded.length){
+      notesHtml+='<div>Excluded: '+r.excluded.map(function(e){ return esc(e.name)+' — '+esc(e.reason)+'.'; }).join(' ')+'</div>';
+    }
+    r.notes.forEach(function(n){ notesHtml+='<div>'+esc(n)+'</div>'; });
+    var notes=$('inhNotes'); if(notes) notes.innerHTML=notesHtml;
+    if(resEl) resEl.style.display='';
+  };
+  /* Test hook: pure compute + fraction helpers (no DOM needed). */
+  window.__inhCalc = { compute:inhCompute, F:F, decToFrac:decToFrac, fmtLand:inhFmtLand, fmtMarla:inhFmtMarla };
+})();
 </script>
 <style>
 /* ===== v7.1 Hide: one tap hides ALL interface — only the map and one small
@@ -4524,8 +5050,8 @@ document.addEventListener('keydown', function(e){
 .floatbtn:active{transform:scale(.92)}
 #menuBtn{left:10px}
 #themeBtn{right:10px;font-size:17px}
-#zoomCtl{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 240px);z-index:1100;display:flex;flex-direction:column;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.28);background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
-#zoomCtl button{width:40px;height:38px;background:none;border:0;color:#e2e8f0;font-size:21px;font-weight:700;line-height:1;cursor:pointer;padding:0}
+#zoomCtl{position:fixed;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 240px);z-index:1100;display:flex;flex-direction:column;border-radius:99px;overflow:hidden;border:1px solid rgba(227,197,101,.5);background:rgba(7,39,28,.85);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#zoomCtl button{width:40px;height:38px;background:none;border:0;color:#E3C565;font-size:21px;font-weight:700;line-height:1;cursor:pointer;padding:0}
 #zoomCtl button+button{border-top:1px solid rgba(255,255,255,.18)}
 #zoomCtl button:active{background:rgba(255,255,255,.14)}
 #find{right:auto}
@@ -4535,7 +5061,7 @@ body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #fabLocate,body.uihide #z
    left looked unprofessional — now ONE horizontal line at the very bottom,
    icon + tiny label per button, plus Add Pin. */
 #mapFabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:1100;display:flex;gap:2px;background:rgba(8,34,25,.94);border:1px solid rgba(201,162,39,.5);border-radius:16px;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.4);width:min(96vw,400px)}
-.mapfab{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:#E3C565;border-radius:12px;padding:6px 2px;font-size:10.5px;font-weight:700;white-space:nowrap;cursor:pointer}
+.mapfab{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:#E3C565;border-radius:12px;padding:6px 2px;font-size:10.5px;font-weight:700;white-space:nowrap;cursor:pointer;transition:transform .12s ease,background .12s ease,color .12s ease}
 .mapfab .mi{font-size:20px;line-height:1}
 .mapfab.on{background:#f59e0b;color:#111827;border-color:#f59e0b}
 .mapfab:active{transform:scale(.94)}
@@ -4602,7 +5128,7 @@ body.uihide #menuBtn,body.uihide #themeBtn,body.uihide #fabLocate,body.uihide #z
 /* ===== v7.2 palette: premium EMERALD + GOLD (owner branding) ===== */
 body{background:#071f18}
 #map{background:#071f18;background-image:linear-gradient(rgba(201,162,39,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.05) 1px,transparent 1px)}
-.glass{background:rgba(8,34,25,.93);border-color:rgba(201,162,39,.28)}
+.glass{background:rgba(7,39,28,.92);border-color:rgba(227,197,101,.30)}
 .dash-head.banner{background:linear-gradient(135deg,#0F4028 0%,#0A2E23 55%,#061A13 100%);border-bottom:2px solid #C9A227;box-shadow:0 2px 14px rgba(0,0,0,.35)}
 .dash-head.banner .brand b{color:#E3C565;font-size:19px;letter-spacing:.3px}
 .dash-head.banner .brand small{color:#A9C6B4}
@@ -4635,13 +5161,15 @@ body{background:#071f18}
 /* Current-village chip (v7.18): the map screen itself must say which village
    it is showing — the sidebar is closed most of the time. Tap = change village. */
 #villageChip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:1100;max-width:56vw;background:linear-gradient(135deg,rgba(12,52,36,.95),rgba(6,26,19,.95));border:1px solid rgba(227,197,101,.65);color:#F0D47A;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 1px rgba(227,197,101,.12)}
+#villageChip.shine::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(240,212,122,.5) 50%,transparent 60%);animation:chipShine 1.2s ease forwards}
+@keyframes chipShine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 /* Abadi plot numbers (v7.19): shown only at zoom 16+ */
 .abadi-lbl{background:rgba(8,34,25,.92);border:1px solid rgba(245,158,11,.75);color:#fcd34d;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.55)}
 .abadi-lbl-strip{border-color:rgba(56,189,248,.7);color:#7dd3fc}
 /* Street View labels (v7.24): street widths + chowk sizes, shown only at zoom 16+ */
 .street-lbl{background:rgba(255,255,255,.95);border:1px solid #334155;color:#0f172a;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .chowk-lbl{background:linear-gradient(135deg,rgba(139,92,246,.95),rgba(109,40,217,.95));border:1px solid #8b5cf6;color:#fff;border-radius:4px;font-size:10px;font-weight:800;text-align:center;line-height:16px;box-shadow:0 1px 4px rgba(0,0,0,.4)}
-#zoomCtl{background:linear-gradient(135deg,rgba(12,52,36,.95),rgba(6,26,19,.95));border-color:rgba(227,197,101,.65)}
+#zoomCtl{background:rgba(7,39,28,.85);border-color:rgba(227,197,101,.5)}
 #zoomCtl button{color:#E3C565}
 #zoomCtl button+button{border-top-color:rgba(201,162,39,.3)}
 #showUi{background:rgba(8,34,25,.94);border-color:#C9A227;color:#E3C565}
