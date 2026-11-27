@@ -1,6 +1,6 @@
 /* ZameenMap service worker — caches the app shell for instant offline open.
    Satellite tiles are NOT handled here; they live in the app's IndexedDB cache. */
-var CACHE = 'zameenmap-shell-v7.29';
+var CACHE = 'zameenmap-shell-v7.30';
 /* Only files that actually exist in the repo: the five icon PNGs used to be
    listed here but were never shipped, and one missing file made c.addAll()
    fail the whole install — so offline never worked. Each file is cached
