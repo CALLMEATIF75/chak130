@@ -738,12 +738,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --gold-label:#fde047;
   --gold-label-soft:#fef08a;
   --gold-line-2:#eab308;
-  /* Gold fill — the ONE solid-gold surface in the system (§05 D.7, G.1 #28):
-     reserved for the active tab, the hero Search/Go action, the menu button,
-     the measure Finish button and the active bottom-bar button. Dark ink text
-     only on it (10.51:1 on --gold, 7.33:1 on --gold-deep — AA ✓; white on it
-     is 2.42:1 and must never be used). Added B13, 27 Nov 2026 visual pass. */
-  --gold-fill:linear-gradient(180deg,var(--gold),var(--gold-deep));
   --gold-rgb:201,162,39;
   --gold-light-rgb:227,197,101;
   --gold-dark-rgb:184,134,11;
@@ -1450,115 +1444,6 @@ body.cleanview #find .combo-list,body.uihide #find .combo-list{display:none!impo
 .skip-link{position:fixed;top:-48px;left:12px;z-index:var(--z-loader);background:var(--gold);color:var(--ink-dark);font-weight:700;font-size:13px;padding:8px 14px;border-radius:8px;text-decoration:none;transition:top var(--dur-fast) ease}
 .skip-link:focus{top:12px}
 
-/* --- B13: Visual redesign 27 Nov 2026 — the LOOK pass (§05 B/C/D/F/J, §04 §14, §23 §9).
-   The rebuild (B12) warmed the palette but left the same layout, same thin
-   segmented tabs and same flat cards — at a glance it was "the same app,
-   warmer". This section makes the app LOOK designed, with zero behaviour
-   change: one designed hierarchy (brand → search card → 2×2 tabs → sections),
-   gold used deliberately with ONE meaning per surface, cards that read as
-   cards, and active states a thumb can read at arm's length. Every rule here
-   sits last in the block so it wins at equal specificity; nothing above is
-   edited. Hard limits kept: 5-button bar, 2×2 icon tabs, English UI, footer
-   one line, toggles default OFF, the qila chip stays removed, Land
-   Calculator untouched. --- */
-
-/* Brand — a low gold glow behind the logo end of the banner (§05 F.4 #3:
-   decorate the background, keep the decoration behind the content). */
-.dash-head.banner{background:radial-gradient(70% 130% at 88% 0%,rgba(var(--gold-light-rgb),.22),transparent 55%),linear-gradient(135deg,var(--em-650) 0%,var(--em-880) 55%,var(--em-975) 100%)}
-/* Drawer — the edge facing the map carries the gold line, so the open panel
-   reads as one framed sheet, not a floating box (§05 C.6 alignment). */
-#dash{border-right:1px solid rgba(var(--gold-rgb),.55)}
-
-/* HERO — search is the job (§05 A.3: start with a feature, not a layout), so
-   it stops being a flat strip and becomes the one raised card at the top of
-   the panel: gold-tinted border, two-part shadow, edges aligned with the tabs
-   and the home view below it (14px line, §05 C.6). */
-.hero{margin:12px 14px 0;padding:12px;border:1px solid rgba(var(--gold-rgb),.40);border-bottom:1px solid rgba(var(--gold-rgb),.40);border-radius:var(--r-xl);background:linear-gradient(180deg,rgba(var(--em-720-rgb),.55),rgba(var(--deep-rgb),.45));box-shadow:var(--sh-card)}
-/* The Search / Go button is the ONE solid-gold action in the panel
-   (§05 G.1 #28 Von Restorff: the primary action is visually different;
-   §05 B.2: one hero per screen). Dark ink text on gold — AA ✓ (7.33:1 at
-   the darkest end of the gradient). Applies to the hero Search button and
-   the home-view Go button — the only two .searchrow buttons. */
-.searchrow button{background:var(--gold-fill);border:1px solid var(--gold-deep);color:var(--ink-dark);box-shadow:var(--sh-btn)}
-
-/* TABS — back to the 2×2 grid of big icon buttons (B2's shape; the B10
-   segmented strip made four main sections look like a footnote). Each tab is
-   a raised card (icon 28px + label, 78px tall, ≥44px touch target, §05 C.7 /
-   §23 §9). The active tab is unmistakable: solid gold fill + dark text +
-   shadow — the same gold-fill language as the Search button, and the ONLY
-   gold-filled tab at any time (§05 D.7: an accent that appears everywhere
-   is not an accent; §05 F.4: states must be designed, not left subtle). */
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 14px 0;border-bottom:0}
-.tab{border:1px solid rgba(var(--gold-rgb),.30);border-bottom:1px solid rgba(var(--gold-rgb),.30);border-radius:var(--r-lg);background:linear-gradient(180deg,var(--em-800),var(--em-880));color:var(--ink-mist);padding:14px 4px;font-size:13px;font-weight:700;min-height:78px;letter-spacing:0;box-shadow:var(--sh-card)}
-.tab.on{background:var(--gold-fill);border-color:var(--gold-deep);color:var(--ink-dark);box-shadow:var(--sh-btn)}
-
-/* SECTION HEADERS — one consistent label language everywhere (§05 E.5,
-   §05 I.2): small caps + tracking + a short gold rule underneath, so a
-   stranger can scan the panel's sections without reading (§05 J.1 #1).
-   Spacing between sections (16–20px) is clearly larger than spacing inside
-   a card (8–12px) — §05 C.5. */
-.home-view h2,.tabbody h2{font-size:12px;text-transform:uppercase;letter-spacing:1.1px;position:relative;padding-bottom:7px;border-bottom:1px solid rgba(var(--gold-rgb),.22)}
-.tabbody h5{position:relative;padding-bottom:7px;border-bottom:1px solid rgba(var(--gold-rgb),.22)}
-.home-view h2::after,.tabbody h2::after,.tabbody h5::after{content:"";position:absolute;left:0;bottom:-1px;width:36px;height:2px;background:var(--gold-deep)}
-.home-view h2{margin:20px 0 10px}
-.tabbody h2,.tabbody h5{margin:16px 0 8px}
-.home-view .card{margin:0 0 12px}
-
-/* STATS — the number is the hero of a stat (§05 B.1): 20px → 24px display
-   size, tabular numerals kept. Each stat tile carries the card family's
-   3px gold top edge so stats, cards and panels read as one system (§05 I.2).
-   The .wide summary stat keeps its 15px size (.stat.wide b outranks this). */
-.stat{border-top:3px solid var(--gold-deep);box-shadow:var(--sh-card)}
-.stat b{font-size:var(--fs-display)}
-.home-view .hstat b{font-size:var(--fs-display)}
-
-/* CARDS — a card must read as a card, not a bordered box (§05 F.2: two-part
-   shadows; §05 G.1 #12 Law of Common Region: the boundary groups). The
-   3px gold top edge from the rebuild stays as the family mark; depth is
-   added with the token shadow. */
-.card,.p-card{box-shadow:var(--sh-card)}
-.owncard{box-shadow:var(--sh-card)}
-.res{box-shadow:var(--sh-card)}
-
-/* SELECTED STATES, second tier — segmented choices (Units, calc tabs, theme,
-   spouse, heir toggles, Quick Tools) must be unmistakable too, but they are
-   NOT gold-filled: gold fill is reserved for the active tab / primary action
-   above. Their language is bright emerald fill + gold border + gold-soft
-   text (6.25:1 on --em-700, AA ✓) — clearly different from unselected, and
-   the same everywhere (§05 G.1 #15 Law of Similarity). */
-.btnrow button.on2{background:linear-gradient(180deg,var(--em-600),var(--em-700));border-color:var(--gold);color:var(--gold-soft)}
-.inhchip.on2{background:linear-gradient(180deg,var(--em-600),var(--em-700));border-color:var(--gold);color:var(--gold-soft)}
-.rtbtn.on{background:linear-gradient(180deg,var(--em-600),var(--em-700));border-color:var(--gold-deep);color:var(--gold-soft)}
-.ndlogin.on{background:linear-gradient(180deg,var(--em-600),var(--em-700));border-color:var(--gold);color:var(--gold-soft)}
-.home-view .qtool.on{background:linear-gradient(180deg,var(--em-600),var(--em-700));border-color:var(--gold);color:var(--gold-soft)}
-.home-view .qtool{box-shadow:var(--sh-card)}
-
-/* MAP SCREEN — the first glance. The menu button is the entry to the whole
-   app, so it is the one solid-gold disc on the map (§05 G.1 #28; §05 B.2
-   one hero per screen). The bottom bar keeps its 5 buttons and equal width
-   with the search bar above it; its top edge now carries the 2px gold accent
-   of the card family, and its active button uses the same gold fill as the
-   active tab (§05 I.2: one active-state language everywhere). The search bar
-   matches the bar's border and shadow so the pair reads as a designed set. */
-#menuBtn{background:var(--gold-fill);border-color:var(--gold-deep);color:var(--ink-dark)}
-#mapFabs{border-top:2px solid var(--gold-deep)}
-.mapfab.on{background:var(--gold-fill);border-color:var(--gold-deep);color:var(--ink-dark)}
-#find{border-color:rgba(var(--gold-rgb),.55);border-radius:var(--r-lg);box-shadow:var(--sh-lift)}
-/* Village chip — a live-status dot before the name, so it reads as "you are
-   here" rather than a plain label (§05 F.4 finishing touches). */
-#villageChip::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:7px;vertical-align:1px}
-
-/* FINISHING TOUCHES — PIN input was the last cold blue (#020617) in the UI
-   chrome; now warm emerald like every other input (§05 D.4 tinted greys).
-   Owner card and toast gain the lift shadow; search results give press
-   feedback (§04 §14.6: every interaction needs feedback); an open section
-   gets a gold rule under its heading so open/closed is visible at a glance. */
-#pinInp{background:var(--em-900)}
-#ownerCard{box-shadow:var(--sh-lift)}
-#toast{box-shadow:var(--sh-lift)}
-.gsitem:active{background:rgba(var(--gold-rgb),.15)}
-.tabbody details.sect[open] summary{border-bottom:1px solid rgba(var(--gold-rgb),.25)}
-
 </style>
 </head>
 <body>
@@ -1941,7 +1826,7 @@ body.cleanview #find .combo-list,body.uihide #find .combo-list{display:none!impo
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.30</span></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.31</span></div>
 </aside>
 <div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:76vw"><span id="pmChipTxt">Points: 0</span></div>
 <div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 232px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:76vw;cursor:pointer" onclick="copyTapCoord()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyTapCoord()}" role="button" tabindex="0" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
@@ -2059,7 +1944,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.30';
+var APP_VERSION='7.31';
 /* ===== ZAMEEN_CONFIG — the app's named constants (§06 §10.1, §09 A3, §08 12-factor III).
    One fact, one place: every threshold, duration and zoom below reads from
    here. Values are the CURRENT behaviour, verified against the pre-rebuild
@@ -4990,10 +4875,6 @@ function loadLayers(){
   }catch(e){}
 }
 window.v6RemoveLayers=function(){
-  /* Destructive action gets confirmation (§05 F.4 states; PROFESSIONAL-
-     STANDARDS §A2 fail closed) — same pattern as clearAllPins(): saved
-     layers (c130layers) + goto pins + measurement are deleted here. */
-  if(!confirm('Delete your saved layers?')) return;
   gotoPts=[]; if(gotoLayer) gotoLayer.clearLayers();
   var st=window._pinUndoStack; if(st) window._pinUndoStack=st.filter(function(it){ return it.kind!=='mark'; });
   try{ localStorage.removeItem(ZAMEEN_CONFIG.LAYERS_KEY); }catch(e){}
