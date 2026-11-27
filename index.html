@@ -681,35 +681,22 @@ svg.leaflet-image-layer.leaflet-interactive path {
 html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none}
 #map{position:absolute;inset:0;background:#0b1220;background-image:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);background-size:40px 40px}
 .glass{background:rgba(7,39,28,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(227,197,101,.30);box-shadow:0 6px 24px rgba(0,0,0,.45)}
-#top{position:absolute;z-index:1000;top:calc(env(safe-area-inset-top,0px) + 8px);left:8px;right:8px;max-width:440px;margin:0 auto;border-radius:15px;padding:6px 9px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;color:#fbbf24;letter-spacing:.2px}
 .dot{width:11px;height:11px;border-radius:50%;background:#f59e0b;animation:pl 1.6s infinite}
 .dot.ok{background:#10b981}.dot.bad{background:#ef4444;animation:none}
 @keyframes pl{0%,100%{opacity:1}50%{opacity:.35}}
 .badge{font-size:11px;padding:3px 9px;border-radius:99px;background:#1e293b;border:1px solid #334155;color:#cbd5e1;white-space:nowrap}
 .badge.good{background:#022c22;border-color:#047857;color:#6ee7b7}.badge.warn{background:#451a03;border-color:#b45309;color:#fcd34d}.badge.bad{background:#450a0a;border-color:#dc2626;color:#fca5a5}
-.off{margin-top:8px;font-size:10px;letter-spacing:.8px;color:#38bdf8;font-weight:700}
 #loc{margin-top:5px;background:rgba(2,6,23,.75);border:1px solid #1e293b;border-radius:10px;padding:5px 8px}
 #loc small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;font-weight:700}
 #pos{font-size:15px;font-weight:800;color:#34d399;margin-top:2px}
 #pos b{color:#facc15}#pos i{font-style:normal;color:#67e8f9;font-weight:800}
 #nav{margin-top:6px;font-size:12px;color:#fde68a;display:none;align-items:center;justify-content:space-between;gap:8px}
 #nav button{background:#334155;border:0;color:#fff;border-radius:8px;padding:3px 9px;font-size:12px}
-#coord{font-size:10px;color:#64748b;margin-top:4px;font-variant-numeric:tabular-nums}
-.fab{position:absolute;z-index:1000;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;flex-direction:column;gap:10px}
+#coord{font-size:10px;color:#94a3b8;margin-top:4px;font-variant-numeric:tabular-nums}
 .btn{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#e2e8f0;border:1px solid #334155;font-size:20px;padding:0;background:rgba(15,23,42,.92)}
 .btn:active{transform:scale(.92)}.btn svg{width:22px;height:22px}
 .btn.on{background:#1d4ed8;border-color:#60a5fa;color:#fff}.btn.amber{color:#fbbf24;border-color:rgba(245,158,11,.45)}.btn.dim{opacity:.45}
-.zoom{display:flex;flex-direction:column;border-radius:15px;overflow:hidden;border:1px solid #334155;background:rgba(15,23,42,.92)}
-.zoom button{width:42px;height:38px;background:none;border:0;color:#e2e8f0;font-size:22px;font-weight:700}
-.zoom button+button{border-top:1px solid #334155}
 #find{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);right:auto;width:min(96vw,400px);bottom:calc(env(safe-area-inset-bottom,0px) + 66px);border-radius:12px;padding:3px;display:flex;gap:4px}
-#find select{flex:1;min-width:0;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:5px 4px;font-size:12px;font-weight:600}
-#find select:disabled{opacity:.5}
-#panel{position:absolute;z-index:1001;right:66px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:220px;border-radius:16px;padding:12px;display:none}
-#panel h4{margin:0 0 4px;font-size:13px;color:#fbbf24}
-#panel p{margin:0 0 8px;font-size:11px;color:#94a3b8;line-height:1.4}
 .pad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,40px);gap:6px;justify-content:center}
 .pad button{background:#1e293b;border:1px solid #334155;color:#fff;border-radius:10px;font-size:16px}
 .pad span{display:flex;align-items:center;justify-content:center;font-size:10px;color:#cbd5e1;text-align:center}
@@ -726,9 +713,9 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 #pinModal.open{display:flex}
 .pincard{background:#0f172a;border:1px solid #b8860b;border-radius:16px;padding:22px 20px;max-width:340px;width:100%;text-align:center;color:#e2e8f0;box-shadow:0 18px 50px rgba(0,0,0,.6)}
 .pincard .pinlock{font-size:34px;line-height:1}
-.pincard h3{margin:8px 0 4px;color:#facc15;font-size:19px}
+.pincard h2{margin:8px 0 4px;color:#facc15;font-size:19px}
 .pincard p{margin:0 0 14px;font-size:13.5px;color:#cbd5e1}
-#pinInp{width:100%;box-sizing:border-box;padding:12px;font-size:18px;text-align:center;letter-spacing:4px;border-radius:10px;border:1.5px solid #475569;background:#020617;color:#fff;outline:none}
+#pinInp{width:100%;box-sizing:border-box;padding:12px;font-size:18px;text-align:center;letter-spacing:4px;border-radius:10px;border:1.5px solid #475569;background:#020617;color:#fff}
 #pinInp:focus{border-color:#f59e0b}
 #pinErr{display:none;color:#f87171;font-size:13px;margin-top:9px;font-weight:700}
 .locknote{background:rgba(245,158,11,.12);border:1px dashed #b8860b;border-radius:10px;padding:10px 12px;font-size:13.5px;color:#fde68a;margin:6px 0}
@@ -738,31 +725,21 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .lbl-q-sel{font-weight:800;font-size:12px;color:#fde047;text-shadow:0 0 3px #000,0 0 3px #000,0 1px 3px #000}
 .lbl-k{font-weight:800;font-size:11px;color:#fbbf24;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
 .lbl-ml{font-weight:700;font-size:9px;color:#7dd3fc;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap}
-/* ===== v5: selected mustatil ka banner — header ke andar rehta hai, map ke center ko nahi dhakta ===== */
-#selBanner{display:none;align-items:center;gap:9px;margin-top:8px;padding:6px 8px 6px 12px;border-radius:11px;background:rgba(180,83,9,.16);border:1px solid #b45309}
-#selBanner .sbName{font-size:17px;font-weight:800;color:#fcd34d;white-space:nowrap;letter-spacing:.2px}
-#selBanner .sbSub{flex:1;min-width:0;font-size:12px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#selBanner button{flex-shrink:0;width:26px;height:26px;border-radius:8px;border:1px solid #92400e;background:#451a03;color:#fcd34d;font-size:13px;line-height:1;cursor:pointer}
 .leaflet-control-scale-line{background:rgba(15,23,42,.8)!important;color:#cbd5e1!important;border-color:#94a3b8!important;font-size:10px}
 .leaflet-control-scale{margin-bottom:60px!important}
 .leaflet-control-attribution{background:rgba(15,23,42,.7)!important;color:#94a3b8!important;font-size:9px!important;margin-bottom:48px!important;margin-right:58px!important}
-#panel{max-height:62vh;overflow:auto;width:240px}
-#panel h4+p{margin-top:0}
 .sect{border-top:1px solid #334155;margin-top:10px;padding-top:10px}
 .bar{height:7px;background:#1e293b;border-radius:99px;overflow:hidden;margin:6px 0}
 .bar i{display:block;height:100%;width:0;background:#38bdf8;transition:width .2s}
 .reset.go{background:#0369a1;margin-top:4px}
-#pick{display:none}
 </style>
 <style>
 /* ===== Chak 130/1-L Dashboard v2 (matches dark premium theme #0b1220) ===== */
-.dashbtn{width:34px;height:34px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#fbbf24;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dashbtn:active{transform:scale(.92)}
 #loader{position:fixed;inset:0;z-index:5000;background:#0b1220;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;color:#cbd5e1;font-weight:700;transition:opacity .45s}
 #loader.hide{opacity:0;pointer-events:none}
 #loader .spin{width:44px;height:44px;border-radius:50%;border:4px solid #1e293b;border-top-color:#fbbf24;animation:ldspin 1s linear infinite}
 @keyframes ldspin{to{transform:rotate(360deg)}}
-#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 310px);z-index:4000;background:rgba(12,52,36,.95);border:1px solid rgba(227,197,101,.6);color:#F0D47A;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(env(safe-area-inset-bottom,0px) + 396px);z-index:4000;background:rgba(12,52,36,.95);border:1px solid rgba(227,197,101,.6);color:#F0D47A;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:88vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* Compass (North) — hidden until the "Compass (North)" toggle in Layers is on.
    Fixed below the Hide button (top-right) so it never covers it. The ui-hide /
@@ -791,7 +768,6 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .brand small{font-size:11px;color:#94a3b8}
 .vrow{display:flex;align-items:center;gap:8px;padding:10px 14px 2px}
 .vrow .vlab{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94a3b8;text-transform:uppercase}
-#villageSel{flex:1;min-width:0;background:#07271C;color:#fff;border:1px solid rgba(201,162,39,.45);border-radius:9px;padding:8px;font-size:13.5px;font-weight:700}
 .xbtn{width:36px;height:36px;min-width:36px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:16px}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px 4px}
 .stat{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:13px;padding:9px 10px}
@@ -804,8 +780,8 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .tab-tx{font-size:13px;font-weight:700;line-height:1.1}
 /* Home view — jab koi panel khula na ho to khali jagah ki bajaye gaon ki maloomat + guide */
 .home-view{padding:14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
-.home-view h5{margin:14px 0 8px;font-size:13px;color:#fbbf24}
-.home-view h5:first-child{margin-top:0}
+.home-view h2{margin:14px 0 8px;font-size:13px;color:#fbbf24}
+.home-view h2:first-child{margin-top:0}
 .home-view p{margin:0 0 8px;font-size:12.5px;color:#cbd5e1;line-height:1.65}
 .home-view .card{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:12px;padding:12px;margin:0 0 10px}
 .home-view .hstat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
@@ -833,8 +809,8 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 .home-view .hstat b{color:#F0D47A;font-size:20px}
 .home-view .hstat span{color:#cbd5e1}
 .tabbody{padding:12px 14px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
-.tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
-.tabbody h5:first-child{margin-top:0}
+.tabbody h2,.tabbody h5{margin:12px 0 6px;font-size:13px;color:#fbbf24}
+.tabbody h2:first-child,.tabbody h5:first-child{margin-top:0}
 .tabbody p{margin:0 0 8px;font-size:12.5px;color:#cbd5e1;line-height:1.65}
 .tabbody ul{margin:0 0 8px;padding-left:18px;font-size:12.5px;color:#cbd5e1;line-height:1.6}
 .tabbody .card{background:rgba(2,6,23,.6);border:1px solid #1e293b;border-radius:12px;padding:10px 12px;margin:0 0 10px}
@@ -945,12 +921,7 @@ html,body{margin:0;height:100%;background:#0b1220;color:#e2e8f0;font-family:syst
 <style>
 /* ===== v4: Compact header, Clean View, Search tab, Numberdar Login, Rabta card, Paimaish coordinates ===== */
 /* --- Compact header bar --- */
-#top{padding:6px 9px;border-radius:15px}
-.tsub{font-size:9px;letter-spacing:.8px;color:#38bdf8;font-weight:700;margin-left:6px;vertical-align:2px}
-#top .title{white-space:nowrap}
-.hbtn{width:34px;height:34px;border-radius:11px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;cursor:pointer}
-.hbtn:active{transform:scale(.92)}
-@media(max-width:480px){.tsub{display:none}#acc{font-size:10px;padding:3px 6px}#top .title{font-size:13px}}
+@media(max-width:480px){#acc{font-size:10px;padding:3px 6px}}
 /* --- Collapsible location card (summary default) --- */
 #loc{margin-top:7px;padding:0;overflow:hidden}
 #locSum{display:flex;align-items:center;gap:7px;padding:8px 10px;cursor:pointer;min-height:34px}
@@ -1002,23 +973,12 @@ body.cleanview .leaflet-control-scale{margin-bottom:12px!important}
 .stat small{letter-spacing:.6px}
 .big{border-radius:14px;background:linear-gradient(180deg,#2563eb,#1d4ed8);box-shadow:0 4px 14px rgba(29,78,216,.35)}
 .big.stop{background:linear-gradient(180deg,#d97706,#b45309);box-shadow:0 4px 14px rgba(180,83,9,.35)}
-.searchrow input:focus{border-color:#3b82f6;outline:none}
+.searchrow input:focus{border-color:#3b82f6}
 .ndlogin{border-radius:13px}
 .tabbody::-webkit-scrollbar{width:5px}
 .tabbody::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
-#rail{position:fixed;left:10px;top:50%;transform:translateY(-50%);z-index:1100;display:flex;flex-direction:column;gap:8px}
-.railbtn{width:44px;min-height:48px;border-radius:14px;border:1px solid #334155;background:rgba(15,23,42,.92);color:#e2e8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;padding:5px 0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 4px 14px rgba(0,0,0,.35)}
-.railbtn span{font-size:17px;line-height:1.1}
-.railbtn small{font-size:8.5px;font-weight:700;letter-spacing:.4px;color:#94a3b8;text-transform:uppercase}
-.railbtn:active{transform:scale(.93)}
-@media(max-height:560px){.railbtn small{display:none}.railbtn{min-height:44px}}
 body.cleanview #rail{display:none!important}
-#qInfo{display:none;align-items:center;gap:9px;margin-top:8px;padding:7px 12px;border-radius:11px;background:rgba(2,132,199,.14);border:1px solid #0369a1;font-size:12px;color:#cbd5e1}
-#qInfo b{color:#7dd3fc;font-size:13px;white-space:nowrap}
-#qInfo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #find{max-width:460px}
-#selMFilter{flex:1.1;min-width:64px;background:#0f172a;color:#fff;border:1px solid #334155;border-radius:9px;padding:6px 7px;font-size:12.5px;font-weight:600}
-#selMFilter::placeholder{color:#64748b}
 /* Marked pins — Naqsha Zameen style (25 Nov 2026): a teardrop pin whose tip
    sits on the point, with the point's coordinates in a label underneath.
    Go-to pins are RED with a white "Lat: X, Lng: Y" label; dropped pins are
@@ -1054,8 +1014,6 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 /* Hero — Village + Search always visible at the top of the panel (no tab needed) */
 .hero{flex-shrink:0;padding:10px 14px;border-bottom:1px solid rgba(201,162,39,.28);background:rgba(2,6,23,.30)}
 .hero label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.9px;color:#E3C565;text-transform:uppercase;margin:0 0 5px}
-.hero-village{margin-bottom:12px}
-.hero #villageSel{width:100%;box-sizing:border-box;padding:12px 10px;font-size:15px;border-radius:11px}
 .hero-search .searchrow{margin-bottom:4px}
 .hero-search .searchrow input{padding:8px 10px;font-size:13px}
 .hero-search .searchrow button{min-height:38px;padding:0 14px;font-size:13px}
@@ -1064,13 +1022,11 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 .tabs{flex-shrink:0}
 /* Collapsible sections inside tab bodies — secondary tools tuck away, nothing removed */
 .tabbody details.sect{margin:0 0 4px}
-.tabbody details.sect summary{cursor:pointer;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#fbbf24;padding:12px 0 8px;list-style:none;outline:none}
+.tabbody details.sect summary{cursor:pointer;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#fbbf24;padding:12px 0 8px;list-style:none}
 .tabbody details.sect summary::-webkit-details-marker{display:none}
 .tabbody details.sect summary::after{content:' \25B8';color:#94a3b8}
 .tabbody details.sect[open ] summary::after{content:' \25BE';color:#94a3b8}
 .tabbody details.sect summary:active{opacity:.75}
-/* Numberdar Login sits above the footer now (always reachable, out of the top flow) */
-#ndBtn{margin:10px 14px}
 /* Offline status lives inside Layers > Offline Satellite now */
 #setSect .offstat{border:1px solid rgba(201,162,39,.25);border-radius:10px;padding:8px 10px;margin:0 0 8px}
 </style>
@@ -1081,7 +1037,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
 <aside id="dash" class="glass" aria-label="Dashboard">
   <div class="dash-head banner">
-    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><b>ZameenMap</b><div class="village-row"><span class="village-lbl">Village</span><div class="village-pick" id="villagePick"><button id="villageSearch" type="button" class="village-btn" onclick="villageListToggle()" aria-label="Select village"><span id="villageSearchLabel">Chak 130/1-L</span></button><div id="villageList" class="village-list" hidden><input id="villageFilter" class="village-filter" type="text" autocomplete="off" spellcheck="false" placeholder="Search village…" oninput="villageListRender(this.value)" onkeydown="if(event.key==='Enter'){villagePickFirst()}else if(event.key==='Escape'){villageListHide();this.blur()}"><div id="villageListRows"></div></div></div></div></div></div>
+    <div class="brand"><span class="logo"><svg width="44" height="44" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="zb2" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#0E3B2C"/><stop offset="1" stop-color="#07271C"/></linearGradient><linearGradient id="zg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C565"/><stop offset="1" stop-color="#C9A227"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="21" fill="url(#zb2)" stroke="#C9A227" stroke-width="3"/><circle cx="27" cy="25" r="7.5" fill="url(#zg2)"/><g stroke="#C9A227" stroke-width="2.6" opacity=".92" fill="none"><path d="M13 45h70M13 58h70M13 70h70M13 82h70M31 45v37M49 45v37M66 45v37"/></g><rect x="31" y="58" width="18" height="12" fill="#14532d" opacity=".8"/><rect x="49" y="70" width="17" height="12" fill="#14532d" opacity=".55"/><path d="M66 12c-7.7 0-13 5.4-13 12.2C53 33 66 45 66 45s13-12 13-20.8C79 17.4 73.7 12 66 12z" fill="url(#zg2)" stroke="#07271C" stroke-width="2"/><circle cx="66" cy="24.5" r="5" fill="#0A2E23"/></svg></span><div class="brand-txt"><h1>ZameenMap</h1><div class="village-row"><span class="village-lbl">Village</span><div class="village-pick" id="villagePick"><button id="villageSearch" type="button" class="village-btn" onclick="villageListToggle()" aria-label="Select village"><span id="villageSearchLabel">Chak 130/1-L</span></button><div id="villageList" class="village-list" hidden><input id="villageFilter" class="village-filter" type="text" autocomplete="off" spellcheck="false" placeholder="Search village…" aria-label="Search village" oninput="villageListRender(this.value)" onkeydown="if(event.key==='Enter'){villagePickFirst()}else if(event.key==='Escape'){villageListHide();this.blur()}"><div id="villageListRows"></div></div></div></div></div></div>
     <button class="xbtn" onclick="toggleDash()" aria-label="Close dashboard">&#10005;</button>
   </div>
   <!-- HERO — Search always visible (24 Nov 2026 sidebar refresh; village selector moved into the header) -->
@@ -1105,7 +1061,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 
   <!-- Home view — koi panel khula na ho to khali jagah ki bajaye ye dikhe (footer neeche hi rehta hai) -->
   <div class="home-view" id="homeView">
-    <h5>Quick Tools</h5>
+    <h2>Quick Tools</h2>
     <div class="qtools">
       <button class="qtool" onclick="homeLocate()"><span class="qi">📍</span>My Location</button>
       <button class="qtool" onclick="showLastMarkCoord()"><span class="qi">🎯</span>Coordinates</button>
@@ -1113,12 +1069,12 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <button class="qtool" id="qtoolMark" onclick="toggleMarkMode()"><span class="qi">📌</span>Mark</button>
     </div>
     <div class="searchrow" id="homeCoordRow">
-      <input id="hgLat" type="text" inputmode="decimal" placeholder="Latitude">
-      <input id="hgLng" type="text" inputmode="decimal" placeholder="Longitude">
+      <input id="hgLat" type="text" inputmode="decimal" placeholder="Latitude" aria-label="Latitude">
+      <input id="hgLng" type="text" inputmode="decimal" placeholder="Longitude" aria-label="Longitude">
       <button onclick="homeGoto()">Go</button>
     </div>
     <div class="homeloc" id="homeLoc">Tap <b>My Location</b> to see which murabba and qila you are standing in.</div>
-    <h5>All Villages</h5>
+    <h2>All Villages</h2>
     <div class="card hstats">
       <div class="hstat"><span>Villages on map</span><b id="homeStatVillages">…</b></div>
       <div class="hstat"><span>Total murabbas</span><b id="homeStatMurabbas">…</b></div>
@@ -1126,16 +1082,16 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <div class="hstat"><span>Land records</span><b id="homeStatRecords">…</b></div>
     </div>
     <div class="card" id="homeVillageList"></div>
-    <h5>How to use</h5>
+    <h2>How to use</h2>
     <div class="card">
       <p>Tap a village above to open it, or tap a murabba on the map to see its 25 qilas. Tap a qila for its 8 kanals, a kanal for its 20 marlas.</p>
-      <p>Use <b>My Location</b> in the field, <b>Coordinates</b> to jump to a lat/lng like Naqsha Zameen, <b>Measure</b> to measure land, and <b>Mark</b> to drop a pin at the map centre. Use <b>My Pins</b> in Tools to save any point on the map.</p>
+      <p>Use <b>My Location</b> in the field, <b>Coordinates</b> to jump to a lat/lng like Naqsha Zameen, <b>Measure</b> to measure land, and <b>Mark</b> to drop pins by tapping the map. Use <b>My Pins</b> in Tools to save any point on the map.</p>
     </div>
   </div>
 
   <div class="tabbody" id="tab-ov" style="display:none">
     <div class="stats" id="dashStats"></div>
-    <h5>&#128205; Live Location</h5>
+    <h2>&#128205; Live Location</h2>
     <div class="p-card">
       <div class="lrow" style="border-bottom:0;padding:2px 0 8px"><div class="ln"><b>GPS Status</b><small>Live fix accuracy</small></div><span style="display:flex;align-items:center;gap:8px"><span id="dot" class="dot"></span><span id="acc" class="badge">GPS: searching...</span></span></div>
       <div id="loc">
@@ -1149,10 +1105,10 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       </div>
       <button class="big" id="locBtn" onclick="followMe()">&#9673; Locate Me</button>
     </div>
-    <h5>&#127968; About</h5>
+    <h2>&#127968; About</h2>
     <p>Offline map of <span id="ovVillage">Chak 130/1-L</span> — <b id="ovMur">...</b> mustatil, <b id="ovQila">...</b> qilas. Each qila = <b>1 acre (160 Marla)</b>, 40 &times; 36 karam.</p>
     <div class="card"><b style="color:#facc15">Offline:</b> <span style="font-size:12.5px;color:#cbd5e1">Works without internet once the satellite is saved (Layers tab).</span></div>
-    <h5>&#128506; Aks Shajra — Download</h5>
+    <h2>&#128506; Aks Shajra — Download</h2>
     <div class="card">
       <p style="margin:0 0 8px">Download the field map (Aks Shajra) of the current village — <b id="shajraVillage">Chak 130/1-L</b>. Built from the map itself, vector quality, never blurry. Works fully offline.</p>
       <div class="btnrow">
@@ -1193,7 +1149,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <li><b>Measure:</b> Tools tab — tap plot corners; area &amp; distance appear live.</li>
         <li><b>Search:</b> the search box at the top — name, khata, murabba or qila.</li>
         <li><b>Land Records:</b> open the Land Records tab, enter the PIN, then print.</li>
-        <li><b>Clean map:</b> the &#128065; button (top-right) hides everything; <b>Show</b> brings it back.</li>
+        <li><b>Clean map:</b> Tools tab &rarr; <b>Clean View</b> hides everything; tap the &#10005; (top-right) to bring it back.</li>
       </ul>
     </details>
   </div>
@@ -1202,34 +1158,34 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <details class="sect" open>
       <summary>&#128506; Map Layers</summary>
       <div class="p-card" style="padding:2px 12px">
-      <div class="lrow"><div class="ln"><b>Satellite</b><small>Works offline once saved</small></div><label class="sw2"><input type="checkbox" id="lySat" checked onchange="lyToggleSat(this.checked)"><i></i></label></div>
-      <div class="lrow"><div class="ln"><b>Mustatil Grid</b><small>Red boundary lines</small></div><label class="sw2"><input type="checkbox" id="lyGrid" checked onchange="lyToggleGrid(this.checked)"><i></i></label></div>
-      <div class="lrow"><div class="ln"><b>All Qilas</b><small>Qila lines at zoom 16+</small></div><label class="sw2"><input type="checkbox" id="lyQila" onchange="lyToggleQila(this.checked)"><i></i></label></div>
-      <div class="lrow"><div class="ln"><b>Labels</b><small>Murabba and qila numbers</small></div><label class="sw2"><input type="checkbox" id="lyLbl" checked onchange="lyToggleLbl(this.checked)"><i></i></label></div>
-      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Owners' Qilas</b><small>Record qilas — light purple</small></div><label class="sw2"><input type="checkbox" id="lyOwn" checked onchange="lyToggleOwn(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Satellite</b><small>Works offline once saved</small></div><label class="sw2"><input type="checkbox" id="lySat" checked onchange="lyToggleSat(this.checked)" aria-label="Satellite"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Mustatil Grid</b><small>Red boundary lines</small></div><label class="sw2"><input type="checkbox" id="lyGrid" checked onchange="lyToggleGrid(this.checked)" aria-label="Mustatil grid"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>All Qilas</b><small>Qila lines at zoom 16+</small></div><label class="sw2"><input type="checkbox" id="lyQila" onchange="lyToggleQila(this.checked)" aria-label="All qilas"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Labels</b><small>Murabba and qila numbers</small></div><label class="sw2"><input type="checkbox" id="lyLbl" checked onchange="lyToggleLbl(this.checked)" aria-label="Labels"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Owners' Qilas</b><small>Record qilas — light purple</small></div><label class="sw2"><input type="checkbox" id="lyOwn" checked onchange="lyToggleOwn(this.checked)" aria-label="Owners' qilas"><i></i></label></div>
       </div>
     </details>
     <details class="sect" open>
       <summary>Tap Tools</summary>
       <div class="p-card" style="padding:2px 12px">
-      <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)"><i></i></label></div>
-      <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" onchange="setTapCoords(this.checked)"><i></i></label></div>
-      <div class="lrow"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)"><i></i></label></div>
-      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Kanal / Marla</b><small>Kanal &amp; marla boxes on qila tap</small></div><label class="sw2"><input type="checkbox" id="lyKanalMarla" onchange="setKanalMarla(this.checked)"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Tap pin</b><small>Pin marker on the tapped point</small></div><label class="sw2"><input type="checkbox" id="lyTapPin" onchange="setTapPin(this.checked)" aria-label="Tap pin"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Coordinates (Lat/Lng)</b><small>Lat/Lng chip on tap</small></div><label class="sw2"><input type="checkbox" id="lyTapCoord" onchange="setTapCoords(this.checked)" aria-label="Coordinates chip on tap"><i></i></label></div>
+      <div class="lrow"><div class="ln"><b>Compass (North)</b><small>North arrow on the map</small></div><label class="sw2"><input type="checkbox" id="lyCompass" onchange="setCompass(this.checked)" aria-label="Compass (North)"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Kanal / Marla</b><small>Kanal &amp; marla boxes on qila tap</small></div><label class="sw2"><input type="checkbox" id="lyKanalMarla" onchange="setKanalMarla(this.checked)" aria-label="Kanal and Marla boxes on qila tap"><i></i></label></div>
       </div>
     </details>
     <details class="sect">
       <summary>🏠 Abadi (Settlement)</summary>
       <div class="p-card" style="padding:2px 12px">
-      <div class="lrow"><div class="ln"><b>Abadi Plots</b><small>138 plots from the hand-drawn sketch</small></div><label class="sw2"><input type="checkbox" id="abadiToggle" onchange="toggleAbadi()"><i></i></label></div>
-      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Find Plot</b><small>Plot number 1–96, or strip 1–42</small></div><div style="display:flex;gap:6px;align-items:center"><input id="abadiPlotNo" type="number" min="1" max="96" placeholder="No." style="width:64px;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-weight:700"><button onclick="abadiGoTo()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(201,162,39,.5);background:#0E5C3A;color:#E3C565;font-weight:700;cursor:pointer">Go</button></div></div>
+      <div class="lrow"><div class="ln"><b>Abadi Plots</b><small>138 plots from the hand-drawn sketch</small></div><label class="sw2"><input type="checkbox" id="abadiToggle" onchange="toggleAbadi()" aria-label="Abadi plots"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><label class="ln" for="abadiPlotNo"><b>Find Plot</b><small>Plot number 1–96, or strip 1–42</small></label><div style="display:flex;gap:6px;align-items:center"><input id="abadiPlotNo" type="number" min="1" max="96" placeholder="No." aria-label="Plot number" style="width:64px;padding:10px 8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-weight:700"><button onclick="abadiGoTo()" style="padding:10px 14px;min-height:44px;border-radius:8px;border:1px solid rgba(201,162,39,.5);background:#0E5C3A;color:#E3C565;font-weight:700;cursor:pointer">Go</button></div></div>
       <p class="hint">Sketch-based — plots are approximate, anchored to the talab + school pins. Only for Chak 130/1-L.</p>
       </div>
     </details>
     <details class="sect">
       <summary>🛣️ Street View</summary>
       <div class="p-card" style="padding:2px 12px">
-      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Streets</b><small>Roads at their real karam widths + chowks</small></div><label class="sw2"><input type="checkbox" id="streetToggle" onchange="toggleStreets()"><i></i></label></div>
+      <div class="lrow" style="border-bottom:0"><div class="ln"><b>Streets</b><small>Roads at their real karam widths + chowks</small></div><label class="sw2"><input type="checkbox" id="streetToggle" onchange="toggleStreets()" aria-label="Streets"><i></i></label></div>
       <p class="hint">Streets drawn at their real karam widths (7/8/9 karam) — tap a street for its width, a chowk for its size. A house or wall inside the street band is encroaching (qabza) on the road.</p>
       </div>
     </details>
@@ -1256,7 +1212,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
         <div class="bar"><i id="satBar"></i></div>
         <button class="reset go" id="satBtn" onclick="downloadSat()">⬇ Download HD Satellite (Offline)</button>
         <button class="reset" onclick="clearSat()">Delete Saved Satellite</button>
-        <h5 style="margin:14px 0 4px">Download villages for offline</h5>
+        <h2 style="margin:14px 0 4px">Download villages for offline</h2>
         <p class="hint">Tick villages, or download them all at once. Already-saved tiles are skipped, so you can stop and resume any time. Big downloads need Wi-Fi — all 27 villages are about <span id="vdlTotal">…</span>.</p>
         <div class="vdlbar"><button class="reset" onclick="vdlSelectAll(true)">Select all</button><button class="reset" onclick="vdlSelectAll(false)">Clear</button></div>
         <div id="vdlList" class="vdllist"></div>
@@ -1272,14 +1228,14 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
   </div>
 
   <div class="tabbody" id="tab-tl" style="display:none">
-    <h5>Measure (Paimaish)</h5>
+    <h2>Measure (Paimaish)</h2>
     <button class="big" id="pmBtn" onclick="toggleMeasure()">Start Measurement</button>
     <div class="btnrow"><button id="unFt" class="on2" onclick="v6SetUnits('ft')">Units: Feet</button><button id="unM" onclick="v6SetUnits('m')">Units: Metres</button></div>
     <p class="hint">Tap the map to mark corners. <b>2 points</b> = distance; <b>3+</b> = area, live.</p>
     <div class="res" id="pmRes" style="display:none">
       <div class="resline mid"><span>Square Feet</span><b id="pmSqft">0</b></div>
-      <div class="resline tap" id="pmAcreRow" onclick="toggleUnitRow('pm','kanal')" style="cursor:pointer"><span>Acre ▸</span><b id="pmAcre">0</b></div>
-      <div class="resline tap" id="pmKanalRow" onclick="toggleUnitRow('pm','marla')" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="pmKanal">0</b></div>
+      <div class="resline tap" id="pmAcreRow" onclick="toggleUnitRow('pm','kanal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleUnitRow('pm','kanal')}" role="button" tabindex="0" style="cursor:pointer"><span>Acre ▸</span><b id="pmAcre">0</b></div>
+      <div class="resline tap" id="pmKanalRow" onclick="toggleUnitRow('pm','marla')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleUnitRow('pm','marla')}" role="button" tabindex="0" style="display:none;cursor:pointer"><span>Kanal ▸</span><b id="pmKanal">0</b></div>
       <div class="resline big" id="pmMarlaRow" style="display:none"><span>Marla</span><b id="pmMarla">0</b></div>
       <div class="unit-hint">Tap Acre for Kanal &middot; Tap Kanal for Marla</div>
       <div class="resline"><span>Square Yard (Gaj)</span><b id="pmGaj">0</b></div>
@@ -1294,19 +1250,19 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <button onclick="pmClear()">Clear</button>
     </div>
     <div id="pmCoordsWrap" style="display:none">
-      <h5>Point Coordinates (Corners)</h5>
+      <h2>Point Coordinates (Corners)</h2>
       <div id="pmCoords"></div>
       <div class="btnrow"><button onclick="pmCopyCoords()">&#128203; Copy All Coordinates</button></div>
       <p class="hint">The latitude and longitude of every point (for example the four corners of a plot) — copy and use them anywhere.</p>
     </div>
 
-    <h5>My Pins</h5>
+    <h2>My Pins</h2>
     <p class="hint">Save points on the map — your fields, tubewell, trees, any place. Pins are saved on this phone and work offline.</p>
     <button class="big" id="pinAddBtn" onclick="togglePinAdd()">📍 Add a Pin — tap the map</button>
     <div id="pinList"></div>
     <div class="btnrow"><button onclick="clearAllPins()">Clear All Pins</button></div>
 
-    <h5>Calculators</h5>
+    <h2>Calculators</h2>
     <p class="hint">Two calculators — Land Calculator measures a plot; Inheritance (Wirasa) divides land between heirs under Sunni (Hanafi) rules.</p>
     <div class="btnrow" id="calcTabRow">
       <button id="calcTabLand" class="on2" onclick="setCalcTab('land')">Land Calculator</button>
@@ -1353,9 +1309,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
       <p class="hint">Sunni (Hanafi) inheritance — Faraid. Shares follow the Quranic fixed shares and the residuary rules applied in Pakistan. <b>Fully offline:</b> this calculator lives inside this page, it fetches nothing from the internet.</p>
 
       <div class="searchrow">
-        <input id="inhKanal" type="number" min="0" step="any" inputmode="decimal" placeholder="Kanal" oninput="inhUpdateTotal()">
-        <input id="inhMarla" type="number" min="0" step="any" inputmode="decimal" placeholder="Marla" oninput="inhUpdateTotal()">
-        <input id="inhSqft" type="number" min="0" step="any" inputmode="decimal" placeholder="Sq Ft" oninput="inhUpdateTotal()">
+        <input id="inhKanal" type="number" min="0" step="any" inputmode="decimal" placeholder="Kanal" aria-label="Kanal" oninput="inhUpdateTotal()">
+        <input id="inhMarla" type="number" min="0" step="any" inputmode="decimal" placeholder="Marla" aria-label="Marla" oninput="inhUpdateTotal()">
+        <input id="inhSqft" type="number" min="0" step="any" inputmode="decimal" placeholder="Sq Ft" aria-label="Square feet" oninput="inhUpdateTotal()">
       </div>
       <div class="resline mid"><span>Total Estate</span><b id="inhTotal">—</b></div>
       <div class="btnrow"><button id="inhUseLandBtn" onclick="inhUseLand()">Use Land Calculator result</button></div>
@@ -1407,19 +1363,19 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     <details class="sect">
       <summary>Go To Location</summary>
       <div class="searchrow">
-        <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)">
-        <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)">
+        <input id="gtLat" type="text" inputmode="decimal" placeholder="Latitude (DD)" aria-label="Latitude in decimal degrees">
+        <input id="gtLng" type="text" inputmode="decimal" placeholder="Longitude (DD)" aria-label="Longitude in decimal degrees">
       </div>
       <div class="btnrow"><button onclick="v6GoToDD()">&#128205; Go to Coordinates</button></div>
       <div class="searchrow">
-        <input id="gtLatD" type="number" placeholder="Lat &#176;">
-        <input id="gtLatM" type="number" placeholder="Lat &#8242;">
-        <input id="gtLatS" type="number" placeholder="Lat &#8243;">
+        <input id="gtLatD" type="number" placeholder="Lat &#176;" aria-label="Latitude degrees">
+        <input id="gtLatM" type="number" placeholder="Lat &#8242;" aria-label="Latitude minutes">
+        <input id="gtLatS" type="number" placeholder="Lat &#8243;" aria-label="Latitude seconds">
       </div>
       <div class="searchrow">
-        <input id="gtLngD" type="number" placeholder="Lng &#176;">
-        <input id="gtLngM" type="number" placeholder="Lng &#8242;">
-        <input id="gtLngS" type="number" placeholder="Lng &#8243;">
+        <input id="gtLngD" type="number" placeholder="Lng &#176;" aria-label="Longitude degrees">
+        <input id="gtLngM" type="number" placeholder="Lng &#8242;" aria-label="Longitude minutes">
+        <input id="gtLngS" type="number" placeholder="Lng &#8243;" aria-label="Longitude seconds">
       </div>
       <div class="btnrow"><button onclick="v6GoToDMS()">&#128205; Go to DMS</button></div>
     </details>
@@ -1445,20 +1401,20 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
     </details>
   </div>
   <div class="tabbody" id="tab-rc" style="display:none">
-    <h5>Land Records — Owners</h5>
+    <h2>Land Records — Owners</h2>
     <div class="searchrow">
-      <input id="rcSearch" placeholder="Name, father, khata, muraba or qila..." autocomplete="off">
+      <input id="rcSearch" placeholder="Name, father, khata, murabba or qila..." autocomplete="off" aria-label="Search records by name, father, khata, murabba or qila">
     </div>
     <div id="rcRes" class="gsres" style="display:none"></div>
     <p class="hint">Tap a result to jump to that qila.</p>
     <div id="ownList"></div>
   </div>
 
-  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.28</span></div>
+  <div class="dash-foot"><span class="owner-name">Muhammad Atif</span><span class="owner-dot">&middot;</span><span class="owner-role">Numberdar, Chak 130/1-L</span><span class="owner-ver" id="appVer">v7.29</span></div>
 </aside>
-<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:86vw"><span id="pmChipTxt">Points: 0</span></div>
-<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 216px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyTapCoord()" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
-<div id="markCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 260px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:86vw;cursor:pointer" onclick="copyMarkCoord()" title="Tap to copy"><span id="markCoordTxt"></span><button id="markCoordX" onclick="event.stopPropagation();hideMarkCoord()" aria-label="Hide coordinates">&#10005;</button></div>
+<div id="pmChip" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#facc15;text-align:center;max-width:76vw"><span id="pmChipTxt">Points: 0</span></div>
+<div id="tapCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 232px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:76vw;cursor:pointer" onclick="copyTapCoord()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyTapCoord()}" role="button" tabindex="0" title="Tap to copy"><span id="tapCoordTxt"></span><button id="tapCoordX" onclick="event.stopPropagation();hideTapCoord()" aria-label="Hide coordinates">&#10005;</button></div>
+<div id="markCoord" class="glass" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 276px);z-index:1200;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;color:#e2e8f0;text-align:center;max-width:76vw;cursor:pointer" onclick="copyMarkCoord()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyMarkCoord()}" role="button" tabindex="0" title="Tap to copy"><span id="markCoordTxt"></span><button id="markCoordX" onclick="event.stopPropagation();hideMarkCoord()" aria-label="Hide coordinates">&#10005;</button></div>
 <button id="cleanExit" onclick="toggleCleanView()" aria-label="Close clean view">&#10005;</button>
 <div id="toast"></div>
 
@@ -1487,7 +1443,7 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 </div>
 <div id="mapVillageBox" class="mapbox" style="display:none">
   <div class="mapbox-h"><b id="mapVillageTitle">All Villages</b><button onclick="mapVillageHide()" aria-label="Close">✕</button></div>
-  <input id="mapVillageSearch" type="text" autocomplete="off" placeholder="Search village…" oninput="mapVillageRender(this.value)">
+  <input id="mapVillageSearch" type="text" autocomplete="off" placeholder="Search village…" aria-label="Search village" oninput="mapVillageRender(this.value)">
   <div id="mapVillageList" class="mapvlist"></div>
 </div>
 <div id="north" aria-label="North is up"><span class="cmp"><i class="n">N</i><i class="e">E</i><i class="s">S</i><i class="w">W</i><span class="a">&#9650;</span></span></div>
@@ -1511,9 +1467,9 @@ body.theme-streets .lbl-q-sel,body.theme-plain .lbl-q-sel{color:#b45309;text-sha
 <div id="pinModal">
   <div class="pincard">
     <div class="pinlock">&#128274;</div>
-    <h3>Land Records</h3>
+    <h2>Land Records</h2>
     <p>These records are for the Numberdar — enter the PIN</p>
-    <input id="pinInp" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" maxlength="12" onkeydown="if(event.key==='Enter')pinSubmit()">
+    <input id="pinInp" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" maxlength="12" aria-label="PIN" onkeydown="if(event.key==='Enter')pinSubmit()">
     <div id="pinErr">Wrong PIN — please try again</div>
     <div class="btnrow" style="margin-top:14px">
       <button onclick="pinSubmit()">&#128275; Unlock</button>
@@ -1556,7 +1512,7 @@ var M_PER_DEG_LAT = 110827, M_PER_DEG_LNG = 97879;
 /* App version — bump on EVERY deploy, together with CACHE in sw.js (the
    changed sw.js is what makes the browser notice the update; the page then
    reloads itself — the user never reinstalls). Footer shows this version. */
-var APP_VERSION='7.28';
+var APP_VERSION='7.29';
 var GEO = { lat0:28.4869381461, lng0:70.6639930763, dLatE:0.0000364846, dLngE:0.0034219004, dLatS:-0.0027272714, dLngS:0.0000249022 };
 var GEO_DET = GEO.dLatE*GEO.dLngS - GEO.dLatS*GEO.dLngE;
 /* The unchanged global affine — now only the filler for unmeasured corners
@@ -2798,7 +2754,7 @@ window.mapVillageRender=function(q){
   VILLAGE_ORDER.forEach(function(v){
     var label=villageLabel(v);
     if(nq && comboNorm(label).indexOf(nq)<0 && comboNorm(v).indexOf(nq)<0) return;
-    html+='<div class="vitem'+(v===curVillage?' sel':'')+'" onclick="setVillage(\''+v+'\',true);mapVillageHide()"><span>'+label+'</span><span>'+villageMurabbaCount(v)+' murabbas</span></div>';
+    html+='<button type="button" class="vitem'+(v===curVillage?' sel':'')+'" onclick="setVillage(\''+v+'\',true);mapVillageHide()"><span>'+label+'</span><span>'+villageMurabbaCount(v)+' murabbas</span></button>';
   });
   list.innerHTML = html || '<p class="hint">No village found</p>';
 };
@@ -3650,10 +3606,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       html = '<div class="oc-split">This qila is shared by '+list.length+' owners &mdash; tap a name for details.</div>';
       list.forEach(function(r, idx){
         var o=r.o, pk=plotKanal(r.plot);
-        html += '<div class="oc-mini" onclick="toggleOwnerDetail('+idx+')">'+
+        html += '<button type="button" class="oc-mini" onclick="toggleOwnerDetail('+idx+')">'+
           '<span class="oc-mini-name">'+o.name+'</span>'+
           '<span class="oc-mini-share">'+pk+' Kanal</span>'+
-          '<span class="oc-mini-chev" id="ocChev'+idx+'">&#9656;</span></div>'+
+          '<span class="oc-mini-chev" id="ocChev'+idx+'">&#9656;</span></button>'+
           '<div class="oc-detail" id="ocDetail'+idx+'" style="display:none">'+ownerDetailHtml(r, true)+'</div>';
       });
     }
@@ -5162,7 +5118,6 @@ body{background:#071f18}
 .card,.p-card{background:rgba(4,24,17,.55);border-color:rgba(201,162,39,.2)}
 .hint{color:#A9C6B4}
 .lrow .ln small{color:#A9C6B4}
-#find select,#selMFilter{background:#07271C;border-color:rgba(201,162,39,.3);color:#fff}
 .floatbtn{background:rgba(8,34,25,.88);border-color:rgba(201,162,39,.5);color:#E3C565}
 /* Current-village chip (v7.18): the map screen itself must say which village
    it is showing — the sidebar is closed most of the time. Tap = change village. */
@@ -5202,13 +5157,11 @@ body{background:#071f18}
 .brand-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .village-row{display:flex;align-items:center;gap:6px}
 .village-lbl{font-size:11px;color:#A9C6B4;font-weight:700;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
-.dash-head #villageSel{flex:1;min-width:0;box-sizing:border-box;padding:5px 7px;font-size:12.5px;border-radius:8px}
-/* Searchable village picker (25 Nov 2026) — type to filter, tap to select */
 .village-pick{position:relative;flex:1;min-width:0}
 .dash-head #villageSearch{width:100%;box-sizing:border-box;padding:5px 26px 5px 7px;font-size:12.5px;font-weight:700;color:#fff;background:#07271C;border:1px solid rgba(201,162,39,.45);border-radius:8px;text-align:left;cursor:pointer}
 .village-pick::after{content:'⌄';position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#C9A227;font-size:14px;pointer-events:none}
 .village-list{position:absolute;top:calc(100% + 4px);left:0;right:0;max-height:260px;overflow-y:auto;background:#07271C;border:1px solid rgba(201,162,39,.55);border-radius:9px;z-index:80;box-shadow:0 10px 28px rgba(0,0,0,.5)}
-.village-filter{width:100%;box-sizing:border-box;padding:8px 10px;font-size:13px;font-weight:600;color:#fff;background:#0A2E23;border:0;border-bottom:1px solid rgba(201,162,39,.45);border-radius:9px 9px 0 0;outline:none}
+.village-filter{width:100%;box-sizing:border-box;padding:8px 10px;font-size:13px;font-weight:600;color:#fff;background:#0A2E23;border:0;border-bottom:1px solid rgba(201,162,39,.45);border-radius:9px 9px 0 0}
 .village-item{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:9px 10px;background:none;border:0;border-bottom:1px solid rgba(201,162,39,.15);color:#fff;font-size:13px;text-align:left;cursor:pointer}
 .village-item:last-child{border-bottom:0}
 .village-item span{font-size:11px;color:#A9C6B4;white-space:nowrap}
@@ -5237,7 +5190,7 @@ body{background:#071f18}
 .combo{position:relative;flex:1;min-width:0}
 .combo input{width:100%;background:#07271C;color:#fff;border:1px solid rgba(201,162,39,.3);border-radius:9px;padding:7px 8px;font-size:13px;font-weight:600}
 .combo input:disabled{opacity:.5}
-.combo input:focus{border-color:#C9A227;outline:none}
+.combo input:focus{border-color:#C9A227}
 .combo-list{position:absolute;left:0;right:0;bottom:calc(100% + 6px);max-height:46vh;overflow-y:auto;background:rgba(8,34,25,.97);border:1px solid rgba(201,162,39,.45);border-radius:12px;box-shadow:0 -8px 28px rgba(0,0,0,.5);z-index:1300;padding:4px}
 .combo-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:46px;padding:8px 10px;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.06);color:#EDEBE4;font-size:14px;cursor:pointer;text-align:left}
 .combo-row:last-child{border-bottom:0}
@@ -5251,6 +5204,68 @@ body.cleanview #find .combo-list,body.uihide #find .combo-list{display:none!impo
 .tabs{display:flex;gap:0;padding:0 10px;border-bottom:1px solid rgba(201,162,39,.28)}
 .tab{flex:1;min-width:0;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:#A9C6B4;padding:13px 1px 11px;font-size:12px;font-weight:700;min-height:46px;letter-spacing:0}
 .tab.on{background:transparent;border-bottom-color:#C9A227;color:#E3C565}
+</style>
+<style>
+/* ===== Design polish (27 Nov 2026) — PROFESSIONAL-STANDARDS §B.
+   Emerald+gold identity kept and elevated; no layout, data, calculation or
+   behaviour changed. This block only overrides earlier rules (same file
+   convention as the v6/v7.x skin blocks above it). ===== */
+:root{
+  --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-5:32px;
+  --gold:#E3C565; --gold-bright:#facc15; --emerald:#0E5C3A; --emerald-deep:#0d3524;
+  --ink:#EDEBE4; --muted:#A9C6B4; --line:rgba(201,162,39,.3);
+}
+/* --- Keyboard focus: one visible gold ring everywhere (B2) --- */
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* --- Respect reduced-motion preference (B2/B3) --- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+/* --- Contrast fixes (WCAG AA 4.5:1, measured) --- */
+.leaflet-container a{color:#E3C565}
+.dash-foot .owner-dot{color:#94a3b8}
+/* --- Stray blue out, emerald+gold in (Abiana is indigo — this app is not) --- */
+.btn.on{background:linear-gradient(180deg,#14532d,#0E3B2C);border-color:#C9A227;color:#fff}
+.userdot{background:#059669}
+.userpulse{background:rgba(5,150,105,.4)}
+.ndbtn.call{background:#0E5C3A;border:1px solid rgba(201,162,39,.55)}
+.ndbtn.wa{background:#15803d}
+/* --- Real headings keep the old look (h1 brand, h2 sections) --- */
+.brand h1{margin:0;font-size:17px;font-weight:800;color:#fbbf24;letter-spacing:.2px}
+.dash-head.banner .brand h1{font-size:19px;color:#E3C565;letter-spacing:.3px}
+/* --- Touch targets ≥ 44px (B2) — hit areas grow, visuals stay the same --- */
+#zoomCtl button{width:44px;height:44px}
+.xbtn{width:44px;height:44px;min-width:44px}
+#ownerCard .ocx{width:44px;height:44px}
+.mapbox-h button{min-width:44px;min-height:44px}
+#tapCoordX,#markCoordX{width:44px;height:44px}
+.sw2{width:56px;height:44px}
+.sw2 i{top:6px;bottom:6px}
+.sw2 input:checked+i:after{left:28px}
+.inhstep button{width:44px;height:44px}
+.inhchip{min-height:44px}
+.pinrow button{min-width:44px;min-height:44px}
+.rtbtn{min-height:44px;padding:10px 12px}
+#locSum{min-height:44px}
+#nav button{min-height:44px;padding:10px 12px}
+.hero-search .searchrow button{min-height:44px}
+.hero-search .searchrow input{padding:11px 10px}
+.searchrow input{min-height:44px}
+.combo input{min-height:44px}
+#mapVillageSearch{min-height:44px}
+.village-filter{min-height:44px}
+#villageSearch{min-height:44px}
+#abadiPlotNo{min-height:44px}
+.village-item{padding:12px 10px}
+.mapvlist .vitem{padding:12px 10px;background:none;border:0;width:100%;text-align:left;font:inherit;color:inherit}
+.vdlrow{padding:11px 2px}
+.pad{grid-template-rows:repeat(3,44px)}
+.pad button{min-height:44px}
+.reset{min-height:44px}
+.ndbtn{min-height:44px}
+.tabbody details.sect summary{padding:14px 0 10px}
+/* --- JS-generated rows are real <button>s now: strip button defaults --- */
+.oc-mini{width:100%;font:inherit;text-align:left}
 </style>
 </body>
 </html>
